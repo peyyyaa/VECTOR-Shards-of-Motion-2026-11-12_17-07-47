@@ -60,6 +60,13 @@ public class PlayerFloat : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (movement.ControlLocked)
+        {
+            // Another ability (e.g., dash) owns gravity right now; don't touch it.
+            isFloating = false;
+            return;
+        }
+
         if (movement.IsGrounded)
         {
             floatTimeRemaining = floatDuration; // landing refills the float

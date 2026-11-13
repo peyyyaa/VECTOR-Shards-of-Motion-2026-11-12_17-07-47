@@ -271,6 +271,7 @@ GameObject:
   - component: {fileID: 397174214}
   - component: {fileID: 397174213}
   - component: {fileID: 397174218}
+  - component: {fileID: 397174219}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -461,6 +462,22 @@ MonoBehaviour:
   floatGravityScale: 0.5
   maxFloatFallSpeed: 2
   floatDuration: 1
+--- !u!114 &397174219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 397174212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5031b0131b4f66b41bd702030f40e6cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDash
+  dashAction: {fileID: -2085110403750432210, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  dashDistance: 3
+  dashDuration: 0.15
+  dashCooldown: 0.5
 --- !u!1 &562524219
 GameObject:
   m_ObjectHideFlags: 0

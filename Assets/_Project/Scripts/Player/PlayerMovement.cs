@@ -44,6 +44,13 @@ public class PlayerMovement : MonoBehaviour
     /// Other player scripts (e.g., PlayerFloat) read this.</summary>
     public bool IsGrounded => isGrounded;
 
+    /// <summary>+1 = facing right, -1 = facing left. Updated from the last horizontal input.</summary>
+    public int FacingDirection { get; private set; } = 1;
+
+    /// <summary>When true, this script stops steering and jumping so another
+    /// script (e.g., PlayerDash) can fully control the Rigidbody2D.</summary>
+    public bool ControlLocked { get; set; }
+
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
@@ -71,6 +78,10 @@ public class PlayerMovement : MonoBehaviour
         if (moveAction != null)
         {
             moveInput = moveAction.action.ReadValue<Vector2>().x;
+            if (Mathf.Abs(moveInput) > 0.01f)
+            {
+                FacingDirection = moveInput > 0f ? 1 : -1;
+            }
         }
 
         if (jumpAction != null && jumpAction.action.WasPressedThisFrame())
@@ -82,6 +93,13 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         isGrounded = CheckGrounded();
+
+        if (ControlLocked)
+        {
+            // Another script is driving the player; ignore input this step.
+            jumpRequested = false;
+            return;
+        }
 
         // Horizontal movement: set x-velocity directly; keep the y-velocity that gravity produced.
         body.linearVelocity = new Vector2(moveInput * moveSpeed, body.linearVelocity.y);
