@@ -32,6 +32,14 @@ public class PlayerMovement : MonoBehaviour
     [Tooltip("How far below the player's collider to look for ground, in units.")]
     [SerializeField] private float groundCheckDepth = 0.1f;
 
+    [Header("Pushing")]
+    [Tooltip("Layers of objects the player pushes with a limited force instead of shoving at full speed (e.g., PhysicsObject).")]
+    [SerializeField] private LayerMask pushableLayers;
+    [Tooltip("Continuous push force in newtons while walking into a pushable object on the ground. 0 = can't push by walking.")]
+    [SerializeField] private float pushForce = 6f;
+    [Tooltip("How close (in units) the player must be to an object to count as touching it for pushing.")]
+    [SerializeField] private float pushReach = 0.05f;
+
     private Rigidbody2D body;
     private Collider2D bodyCollider;
 
@@ -102,7 +110,14 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Horizontal movement: set x-velocity directly; keep the y-velocity that gravity produced.
-        body.linearVelocity = new Vector2(moveInput * moveSpeed, body.linearVelocity.y);
+        float targetVelocityX = moveInput * moveSpeed;
+
+        if (Mathf.Abs(moveInput) > 0.01f)
+        {
+            targetVelocityX = LimitByPushable(targetVelocityX);
+        }
+
+        body.linearVelocity = new Vector2(targetVelocityX, body.linearVelocity.y);
 
         if (jumpRequested && isGrounded)
         {
@@ -126,6 +141,75 @@ public class PlayerMovement : MonoBehaviour
         body.linearVelocity = new Vector2(body.linearVelocity.x, 0f);
         body.AddForce(Vector2.up * body.mass * launchSpeed, ForceMode2D.Impulse);
     }
+
+    /// <summary>
+    /// If a pushable object is in the way, the player may only move as fast as:
+    /// closing the remaining gap, or keeping up with the object — never faster.
+    /// When touching it on the ground, the player pushes it with a limited force.
+    ///
+    /// Physics: the object only starts moving if the push beats friction.
+    ///   F_net = F_push - μ·m·g   and   a = F_net / m
+    /// (Simplification: we assume the player's feet grip the ground, even though
+    /// the player's collider uses a no-friction material to avoid sticking to walls.)
+    /// </summary>
+    private float LimitByPushable(float desiredVelocityX)
+    {
+        int direction = desiredVelocityX > 0f ? 1 : -1;
+        float desiredSpeed = Mathf.Abs(desiredVelocityX);
+        float step = Time.fixedDeltaTime;
+
+        RaycastHit2D hit = FindPushableAhead(direction, desiredSpeed * step + pushReach);
+        if (!hit)
+        {
+            return desiredVelocityX;
+        }
+
+        Rigidbody2D target = hit.rigidbody;
+        float objectSpeedAway = Mathf.Max(0f, target.linearVelocity.x * direction);
+        float closeGapSpeed = Mathf.Max(0f, hit.distance) / step;
+        float allowedSpeed = Mathf.Min(desiredSpeed, Mathf.Max(objectSpeedAway, closeGapSpeed));
+
+        bool touching = hit.distance <= pushReach;
+        if (touching && isGrounded && pushForce > 0f)
+        {
+            // Continuous force (newtons), applied every physics step while pushing.
+            target.AddForce(new Vector2(direction * pushForce * Mathf.Abs(moveInput), 0f), ForceMode2D.Force);
+        }
+
+        return direction * allowedSpeed;
+    }
+
+    /// <summary>
+    /// Sweeps the player's collider sideways to find a pushable Rigidbody2D within 'distance'.
+    /// Only counts surfaces facing the player (so standing ON a block doesn't count as being blocked).
+    /// Also used by PlayerDash to stop at objects instead of ramming them.
+    /// </summary>
+    public RaycastHit2D FindPushableAhead(int direction, float distance)
+    {
+        if (pushableLayers.value == 0)
+        {
+            return default;
+        }
+
+        ContactFilter2D filter = new ContactFilter2D();
+        filter.SetLayerMask(pushableLayers);
+        filter.useTriggers = false;
+
+        int count = body.Cast(new Vector2(direction, 0f), filter, castResults, distance);
+        for (int i = 0; i < count; i++)
+        {
+            RaycastHit2D hit = castResults[i];
+            bool facesPlayer = hit.normal.x * direction < -0.5f;
+            if (facesPlayer && hit.rigidbody != null && hit.rigidbody != body
+                && hit.rigidbody.bodyType == RigidbodyType2D.Dynamic)
+            {
+                return hit;
+            }
+        }
+        return default;
+    }
+
+    private readonly RaycastHit2D[] castResults = new RaycastHit2D[4];
 
     private bool CheckGrounded()
     {

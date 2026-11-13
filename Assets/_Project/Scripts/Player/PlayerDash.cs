@@ -91,8 +91,7 @@ public class PlayerDash : MonoBehaviour
             }
             else
             {
-                // Hold a perfectly horizontal velocity for the whole dash.
-                body.linearVelocity = new Vector2(dashDirection * dashSpeed, 0f);
+                MoveDashStep();
             }
         }
         else
@@ -102,7 +101,10 @@ public class PlayerDash : MonoBehaviour
                 airDashAvailable = true; // landing refills the air dash
             }
 
-            bool canDash = cooldownRemaining <= 0f && (movement.IsGrounded || airDashAvailable);
+            // Don't start while another ability (e.g., Kinetic Burst recoil) controls the player.
+            bool canDash = !movement.ControlLocked
+                && cooldownRemaining <= 0f
+                && (movement.IsGrounded || airDashAvailable);
             if (dashRequested && canDash)
             {
                 StartDash();
@@ -128,7 +130,30 @@ public class PlayerDash : MonoBehaviour
         isDashing = true;
         movement.ControlLocked = true;
         body.gravityScale = 0f;
-        body.linearVelocity = new Vector2(dashDirection * dashSpeed, 0f);
+        MoveDashStep();
+    }
+
+    /// <summary>
+    /// Sets this physics step's dash velocity: a perfectly horizontal line at dash speed,
+    /// unless a pushable object is in the way. Then the player moves just up to it and the
+    /// dash ends — the dash isn't a battering ram (Kinetic Burst is how to launch objects).
+    /// </summary>
+    private void MoveDashStep()
+    {
+        float step = Time.fixedDeltaTime;
+        RaycastHit2D hit = movement.FindPushableAhead(dashDirection, dashSpeed * step);
+
+        if (hit)
+        {
+            const float skin = 0.01f; // stop a hair short so we arrive touching, not overlapping
+            float speedToContact = Mathf.Max(0f, hit.distance - skin) / step;
+            body.linearVelocity = new Vector2(dashDirection * speedToContact, 0f);
+            dashStepsRemaining = Mathf.Min(dashStepsRemaining, 1); // end on the next step
+        }
+        else
+        {
+            body.linearVelocity = new Vector2(dashDirection * dashSpeed, 0f);
+        }
     }
 
     private void EndDash()

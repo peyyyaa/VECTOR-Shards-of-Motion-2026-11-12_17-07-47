@@ -1,0 +1,179 @@
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+/// <summary>
+/// Kinetic Burst: an instant push on physics objects in a cone in front of the player.
+///
+/// Physics:
+/// - Impulse changes momentum:  J = Δp = m * Δv   →   Δv = J / m
+///   Every object in the cone receives the same impulse J, so a light object
+///   gains more speed than a heavy one. (Try changing the block's Mass.)
+/// - Newton's 3rd law: if the player pushes an object with impulse J, the object
+///   pushes back on the player with -J. Physically exact recoil = Recoil Multiplier 1.
+///   The default is smaller (a deliberate game choice so the player stays controllable).
+/// - No objects hit means nothing pushed back, so there is no recoil.
+///
+/// Unity details: impulses use ForceMode2D.Impulse (an instant change in momentum).
+/// After that, Unity's friction, collisions, and gravity take over; real-world results
+/// would also depend on air resistance and surface details Unity simplifies.
+/// </summary>
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(PlayerMovement))]
+public class KineticBurst : MonoBehaviour
+{
+    [Header("Input (drag InputSystem_Actions > Player/KineticBurst)")]
+    [SerializeField] private InputActionReference burstAction;
+
+    [Header("Burst Area")]
+    [Tooltip("How far the burst reaches from the player's center, in units (meters).")]
+    [SerializeField] private float range = 2.5f;
+    [Tooltip("Total width of the cone in degrees (60 = 30° above and below facing direction).")]
+    [SerializeField, Range(1f, 180f)] private float coneAngle = 60f;
+    [Tooltip("Layers the burst can push (e.g., PhysicsObject).")]
+    [SerializeField] private LayerMask affectedLayers;
+
+    [Header("Force")]
+    [Tooltip("Impulse given to each object hit, in newton-seconds (N·s = kg·m/s).")]
+    [SerializeField] private float burstImpulse = 5f;
+    [Tooltip("Fraction of the reaction impulse applied to the player. 1 = physically exact (Newton's 3rd law), 0 = no recoil.")]
+    [SerializeField, Range(0f, 1f)] private float recoilMultiplier = 0.3f;
+    [Tooltip("Seconds the player's normal steering is paused so the recoil is visible.")]
+    [SerializeField] private float recoilControlLockTime = 0.15f;
+
+    [Header("Timing")]
+    [Tooltip("Seconds between bursts.")]
+    [SerializeField] private float cooldown = 0.5f;
+
+    private Rigidbody2D body;
+    private PlayerMovement movement;
+
+    private bool burstRequested;      // set in Update, consumed in FixedUpdate
+    private float cooldownRemaining;
+    private float lockTimeRemaining;
+    private bool holdingLock;         // true while this script owns ControlLocked
+
+    private readonly HashSet<Rigidbody2D> alreadyHit = new HashSet<Rigidbody2D>();
+
+    private void Awake()
+    {
+        body = GetComponent<Rigidbody2D>();
+        movement = GetComponent<PlayerMovement>();
+    }
+
+    private void OnEnable()
+    {
+        burstAction?.action.Enable();
+    }
+
+    private void OnDisable()
+    {
+        ReleaseLock();
+    }
+
+    private void Update()
+    {
+        if (burstAction != null && burstAction.action.WasPressedThisFrame())
+        {
+            burstRequested = true;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        if (cooldownRemaining > 0f)
+        {
+            cooldownRemaining -= Time.fixedDeltaTime;
+        }
+
+        if (holdingLock)
+        {
+            lockTimeRemaining -= Time.fixedDeltaTime;
+            if (lockTimeRemaining <= 0f)
+            {
+                ReleaseLock();
+            }
+        }
+
+        // Don't fire during a dash or while another ability controls the player.
+        if (burstRequested && cooldownRemaining <= 0f && !movement.ControlLocked)
+        {
+            Fire();
+        }
+
+        burstRequested = false;
+    }
+
+    private void Fire()
+    {
+        cooldownRemaining = cooldown;
+
+        Vector2 origin = body.position;
+        Vector2 facing = new Vector2(movement.FacingDirection, 0f);
+        float halfAngle = coneAngle * 0.5f;
+
+        Vector2 totalReaction = Vector2.zero;
+        alreadyHit.Clear();
+
+        Collider2D[] hits = Physics2D.OverlapCircleAll(origin, range, affectedLayers);
+        foreach (Collider2D hit in hits)
+        {
+            Rigidbody2D target = hit.attachedRigidbody;
+
+            // Skip: no Rigidbody2D, the player itself, non-dynamic bodies, or a body already pushed
+            // (one object can have several colliders).
+            if (target == null || target == body || target.bodyType != RigidbodyType2D.Dynamic)
+                continue;
+            if (!alreadyHit.Add(target))
+                continue;
+
+            Vector2 toTarget = target.worldCenterOfMass - origin;
+            if (toTarget.sqrMagnitude < 0.0001f)
+                continue;
+
+            if (Vector2.Angle(facing, toTarget) > halfAngle)
+                continue; // outside the cone
+
+            Vector2 pushDirection = toTarget.normalized;
+            target.AddForce(pushDirection * burstImpulse, ForceMode2D.Impulse);
+
+            totalReaction -= pushDirection * burstImpulse; // Newton's 3rd law: equal and opposite
+        }
+
+        if (totalReaction != Vector2.zero && recoilMultiplier > 0f)
+        {
+            body.AddForce(totalReaction * recoilMultiplier, ForceMode2D.Impulse);
+
+            // Pause normal steering briefly; otherwise PlayerMovement would overwrite
+            // the recoil's horizontal velocity on the very next physics step.
+            movement.ControlLocked = true;
+            holdingLock = true;
+            lockTimeRemaining = recoilControlLockTime;
+        }
+    }
+
+    private void ReleaseLock()
+    {
+        if (holdingLock)
+        {
+            holdingLock = false;
+            movement.ControlLocked = false;
+        }
+    }
+
+    // Draws the burst range and cone edges in the Scene view when the player is selected.
+    private void OnDrawGizmosSelected()
+    {
+        PlayerMovement pm = movement != null ? movement : GetComponent<PlayerMovement>();
+        int dir = (pm != null && Application.isPlaying) ? pm.FacingDirection : 1;
+
+        Vector3 origin = transform.position;
+        Vector3 facing = new Vector3(dir, 0f, 0f);
+        float halfAngle = coneAngle * 0.5f;
+
+        Gizmos.color = new Color(1f, 0.6f, 0f, 0.8f);
+        Gizmos.DrawWireSphere(origin, range);
+        Gizmos.DrawLine(origin, origin + Quaternion.Euler(0f, 0f, halfAngle) * facing * range);
+        Gizmos.DrawLine(origin, origin + Quaternion.Euler(0f, 0f, -halfAngle) * facing * range);
+    }
+}

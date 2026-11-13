@@ -272,6 +272,7 @@ GameObject:
   - component: {fileID: 397174213}
   - component: {fileID: 397174218}
   - component: {fileID: 397174219}
+  - component: {fileID: 397174220}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -299,6 +300,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 320
   groundCheckDepth: 0.1
+  pushableLayers:
+    serializedVersion: 2
+    m_Bits: 768
+  pushForce: 6
+  pushReach: 0.05
 --- !u!61 &397174214
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -478,6 +484,28 @@ MonoBehaviour:
   dashDistance: 3
   dashDuration: 0.15
   dashCooldown: 0.5
+--- !u!114 &397174220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 397174212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 618bd2512f47d0244a54e1ecbe994418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KineticBurst
+  burstAction: {fileID: 1507210386506705010, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  range: 2.5
+  coneAngle: 60
+  affectedLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  burstImpulse: 5
+  recoilMultiplier: 0.3
+  recoilControlLockTime: 0.15
+  cooldown: 0.5
 --- !u!1 &562524219
 GameObject:
   m_ObjectHideFlags: 0
