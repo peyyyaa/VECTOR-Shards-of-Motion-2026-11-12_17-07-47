@@ -38,11 +38,20 @@ public class PlayerMovement : MonoBehaviour
     private float moveInput;      // -1 (left) to +1 (right)
     private bool jumpRequested;   // set in Update, consumed in FixedUpdate
     private bool isGrounded;
+    private float baseGravityScale; // the Rigidbody2D's Gravity Scale at startup
+
+    /// <summary>True when the player is standing on something in Ground Layers.
+    /// Other player scripts (e.g., PlayerFloat) read this.</summary>
+    public bool IsGrounded => isGrounded;
 
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
         bodyCollider = GetComponent<Collider2D>();
+
+        // Saved so jump height stays correct even if another script
+        // (like PlayerFloat) temporarily changes the gravity scale.
+        baseGravityScale = body.gravityScale;
     }
 
     private void OnEnable()
@@ -93,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
         //   v = sqrt(2 * g * h)          (from v^2 = v0^2 - 2gh, with v = 0 at the top)
         // An impulse changes momentum:  J = m * Δv   (units: N·s = kg·m/s)
         // We zero any existing vertical velocity first so Δv = v and every jump is the same height.
-        float gravity = Mathf.Abs(Physics2D.gravity.y * body.gravityScale);
+        float gravity = Mathf.Abs(Physics2D.gravity.y * baseGravityScale);
         float launchSpeed = Mathf.Sqrt(2f * gravity * jumpHeight);
 
         body.linearVelocity = new Vector2(body.linearVelocity.x, 0f);
