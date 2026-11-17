@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 /// <summary>
 /// Horizontal dash: a short, fixed-distance burst of sideways movement in the
@@ -21,9 +20,6 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerMovement))]
 public class PlayerDash : MonoBehaviour
 {
-    [Header("Input (drag InputSystem_Actions > Player/Dash)")]
-    [SerializeField] private InputActionReference dashAction;
-
     [Header("Dash")]
     [Tooltip("How far one dash travels, in units (meters), if nothing blocks it.")]
     [SerializeField] private float dashDistance = 3f;
@@ -34,6 +30,7 @@ public class PlayerDash : MonoBehaviour
 
     private Rigidbody2D body;
     private PlayerMovement movement;
+    private PlayerInputReader input;
 
     private float normalGravityScale;
     private bool dashRequested;     // set in Update, consumed in FixedUpdate
@@ -51,12 +48,8 @@ public class PlayerDash : MonoBehaviour
     {
         body = GetComponent<Rigidbody2D>();
         movement = GetComponent<PlayerMovement>();
+        input = GetComponent<PlayerInputReader>();
         normalGravityScale = body.gravityScale;
-    }
-
-    private void OnEnable()
-    {
-        dashAction?.action.Enable();
     }
 
     private void OnDisable()
@@ -69,7 +62,7 @@ public class PlayerDash : MonoBehaviour
 
     private void Update()
     {
-        if (dashAction != null && dashAction.action.WasPressedThisFrame())
+        if (input.DashPressedThisFrame)
         {
             dashRequested = true;
         }

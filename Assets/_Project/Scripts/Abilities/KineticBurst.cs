@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 /// <summary>
 /// Kinetic Burst: an instant push on physics objects in a cone in front of the player.
@@ -22,8 +21,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerMovement))]
 public class KineticBurst : MonoBehaviour
 {
-    [Header("Input (drag InputSystem_Actions > Player/KineticBurst)")]
-    [SerializeField] private InputActionReference burstAction;
+    // Triggered by this player's "Ability" button (read via PlayerInputReader).
 
     [Header("Burst Area")]
     [Tooltip("How far the burst reaches from the player's center, in units (meters).")]
@@ -47,6 +45,7 @@ public class KineticBurst : MonoBehaviour
 
     private Rigidbody2D body;
     private PlayerMovement movement;
+    private PlayerInputReader input;
 
     private bool burstRequested;      // set in Update, consumed in FixedUpdate
     private float cooldownRemaining;
@@ -59,11 +58,7 @@ public class KineticBurst : MonoBehaviour
     {
         body = GetComponent<Rigidbody2D>();
         movement = GetComponent<PlayerMovement>();
-    }
-
-    private void OnEnable()
-    {
-        burstAction?.action.Enable();
+        input = GetComponent<PlayerInputReader>();
     }
 
     private void OnDisable()
@@ -73,7 +68,7 @@ public class KineticBurst : MonoBehaviour
 
     private void Update()
     {
-        if (burstAction != null && burstAction.action.WasPressedThisFrame())
+        if (input.AbilityPressedThisFrame)
         {
             burstRequested = true;
         }

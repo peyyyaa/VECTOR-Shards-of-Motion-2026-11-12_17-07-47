@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 /// <summary>
 /// Temporary floating: while airborne and falling, holding Jump lowers the
@@ -17,9 +16,6 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerMovement))]
 public class PlayerFloat : MonoBehaviour
 {
-    [Header("Input (drag InputSystem_Actions > Player/Jump)")]
-    [SerializeField] private InputActionReference jumpAction;
-
     [Header("Float")]
     [Tooltip("Gravity Scale used while floating. The player's normal value is set on the Rigidbody2D.")]
     [SerializeField] private float floatGravityScale = 0.5f;
@@ -30,6 +26,7 @@ public class PlayerFloat : MonoBehaviour
 
     private Rigidbody2D body;
     private PlayerMovement movement;
+    private PlayerInputReader input;
 
     private float normalGravityScale;
     private float floatTimeRemaining;
@@ -42,19 +39,14 @@ public class PlayerFloat : MonoBehaviour
     {
         body = GetComponent<Rigidbody2D>();
         movement = GetComponent<PlayerMovement>();
+        input = GetComponent<PlayerInputReader>();
         normalGravityScale = body.gravityScale;
         floatTimeRemaining = floatDuration;
-    }
-
-    private void OnEnable()
-    {
-        jumpAction?.action.Enable();
     }
 
     private void OnDisable()
     {
         // Never leave the player stuck with low gravity if this script is turned off.
-        // (We don't disable the Jump action here: PlayerMovement uses it too.)
         StopFloating();
     }
 
@@ -74,7 +66,7 @@ public class PlayerFloat : MonoBehaviour
             return;
         }
 
-        bool holdingJump = jumpAction != null && jumpAction.action.IsPressed();
+        bool holdingJump = input.JumpHeld;
         bool falling = body.linearVelocity.y < 0f;
         bool canFloat = holdingJump && falling && floatTimeRemaining > 0f;
 

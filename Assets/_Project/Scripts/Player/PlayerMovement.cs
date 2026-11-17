@@ -1,23 +1,20 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 /// <summary>
-/// Milestone 1: horizontal movement and jumping for the player.
+/// Horizontal movement and jumping for one player.
 ///
 /// How it works:
-/// - Input is read every frame in Update (so no key press is missed).
+/// - Input comes from this player's PlayerInputReader, read every frame in Update
+///   (so no key press is missed).
 /// - Physics changes happen in FixedUpdate (Unity's fixed physics step, 0.02 s by default).
 /// - Horizontal movement sets the Rigidbody2D's x-velocity directly, for tight, responsive control.
 /// - Jumping applies a single upward impulse sized to reach a chosen jump height.
 /// </summary>
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(PlayerInputReader))]
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Input (drag actions from InputSystem_Actions > Player)")]
-    [SerializeField] private InputActionReference moveAction;
-    [SerializeField] private InputActionReference jumpAction;
-
     [Header("Movement")]
     [Tooltip("Horizontal speed in Unity units (meters) per second.")]
     [SerializeField] private float moveSpeed = 6f;
@@ -42,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody2D body;
     private Collider2D bodyCollider;
+    private PlayerInputReader input;
 
     private float moveInput;      // -1 (left) to +1 (right)
     private bool jumpRequested;   // set in Update, consumed in FixedUpdate
@@ -63,36 +61,22 @@ public class PlayerMovement : MonoBehaviour
     {
         body = GetComponent<Rigidbody2D>();
         bodyCollider = GetComponent<Collider2D>();
+        input = GetComponent<PlayerInputReader>();
 
         // Saved so jump height stays correct even if another script
         // (like PlayerFloat) temporarily changes the gravity scale.
         baseGravityScale = body.gravityScale;
     }
 
-    private void OnEnable()
-    {
-        moveAction?.action.Enable();
-        jumpAction?.action.Enable();
-    }
-
-    private void OnDisable()
-    {
-        moveAction?.action.Disable();
-        jumpAction?.action.Disable();
-    }
-
     private void Update()
     {
-        if (moveAction != null)
+        moveInput = input.MoveX;
+        if (Mathf.Abs(moveInput) > 0.01f)
         {
-            moveInput = moveAction.action.ReadValue<Vector2>().x;
-            if (Mathf.Abs(moveInput) > 0.01f)
-            {
-                FacingDirection = moveInput > 0f ? 1 : -1;
-            }
+            FacingDirection = moveInput > 0f ? 1 : -1;
         }
 
-        if (jumpAction != null && jumpAction.action.WasPressedThisFrame())
+        if (input.JumpPressedThisFrame)
         {
             jumpRequested = true;
         }

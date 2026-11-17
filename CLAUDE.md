@@ -14,7 +14,9 @@ Development schedule: Approximately 8 weeks.
 
 Genre: 2D action-platform adventure.
 
-Camera: Side-view, room-based camera.
+Camera: Side-view, room-based camera (one shared screen for both players).
+
+Players: Local co-op only — always exactly 2 players.
 
 Visual style: Detailed fantasy pixel art.
 
@@ -27,9 +29,22 @@ Gameplay balance:
 - Exploration
 - Educational physics concepts
 
+## Local Co-op
+
+- Co-op only: exactly 2 players on one shared screen. No single-player mode.
+- Each player has different abilities. Core movement (below) is shared by both.
+- Ability-to-player mapping: TO BE DECIDED by the team (see region abilities below).
+- Puzzles must be designed for two players; room exits require both players.
+- Controls: shared keyboard (P1 left half, P2 right half), keyboard + gamepad, or two gamepads.
+  `LocalCoopSpawner` assigns devices when a room starts.
+- Input rule: gameplay scripts read input only through `PlayerInputReader`
+  (one per player, backed by Unity's Player Input component). Never read the shared
+  input asset directly, or both players will respond to the same keys.
+- Players do not collide with each other (Player × Player disabled in the Layer Collision Matrix).
+
 ## Core Movement
 
-The player should eventually support:
+Each player should eventually support:
 - Horizontal movement
 - Jumping
 - Temporary floating (reduced gravity)

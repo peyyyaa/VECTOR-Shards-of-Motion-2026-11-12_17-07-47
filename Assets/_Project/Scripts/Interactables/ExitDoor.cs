@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
 /// An exit door. Closed: a solid wall. Open: the solid collider is switched off,
-/// the sprite fades, and the player walking into the doorway completes the room.
+/// the sprite fades, and the room completes once enough players (default: both)
+/// are standing in the doorway.
 ///
 /// Setup: the door GameObject needs TWO BoxCollider2D components:
 ///   1. A solid one (Is Trigger OFF) — assign it to "Solid Collider". Blocks the player while closed.
@@ -23,8 +25,13 @@ public class ExitDoor : MonoBehaviour
     [Header("State")]
     [SerializeField] private bool startOpen = false;
 
+    [Header("Co-op")]
+    [Tooltip("How many players must be in the open doorway to complete the room.")]
+    [SerializeField, Min(1)] private int requiredPlayers = 2;
+
     private bool isOpen;
     private bool roomCompleted;
+    private readonly HashSet<PlayerMovement> playersInDoorway = new HashSet<PlayerMovement>();
 
     public bool IsOpen => isOpen;
 
@@ -54,17 +61,34 @@ public class ExitDoor : MonoBehaviour
         }
     }
 
-    // "Stay" (not "Enter") so it still works if the player is already
-    // standing in the doorway at the moment the door opens.
-    private void OnTriggerStay2D(Collider2D other)
+    // Track which players are inside the doorway trigger. Entering/leaving is tracked even
+    // while the door is closed, so the room completes the moment it opens if everyone's there.
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!isOpen || roomCompleted) return;
+        PlayerMovement player = GetPlayer(other);
+        if (player != null) playersInDoorway.Add(player);
+    }
 
-        Rigidbody2D rb = other.attachedRigidbody;
-        if (rb != null && rb.GetComponent<PlayerMovement>() != null)
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        PlayerMovement player = GetPlayer(other);
+        if (player != null) playersInDoorway.Remove(player);
+    }
+
+    private void FixedUpdate()
+    {
+        playersInDoorway.RemoveWhere(p => p == null); // destroyed players
+
+        if (isOpen && !roomCompleted && playersInDoorway.Count >= requiredPlayers)
         {
             roomCompleted = true;
             Debug.Log("Room complete!");
         }
+    }
+
+    private static PlayerMovement GetPlayer(Collider2D other)
+    {
+        Rigidbody2D rb = other.attachedRigidbody;
+        return rb != null ? rb.GetComponent<PlayerMovement>() : null;
     }
 }
