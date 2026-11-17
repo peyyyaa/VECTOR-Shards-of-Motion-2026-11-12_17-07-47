@@ -50,6 +50,10 @@ public class PlayerMovement : MonoBehaviour
     /// Other player scripts (e.g., PlayerFloat) read this.</summary>
     public bool IsGrounded => isGrounded;
 
+    /// <summary>The moving body we're standing on (e.g., a block), or null
+    /// when on static ground or in the air.</summary>
+    public Rigidbody2D GroundBody { get; private set; }
+
     /// <summary>+1 = facing right, -1 = facing left. Updated from the last horizontal input.</summary>
     public int FacingDirection { get; private set; } = 1;
 
@@ -94,14 +98,19 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Horizontal movement: set x-velocity directly; keep the y-velocity that gravity produced.
-        float targetVelocityX = moveInput * moveSpeed;
+        float inputVelocityX = moveInput * moveSpeed;
 
         if (Mathf.Abs(moveInput) > 0.01f)
         {
-            targetVelocityX = LimitByPushable(targetVelocityX);
+            inputVelocityX = LimitByPushable(inputVelocityX);
         }
 
-        body.linearVelocity = new Vector2(targetVelocityX, body.linearVelocity.y);
+        // Riding: when standing on something that moves (e.g., a block sliding after a
+        // Kinetic Burst), move along with it. Physically, friction under your feet would drag you along; our
+        // collider is frictionless (so it doesn't stick to walls), so we add the speed directly.
+        float carryVelocityX = GroundBody != null ? GroundBody.linearVelocity.x : 0f;
+
+        body.linearVelocity = new Vector2(carryVelocityX + inputVelocityX, body.linearVelocity.y);
 
         if (jumpRequested && isGrounded)
         {
@@ -195,13 +204,42 @@ public class PlayerMovement : MonoBehaviour
 
     private readonly RaycastHit2D[] castResults = new RaycastHit2D[4];
 
+    private readonly Collider2D[] groundResults = new Collider2D[8];
+
+    /// <summary>
+    /// Checks a thin box just under the player's feet. Also records what we're standing on:
+    /// GroundBody is set only when standing on a dynamic body (e.g., a block) and NOT also
+    /// on static ground — standing half on the floor shouldn't make you ride a block.
+    /// Our own collider is skipped, in case the Player layer is ever added to Ground Layers.
+    /// </summary>
     private bool CheckGrounded()
     {
-        // A thin box just under the bottom of the player's collider.
         Bounds bounds = bodyCollider.bounds;
         Vector2 center = new Vector2(bounds.center.x, bounds.min.y - groundCheckDepth * 0.5f);
         Vector2 size = new Vector2(bounds.size.x * 0.9f, groundCheckDepth);
-        return Physics2D.OverlapBox(center, size, 0f, groundLayers) != null;
+
+        ContactFilter2D filter = new ContactFilter2D();
+        filter.SetLayerMask(groundLayers);
+        filter.useTriggers = false;
+
+        int count = Physics2D.OverlapBox(center, size, 0f, filter, groundResults);
+
+        bool grounded = false;
+        bool onStatic = false;
+        Rigidbody2D dynamicBelow = null;
+
+        for (int i = 0; i < count; i++)
+        {
+            Rigidbody2D rb = groundResults[i].attachedRigidbody;
+            if (rb == body) continue; // never count our own collider as ground
+
+            grounded = true;
+            if (rb == null || rb.bodyType != RigidbodyType2D.Dynamic) onStatic = true;
+            else if (dynamicBelow == null) dynamicBelow = rb;
+        }
+
+        GroundBody = onStatic ? null : dynamicBelow;
+        return grounded;
     }
 
     // Draws the ground-check box in the Scene view when the player is selected.

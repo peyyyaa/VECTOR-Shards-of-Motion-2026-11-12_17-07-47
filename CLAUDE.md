@@ -40,7 +40,10 @@ Gameplay balance:
 - Input rule: gameplay scripts read input only through `PlayerInputReader`
   (one per player, backed by Unity's Player Input component). Never read the shared
   input asset directly, or both players will respond to the same keys.
-- Players do not collide with each other (Player × Player disabled in the Layer Collision Matrix).
+- Players do NOT collide with each other (Player × Player disabled in the Layer Collision
+  Matrix): they pass through each other and can push the same object together (forces add).
+  No stacking on each other; reaching high places uses partner-launching instead.
+- Pressure plates count the whole stack's weight (e.g., a player standing on a block on the plate).
 
 ## Core Movement
 
