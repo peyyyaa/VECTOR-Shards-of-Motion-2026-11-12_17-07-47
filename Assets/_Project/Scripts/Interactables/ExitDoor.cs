@@ -24,6 +24,8 @@ public class ExitDoor : MonoBehaviour
 
     [Header("State")]
     [SerializeField] private bool startOpen = false;
+    [Tooltip("Once opened, the door stays open even if Close() is called (e.g., the block is taken off the plate).")]
+    [SerializeField] private bool stayOpenOnceOpened = false;
 
     [Header("Co-op")]
     [Tooltip("How many players must be in the open doorway to complete the room.")]
@@ -42,7 +44,11 @@ public class ExitDoor : MonoBehaviour
 
     public void Open() => SetOpen(true);
 
-    public void Close() => SetOpen(false);
+    public void Close()
+    {
+        if (stayOpenOnceOpened && isOpen) return; // latched open
+        SetOpen(false);
+    }
 
     private void SetOpen(bool open)
     {
