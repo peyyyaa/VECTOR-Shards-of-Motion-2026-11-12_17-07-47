@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Kinetic Burst: an instant push on physics objects in a cone in front of the player.
+/// Kinetic Burst (Player 1): an instant push on physics objects in a cone in front of the player.
 ///
 /// Physics:
 /// - Impulse changes momentum:  J = Δp = m * Δv   →   Δv = J / m
@@ -12,6 +12,9 @@ using UnityEngine;
 ///   pushes back on the player with -J. Physically exact recoil = Recoil Multiplier 1.
 ///   The default is smaller (a deliberate game choice so the player stays controllable).
 /// - No objects hit means nothing pushed back, so there is no recoil.
+///
+/// Never affects players (including the partner), even if the Player layer is ticked
+/// in Affected Layers. Launching players is left to environmental equipment (spring pads, etc.).
 ///
 /// Unity details: impulses use ForceMode2D.Impulse (an instant change in momentum).
 /// After that, Unity's friction, collisions, and gravity take over; real-world results
@@ -28,14 +31,14 @@ public class KineticBurst : MonoBehaviour
     [SerializeField] private float range = 2.5f;
     [Tooltip("Total width of the cone in degrees (60 = 30° above and below facing direction).")]
     [SerializeField, Range(1f, 180f)] private float coneAngle = 60f;
-    [Tooltip("Layers the burst can push (e.g., PhysicsObject).")]
+    [Tooltip("Layers the burst can push (PhysicsObject). Players are always ignored.")]
     [SerializeField] private LayerMask affectedLayers;
 
     [Header("Force")]
     [Tooltip("Impulse given to each object hit, in newton-seconds (N·s = kg·m/s).")]
-    [SerializeField] private float burstImpulse = 5f;
+    [SerializeField] private float burstImpulse = 15f;
     [Tooltip("Fraction of the reaction impulse applied to the player. 1 = physically exact (Newton's 3rd law), 0 = no recoil.")]
-    [SerializeField, Range(0f, 1f)] private float recoilMultiplier = 0.3f;
+    [SerializeField, Range(0f, 1f)] private float recoilMultiplier = 0.15f;
     [Tooltip("Seconds the player's normal steering is paused so the recoil is visible.")]
     [SerializeField] private float recoilControlLockTime = 0.15f;
 
@@ -120,6 +123,10 @@ public class KineticBurst : MonoBehaviour
             if (target == null || target == body || target.bodyType != RigidbodyType2D.Dynamic)
                 continue;
             if (!alreadyHit.Add(target))
+                continue;
+
+            // Never push players (safety net in case the Player layer is ticked by mistake).
+            if (target.GetComponent<PlayerMovement>() != null)
                 continue;
 
             Vector2 toTarget = target.worldCenterOfMass - origin;

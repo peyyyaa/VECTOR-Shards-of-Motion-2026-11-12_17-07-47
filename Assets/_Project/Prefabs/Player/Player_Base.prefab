@@ -113,7 +113,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 3
+  m_GravityScale: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -191,9 +191,11 @@ MonoBehaviour:
   groundCheckDepth: 0.1
   pushableLayers:
     serializedVersion: 2
-    m_Bits: 768
-  pushForce: 6
+    m_Bits: 256
+  pushForce: 12
   pushReach: 0.05
+  minLaunchControlLock: 0.1
+  launchSafetyTimeout: 3
 --- !u!114 &3102347676292567127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,7 +208,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf5e1dad28469694cbc3e13397c00d7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerFloat
-  floatGravityScale: 0.5
+  floatGravityFraction: 0.16666667
   maxFloatFallSpeed: 2
   floatDuration: 1
 --- !u!114 &274270198258514952

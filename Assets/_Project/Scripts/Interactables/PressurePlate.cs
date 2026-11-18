@@ -6,21 +6,27 @@ using UnityEngine.Events;
 /// A pressure plate that activates when the total weight resting on it reaches a threshold.
 ///
 /// Physics: weight is the force of gravity on a mass,  W = m * g  (newtons).
-///   Example: a 2 kg block weighs 2 * 9.81 ≈ 19.6 N; a 1 kg player weighs ≈ 9.8 N.
+///   g is the world gravity from Project Settings > Physics 2D (currently 29.43 m/s², 3× Earth).
+///   Example: a 2 kg block weighs 2 * 29.43 ≈ 58.9 N; a 1 kg player weighs ≈ 29.4 N.
 ///
 /// Stacks: weight passes down through whatever is underneath (a normal-force chain).
 ///   If a player stands on a block that's on the plate, the plate feels BOTH:
 ///   W_total = Σ m * g over the whole stack. So the plate counts bodies in its zone, plus
 ///   anything resting on top of them, plus anything on top of those, and so on.
 ///
+/// Resting check: a body in the plate's zone only counts once it's moving slower than
+/// Max Resting Speed (default 0.5 m/s). A block sliding across, or a player walking over,
+/// doesn't press the plate until it stops on it. Bodies stacked on a resting body count as before.
+///
 /// Simplifications:
 /// - A real scale measures the normal force pushing on it, which equals m * g only when
-///   the stack is at rest. This plate adds up m * g for every body in the stack — even one
-///   that's bouncing or still falling through.
+///   the stack is at rest. This plate adds up m * g for every counted body — the resting check
+///   makes that much closer to true, but a body bouncing on top of the stack still counts.
 /// - A body resting on the stack AND on something else (e.g., straddling a ledge) is
 ///   counted with its full weight, though really only part of it would press down here.
-/// - We use the world's g (9.81 m/s²) and ignore each body's Gravity Scale, because Gravity
-///   Scale is a game-feel tweak (the player uses 3 for snappy jumps), not a change of mass.
+/// - We use the world's g and ignore each body's Gravity Scale. Every body normally uses
+///   Gravity Scale 1; abilities change it only briefly (float, dash), and weight on the plate
+///   shouldn't flicker because of that.
 ///
 /// Setup: needs a Collider2D with "Is Trigger" ticked. Wire On Pressed / On Released in the
 /// Inspector to whatever should react (e.g., ExitDoor.Open / ExitDoor.Close).
@@ -29,8 +35,10 @@ using UnityEngine.Events;
 public class PressurePlate : MonoBehaviour
 {
     [Header("Activation")]
-    [Tooltip("Total weight needed to press the plate, in newtons (N). 2 kg ≈ 19.6 N, 1 kg ≈ 9.8 N.")]
-    [SerializeField] private float requiredWeight = 15f;
+    [Tooltip("Total weight needed to press the plate, in newtons (N). With g = 29.43: 1 kg ≈ 29.4 N, 2 kg ≈ 58.9 N.")]
+    [SerializeField] private float requiredWeight = 45f;
+    [Tooltip("A body in the plate's zone only counts once it's moving slower than this (m/s), so a block sliding or passing over doesn't trigger the plate.")]
+    [SerializeField] private float maxRestingSpeed = 0.5f;
 
     [Header("Feedback (optional)")]
     [SerializeField] private SpriteRenderer plateRenderer;
@@ -102,7 +110,9 @@ public class PressurePlate : MonoBehaviour
                 removeList.Add(rb); // destroyed or disabled while on the plate
                 continue;
             }
-            if (rb.bodyType == RigidbodyType2D.Dynamic && stack.Add(rb))
+            // Only bodies that have settled count; something sliding across doesn't press the plate.
+            bool resting = rb.linearVelocity.magnitude <= maxRestingSpeed;
+            if (rb.bodyType == RigidbodyType2D.Dynamic && resting && stack.Add(rb))
             {
                 toVisit.Enqueue(rb);
             }

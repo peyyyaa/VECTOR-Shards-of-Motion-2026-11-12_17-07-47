@@ -82,7 +82,7 @@ MonoBehaviour:
   affectedLayers:
     serializedVersion: 2
     m_Bits: 256
-  burstImpulse: 5
-  recoilMultiplier: 0.3
+  burstImpulse: 15
+  recoilMultiplier: 0.15
   recoilControlLockTime: 0.15
   cooldown: 0.5

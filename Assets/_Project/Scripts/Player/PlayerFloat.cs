@@ -8,6 +8,7 @@ using UnityEngine;
 /// Physics:
 /// - Newton's 2nd law, a = F / m. Gravity's force is F = m * g, so its acceleration is just g.
 ///   Lowering the Rigidbody2D's Gravity Scale lowers g, so the player speeds up downward more slowly.
+///   Default: 1/6 of normal gravity (29.43 / 6 ≈ 4.9 m/s²) — roughly how the Moon compares to Earth.
 /// - The fall-speed cap stands in for air resistance. Real drag grows with speed until it
 ///   balances gravity (terminal velocity). Here we simply clamp the speed — a game simplification,
 ///   not a real force.
@@ -17,8 +18,8 @@ using UnityEngine;
 public class PlayerFloat : MonoBehaviour
 {
     [Header("Float")]
-    [Tooltip("Gravity Scale used while floating. The player's normal value is set on the Rigidbody2D.")]
-    [SerializeField] private float floatGravityScale = 0.5f;
+    [Tooltip("Gravity while floating, as a fraction of the player's normal gravity. 0.1667 = 1/6 (about the Moon vs. Earth).")]
+    [SerializeField, Range(0f, 1f)] private float floatGravityFraction = 1f / 6f;
     [Tooltip("Fastest downward speed while floating, in units (meters) per second.")]
     [SerializeField] private float maxFloatFallSpeed = 2f;
     [Tooltip("Total seconds of floating allowed before landing again.")]
@@ -73,7 +74,7 @@ public class PlayerFloat : MonoBehaviour
         if (canFloat)
         {
             isFloating = true;
-            body.gravityScale = floatGravityScale;
+            body.gravityScale = normalGravityScale * floatGravityFraction;
 
             // Cap the downward speed (never slower than -maxFloatFallSpeed).
             if (body.linearVelocity.y < -maxFloatFallSpeed)

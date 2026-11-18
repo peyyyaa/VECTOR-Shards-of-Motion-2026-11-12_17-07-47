@@ -33,9 +33,17 @@ public class PlayerMovement : MonoBehaviour
     [Tooltip("Layers of objects the player pushes with a limited force instead of shoving at full speed (e.g., PhysicsObject).")]
     [SerializeField] private LayerMask pushableLayers;
     [Tooltip("Continuous push force in newtons while walking into a pushable object on the ground. 0 = can't push by walking.")]
-    [SerializeField] private float pushForce = 6f;
+    [SerializeField] private float pushForce = 12f;
     [Tooltip("How close (in units) the player must be to an object to count as touching it for pushing.")]
     [SerializeField] private float pushReach = 0.05f;
+
+    // Not used by any ability yet: kept for future launch equipment (spring pads, kinetic cannons),
+    // which can call TryLaunch() to fling a player as a projectile until they land.
+    [Header("Being Launched (future: spring pads, kinetic cannons)")]
+    [Tooltip("Seconds after launch before landing can end the flight (we start on the ground, so this stops it ending instantly).")]
+    [SerializeField] private float minLaunchControlLock = 0.1f;
+    [Tooltip("Safety limit: control returns after this many seconds even if we never land on Ground Layers (e.g., stuck on a ledge that isn't ground).")]
+    [SerializeField] private float launchSafetyTimeout = 3f;
 
     private Rigidbody2D body;
     private Collider2D bodyCollider;
@@ -45,6 +53,9 @@ public class PlayerMovement : MonoBehaviour
     private bool jumpRequested;   // set in Update, consumed in FixedUpdate
     private bool isGrounded;
     private float baseGravityScale; // the Rigidbody2D's Gravity Scale at startup
+    private bool isLaunched;
+    private float launchTimer;
+    private bool launchAvailable = true; // one launch per airtime; refilled on landing
 
     /// <summary>True when the player is standing on something in Ground Layers.
     /// Other player scripts (e.g., PlayerFloat) read this.</summary>
@@ -90,6 +101,15 @@ public class PlayerMovement : MonoBehaviour
     {
         isGrounded = CheckGrounded();
 
+        if (isLaunched)
+        {
+            UpdateLaunch();
+        }
+        else if (isGrounded)
+        {
+            launchAvailable = true; // landed: can be launched again
+        }
+
         if (ControlLocked)
         {
             // Another script is driving the player; ignore input this step.
@@ -120,6 +140,48 @@ public class PlayerMovement : MonoBehaviour
         // Clear the request whether or not we jumped, so a press in mid-air
         // doesn't trigger a surprise jump on landing.
         jumpRequested = false;
+    }
+
+    /// <summary>
+    /// Launches this player with an impulse (intended for future equipment: spring pads, kinetic cannons).
+    /// The player then flies as a true projectile until they land: no steering, floating,
+    /// or dashing (all blocked while ControlLocked), so only gravity shapes the arc.
+    ///
+    /// Physics: J = m * Δv, so Δv = J / m. The impulse ADDS to the current velocity —
+    /// launching a player who's already falling gives a smaller upward result.
+    /// On flat ground the flight is a projectile arc:
+    ///   time of flight T = 2·v·sinθ / g,   range R = v²·sin(2θ) / g
+    /// (Ideal: no air resistance. Unity matches this closely, in 0.02 s steps,
+    ///  unless the arc hits a wall or lands on a higher/lower surface.)
+    ///
+    /// Returns false (no launch) if another ability already controls this player (e.g., mid-dash),
+    /// or if they've already been launched since they last touched the ground. That limit gives
+    /// level designers a predictable maximum reach: one launch + float + air dash.
+    /// </summary>
+    public bool TryLaunch(Vector2 impulse)
+    {
+        if (ControlLocked || !launchAvailable) return false;
+
+        body.AddForce(impulse, ForceMode2D.Impulse);
+        launchAvailable = false;
+        isLaunched = true;
+        launchTimer = 0f;
+        ControlLocked = true;
+        return true;
+    }
+
+    private void UpdateLaunch()
+    {
+        launchTimer += Time.fixedDeltaTime;
+
+        bool pastMinimum = launchTimer >= minLaunchControlLock;
+        bool landed = pastMinimum && isGrounded;
+
+        if (landed || launchTimer >= launchSafetyTimeout)
+        {
+            isLaunched = false;
+            ControlLocked = false;
+        }
     }
 
     private void Jump()

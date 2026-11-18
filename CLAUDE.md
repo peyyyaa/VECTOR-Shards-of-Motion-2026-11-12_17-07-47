@@ -33,7 +33,9 @@ Gameplay balance:
 
 - Co-op only: exactly 2 players on one shared screen. No single-player mode.
 - Each player has different abilities. Core movement (below) is shared by both.
-- Ability-to-player mapping: TO BE DECIDED by the team (see region abilities below).
+- Abilities (finalized): Player 1 = Kinetic Burst (pushes objects away with an impulse);
+  Player 2 = Wind Tether (pulls one object toward them with a continuous force).
+  Neither ability affects players.
 - Puzzles must be designed for two players; room exits require both players.
 - Controls: shared keyboard (P1 left half, P2 right half), keyboard + gamepad, or two gamepads.
   `LocalCoopSpawner` assigns devices when a room starts.
@@ -42,7 +44,10 @@ Gameplay balance:
   input asset directly, or both players will respond to the same keys.
 - Players do NOT collide with each other (Player × Player disabled in the Layer Collision
   Matrix): they pass through each other and can push the same object together (forces add).
-  No stacking on each other; reaching high places uses partner-launching instead.
+  No stacking on each other.
+- Launching players is NOT a character ability. Long-distance launches will come from
+  environmental equipment (spring pads, kinetic cannons), which should reuse
+  `PlayerMovement.TryLaunch()` (projectile flight with no control until landing).
 - Pressure plates count the whole stack's weight (e.g., a player standing on a block on the plate).
 
 ## Core Movement
@@ -112,6 +117,10 @@ The finale combines the abilities and concepts.
 10. Explain all required Unity Inspector configuration.
 
 ## Physics Requirements
+
+- World gravity is 29.43 m/s² (3× Earth), set in Project Settings > Physics 2D, and every body
+  uses Gravity Scale 1 so everything falls at the same rate. Abilities may change a body's
+  Gravity Scale only temporarily (float, dash). Use g = 29.43 in all formulas and on-screen numbers.
 
 - Check equations, units, and assumptions.
 - Distinguish ideal theoretical physics from Unity's simulated behavior.

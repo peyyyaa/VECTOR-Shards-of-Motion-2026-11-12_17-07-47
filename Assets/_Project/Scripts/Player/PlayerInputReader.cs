@@ -34,6 +34,7 @@ public class PlayerInputReader : MonoBehaviour
     public bool JumpHeld => Ready() && jump.IsPressed();
     public bool DashPressedThisFrame => Ready() && dash.WasPressedThisFrame();
     public bool AbilityPressedThisFrame => Ready() && ability.WasPressedThisFrame();
+    public bool AbilityHeld => Ready() && ability.IsPressed();
 
     private void Awake()
     {
