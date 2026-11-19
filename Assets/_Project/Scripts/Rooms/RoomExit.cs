@@ -24,7 +24,7 @@ public class RoomExit : MonoBehaviour
     [Header("Rooms")]
     [Tooltip("The room this exit belongs to. If empty: the parent Room, or else the Room whose area contains this exit.")]
     [SerializeField] private Room fromRoom;
-    [Tooltip("The room the players go to.")]
+    [Tooltip("The room the players go to. If empty: the Room whose area contains Target Entry Player 1.")]
     [SerializeField] private Room targetRoom;
 
     [Header("Arrival Points (inside the target room)")]
@@ -51,11 +51,12 @@ public class RoomExit : MonoBehaviour
         zone = GetComponent<Collider2D>();
         if (fromRoom == null) fromRoom = GetComponentInParent<Room>();
         if (fromRoom == null) fromRoom = FindRoomContaining(transform.position);
+        if (targetRoom == null && targetEntryPlayer1 != null) targetRoom = FindRoomContaining(targetEntryPlayer1.position);
         manager = FindFirstObjectByType<RoomManager>();
 
         if (manager == null) Debug.LogError($"{name}: no RoomManager in the scene.", this);
         if (fromRoom == null) Debug.LogError($"{name}: 'From Room' isn't set (make this a child of a Room).", this);
-        if (targetRoom == null) Debug.LogError($"{name}: 'Target Room' isn't set.", this);
+        if (targetRoom == null) Debug.LogError($"{name}: 'Target Room' isn't set, and no Room contains its arrival point.", this);
     }
 
     private void FixedUpdate()

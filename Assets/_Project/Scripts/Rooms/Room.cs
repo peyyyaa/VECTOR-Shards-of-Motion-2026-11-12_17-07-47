@@ -9,13 +9,13 @@ using UnityEngine;
 ///
 /// Setup: put this on an empty GameObject placed at the room's CENTER. The room's area is drawn
 /// as a yellow box in the Scene view. Default size = one screen:
-///   480 × 270 pixels at 32 pixels per unit = 15 × 8.4375 units.
-/// Rooms next to each other should touch edge to edge (e.g., centers 15 units apart sideways).
+///   640 × 360 pixels at 32 pixels per unit = 20 × 11.25 units.
+/// Rooms next to each other should touch edge to edge (e.g., centers 20 units apart sideways).
 /// </summary>
 public class Room : MonoBehaviour
 {
     [Tooltip("Room area in units, centered on this GameObject. Keep the default (one screen) unless the camera changes.")]
-    [SerializeField] private Vector2 size = new Vector2(15f, 8.4375f);
+    [SerializeField] private Vector2 size = new Vector2(20f, 11.25f);
 
     [Header("Default Entry Points")]
     [Tooltip("Where Player 1 appears if the game starts in this room, or respawns before entering through an exit.")]
