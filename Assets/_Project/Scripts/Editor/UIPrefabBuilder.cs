@@ -23,6 +23,20 @@ public static class UIPrefabBuilder
     [MenuItem("Tools/Shards of Motion/Create UI Prefabs (Add To Scene)")]
     public static void Build()
     {
+        GameObject canvasPrefab = BuildPrefabs();
+        AddToScene(canvasPrefab);
+        Debug.Log("UI prefabs built in " + Folder + ". UI_Canvas is in the scene under _Managers; save the scene (Ctrl+S).");
+    }
+
+    /// <summary>Returns the UI_Canvas prefab, building both UI prefabs first if they don't exist yet.</summary>
+    public static GameObject EnsurePrefabs()
+    {
+        GameObject existing = AssetDatabase.LoadAssetAtPath<GameObject>(CanvasPath);
+        return existing != null ? existing : BuildPrefabs();
+    }
+
+    private static GameObject BuildPrefabs()
+    {
         if (!AssetDatabase.IsValidFolder(Folder))
         {
             Directory.CreateDirectory(Folder);
@@ -30,12 +44,8 @@ public static class UIPrefabBuilder
         }
 
         Sprite rounded = AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/UISprite.psd");
-
         ScreenLabel labelPrefab = BuildLabel(rounded);
-        GameObject canvasPrefab = BuildCanvas(rounded, labelPrefab);
-        AddToScene(canvasPrefab);
-
-        Debug.Log("UI prefabs built in " + Folder + ". UI_Canvas is in the scene under _Managers; save the scene (Ctrl+S).");
+        return BuildCanvas(rounded, labelPrefab);
     }
 
     private static ScreenLabel BuildLabel(Sprite rounded)

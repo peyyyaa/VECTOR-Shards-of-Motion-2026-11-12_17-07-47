@@ -41,17 +41,29 @@ TagManager:
   - name: Background
     uniqueID: 3299500007
     locked: 0
+  - name: BackDecor
+    uniqueID: 1613601872
+    locked: 0
   - name: Midground
     uniqueID: 1820357415
     locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Props
+    uniqueID: 1582299349
+    locked: 0
   - name: Interactables
     uniqueID: 903655291
     locked: 0
   - name: Player
     uniqueID: 2732097689
+    locked: 0
+  - name: Water
+    uniqueID: 1146864789
+    locked: 0
+  - name: FX
+    uniqueID: 1277435206
     locked: 0
   - name: Foreground
     uniqueID: 2035910757
