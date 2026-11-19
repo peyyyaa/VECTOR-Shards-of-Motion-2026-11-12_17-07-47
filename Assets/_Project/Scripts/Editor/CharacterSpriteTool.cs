@@ -187,7 +187,8 @@ public static class CharacterSpriteTool
         }
 
         foreach (string path in written) Import(path, new Vector2(0.5f, pivotY));
-        Debug.Log($"Character sprites: {name} built ({written.Count} frames) in {folder}.");
+        SaveAnimationSet(name, folder, anims);
+        Debug.Log($"Character sprites: {name} built ({written.Count} frames) in {folder}, with {name}_Animations.asset.");
     }
 
     private static void Stamp(Color32?[,] px, List<object> rows, int x0, int y0, Dictionary<char, Color32> palette,
@@ -285,6 +286,97 @@ public static class CharacterSpriteTool
         Dictionary<string, object> art = (Dictionary<string, object>)MiniJson.Parse(File.ReadAllText(path));
         Dictionary<string, object> a = (Dictionary<string, object>)((Dictionary<string, object>)art["anims"])[anim];
         return a.TryGetValue("fps", out object fps) ? (float)(double)fps : fallback;
+    }
+
+    // One CharacterAnimationSet per character (kept at the same path, so prefab references survive rebuilds).
+    private static void SaveAnimationSet(string name, string folder, Dictionary<string, object> anims)
+    {
+        string path = $"{folder}/{name}_Animations.asset";
+        CharacterAnimationSet set = AssetDatabase.LoadAssetAtPath<CharacterAnimationSet>(path);
+        if (set == null)
+        {
+            set = ScriptableObject.CreateInstance<CharacterAnimationSet>();
+            AssetDatabase.CreateAsset(set, path);
+        }
+        Dictionary<string, Sprite[]> sprites = LoadAnims(name);
+        set.clips.Clear();
+        foreach (KeyValuePair<string, object> anim in anims)
+        {
+            Dictionary<string, object> a = (Dictionary<string, object>)anim.Value;
+            if (!sprites.TryGetValue(anim.Key, out Sprite[] frames)) continue;
+            set.clips.Add(new CharacterAnimationSet.Clip
+            {
+                name = anim.Key,
+                frames = frames,
+                framesPerSecond = a.TryGetValue("fps", out object fps) ? (float)(double)fps : 10f,
+                loop = !a.TryGetValue("loop", out object loop) || !(loop is bool l) || l,
+            });
+        }
+        EditorUtility.SetDirty(set);
+        AssetDatabase.SaveAssets();
+    }
+
+    // ------------------------------------------------------------------ 3. player prefabs
+
+    [MenuItem("Tools/Shards of Motion/Characters/3. Set Up Player Visuals")]
+    public static void SetUpPlayers()
+    {
+        CharacterAnimationSet p1 = AssetDatabase.LoadAssetAtPath<CharacterAnimationSet>($"{OutFolder}/P1/P1_Animations.asset");
+        CharacterAnimationSet p2 = AssetDatabase.LoadAssetAtPath<CharacterAnimationSet>($"{OutFolder}/P2/P2_Animations.asset");
+        if (p1 == null || p2 == null) { Debug.LogError("Player visuals: run 1. Build Character Sprites first (P1/P2_Animations missing)."); return; }
+
+        // Player_Base: a "Visual" child (counter-scaled) + PlayerAnimator; the old placeholder sprite is hidden.
+        GameObject root = PrefabUtility.LoadPrefabContents(PlayerPrefab);
+        try
+        {
+            Transform visual = root.transform.Find("Visual");
+            if (visual == null)
+            {
+                visual = new GameObject("Visual").transform;
+                visual.SetParent(root.transform, false);
+            }
+            Vector3 s = root.transform.localScale;
+            visual.localPosition = Vector3.zero;
+            visual.localScale = new Vector3(1f / s.x, 1f / s.y, 1f); // cancel the 0.8 x 1.5 body scale
+            SpriteRenderer vr = visual.GetComponent<SpriteRenderer>();
+            if (vr == null) vr = visual.gameObject.AddComponent<SpriteRenderer>();
+            vr.sortingLayerName = "Player";
+            vr.sprite = p1.Get("Idle") != null && p1.Get("Idle").frames.Length > 0 ? p1.Get("Idle").frames[0] : null;
+
+            SpriteRenderer placeholder = root.GetComponent<SpriteRenderer>();
+            if (placeholder != null) placeholder.enabled = false; // the graybox rectangle; kept (disabled) in case it's needed again
+
+            PlayerAnimator anim = root.GetComponent<PlayerAnimator>();
+            if (anim == null) anim = root.AddComponent<PlayerAnimator>();
+            anim.EditorSetup(p1, vr);
+            PrefabUtility.SaveAsPrefabAsset(root, PlayerPrefab);
+        }
+        finally
+        {
+            PrefabUtility.UnloadPrefabContents(root);
+        }
+
+        // Variants: each gets its own animation set.
+        foreach ((string variant, CharacterAnimationSet set) in new[] { ("Player1", p1), ("Player2", p2) })
+        {
+            string path = $"Assets/_Project/Prefabs/Player/{variant}.prefab";
+            GameObject v = PrefabUtility.LoadPrefabContents(path);
+            try
+            {
+                PlayerAnimator anim = v.GetComponent<PlayerAnimator>();
+                if (anim == null) { Debug.LogError($"Player visuals: {variant} has no PlayerAnimator (is it a variant of Player_Base?)."); continue; }
+                anim.EditorSetAnimationSet(set);
+                Transform visual = v.transform.Find("Visual");
+                CharacterAnimationSet.Clip idle = set.Get("Idle");
+                if (visual != null && idle != null && idle.frames.Length > 0) visual.GetComponent<SpriteRenderer>().sprite = idle.frames[0];
+                PrefabUtility.SaveAsPrefabAsset(v, path);
+            }
+            finally
+            {
+                PrefabUtility.UnloadPrefabContents(v);
+            }
+        }
+        Debug.Log("Player visuals: Player_Base has a Visual child + PlayerAnimator; Player1 uses P1_Animations, Player2 uses P2_Animations.");
     }
 
     private static void Character(string objName, Sprite[] frames, float fps, Vector3 pos, int scale)

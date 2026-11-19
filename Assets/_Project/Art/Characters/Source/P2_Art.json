@@ -213,6 +213,118 @@
    "hhHHHHHHhhhh....",
    "hhHHHHHHhhhh....",
    "..hhh..........."
+  ],
+  "armUp": [
+   "....SS",
+   "...TTS",
+   "..TTT.",
+   ".TTT..",
+   "tTT...",
+   "tTT..."
+  ],
+  "armOut": [
+   "TTTTTT...",
+   "tTTTTTTSS",
+   ".ttttttSS"
+  ],
+  "armWide": [
+   "......SS",
+   "....TTSS",
+   "..TTTT..",
+   "tTTT....",
+   "tT......"
+  ],
+  "legDangle": [
+   "LLLL",
+   "LLLL",
+   "LLLL",
+   ".LLLL",
+   ".LLLL",
+   ".LLLL",
+   "..FFF",
+   "..FFF",
+   "..FF."
+  ],
+  "legSquat": [
+   "LLLLL.",
+   "LLLLLL",
+   "..LLLL",
+   ".LLLL.",
+   "LLLL..",
+   "FFFFF.",
+   "FFFFFF"
+  ],
+  "hairUpA": [
+   "hh..........",
+   "hHh.........",
+   "hHHh........",
+   ".hHHh.......",
+   ".hHjHh......",
+   "..hHjHHh....",
+   "..hHHjHHh...",
+   "...hHHjHHHh.",
+   "...hHHHHHHHH",
+   "....hHHHHHHH",
+   ".....hhHHHHH",
+   "......hHHHHH",
+   ".......hhHHH"
+  ],
+  "hairUpB": [
+   ".hh.........",
+   ".hHh........",
+   "hHHh........",
+   "hHHHh.......",
+   ".hHjHh......",
+   "..hHjHHh....",
+   "..hHHjHHh...",
+   "...hHHjHHHh.",
+   "...hHHHHHHHH",
+   "....hHHHHHHH",
+   ".....hhHHHHH",
+   "......hHHHHH",
+   ".......hhHHH"
+  ],
+  "hairFloatA": [
+   "....hhhh........",
+   "..hhHHHHhh......",
+   ".hHHHjjHHHhh....",
+   "hHHjjHHHHHHHh...",
+   "hHjHHHHHHHHHHh..",
+   ".h.hHHHjHHHHHHh.",
+   ".....hHHHjHHHHHh",
+   "......hhHHHHHHHH",
+   "........hHHHHHHH",
+   ".........hhHHHHH",
+   "...........hHHHH",
+   "............hHHH"
+  ],
+  "hairFloatB": [
+   "................",
+   "...hhhh.........",
+   ".hhHHHHhhh......",
+   "hHHHjjHHHHhh....",
+   "hHjjHHHHHHHHh...",
+   ".hhHHHjHHHHHHh..",
+   "....hHHHjHHHHHh.",
+   "......hhHHHHHHHh",
+   "........hHHHHHHH",
+   ".........hhHHHHH",
+   "...........hHHHH",
+   "............hHHH"
+  ],
+  "hairDashA": [
+   "...............hHHHHHH",
+   "......hhhhhHHHHHHHHHHH",
+   "hhHHHHHHjjjjHHHHHHHHHH",
+   "..hhhhhHHHHHHHHHHhhh..",
+   "........hhhhhhh......."
+  ],
+  "hairDashB": [
+   "................hHHHHH",
+   ".......hhhhHHHHHHHHHHH",
+   ".hHHHHHHHjjjjHHHHHHHHH",
+   "hhhhhhHHHHHHHHHHHhhh..",
+   ".......hhhhhh........."
   ]
  },
  "poses": {
@@ -258,6 +370,53 @@
   "hairRunB": {
    "part": "hairRunB",
    "dx": -7
+  },
+  "armUp": {
+   "part": "armUp",
+   "dy": -4
+  },
+  "armOut": {
+   "part": "armOut"
+  },
+  "armWide": {
+   "part": "armWide",
+   "dy": -2
+  },
+  "dangle": {
+   "part": "legDangle"
+  },
+  "squat": {
+   "part": "legSquat"
+  },
+  "hairUpA": {
+   "part": "hairUpA",
+   "dx": -3,
+   "dy": -6
+  },
+  "hairUpB": {
+   "part": "hairUpB",
+   "dx": -3,
+   "dy": -6
+  },
+  "hairFloatA": {
+   "part": "hairFloatA",
+   "dx": -7,
+   "dy": -5
+  },
+  "hairFloatB": {
+   "part": "hairFloatB",
+   "dx": -7,
+   "dy": -5
+  },
+  "hairDashA": {
+   "part": "hairDashA",
+   "dx": -13,
+   "dy": 2
+  },
+  "hairDashB": {
+   "part": "hairDashB",
+   "dx": -13,
+   "dy": 2
   }
  },
  "anims": {
@@ -331,6 +490,7 @@
      "hair": "hairIdleA"
     }
    ],
+   "loop": true,
    "fps": 6
   },
   "Run": {
@@ -439,7 +599,523 @@
      "hair": "hairRunB"
     }
    ],
+   "loop": true,
    "fps": 12
+  },
+  "Jump": {
+   "fps": 10,
+   "loop": false,
+   "layers": [
+    {
+     "key": "hair",
+     "x": 9,
+     "y": 30,
+     "default": "hairRunA"
+    },
+    {
+     "key": "barm",
+     "x": 16,
+     "y": 40,
+     "default": "armDown",
+     "recolor": "back"
+    },
+    {
+     "key": "bleg",
+     "x": 19,
+     "y": 48,
+     "default": "stand",
+     "recolor": "back"
+    },
+    {
+     "key": "fleg",
+     "x": 24,
+     "y": 48,
+     "default": "stand",
+     "recolor": "front"
+    },
+    {
+     "key": "torso",
+     "x": 17,
+     "y": 35,
+     "default": "torso"
+    },
+    {
+     "key": "head",
+     "x": 13,
+     "y": 12,
+     "default": "head",
+     "lean": true
+    },
+    {
+     "key": "farm",
+     "x": 29,
+     "y": 40,
+     "default": "armDown",
+     "recolor": "front"
+    }
+   ],
+   "frames": [
+    {
+     "bob": 0,
+     "fleg": "knee",
+     "bleg": "kick",
+     "farm": "armUp",
+     "barm": "armUp",
+     "hair": "hairIdleA"
+    },
+    {
+     "bob": -1,
+     "fleg": "knee",
+     "bleg": "kick",
+     "farm": "armUp",
+     "barm": "armUp",
+     "hair": "hairIdleB"
+    }
+   ]
+  },
+  "Fall": {
+   "fps": 8,
+   "loop": true,
+   "layers": [
+    {
+     "key": "hair",
+     "x": 9,
+     "y": 30,
+     "default": "hairRunA"
+    },
+    {
+     "key": "barm",
+     "x": 16,
+     "y": 40,
+     "default": "armDown",
+     "recolor": "back"
+    },
+    {
+     "key": "bleg",
+     "x": 19,
+     "y": 48,
+     "default": "stand",
+     "recolor": "back"
+    },
+    {
+     "key": "fleg",
+     "x": 24,
+     "y": 48,
+     "default": "stand",
+     "recolor": "front"
+    },
+    {
+     "key": "torso",
+     "x": 17,
+     "y": 35,
+     "default": "torso"
+    },
+    {
+     "key": "head",
+     "x": 13,
+     "y": 12,
+     "default": "head",
+     "lean": true
+    },
+    {
+     "key": "farm",
+     "x": 29,
+     "y": 40,
+     "default": "armDown",
+     "recolor": "front"
+    }
+   ],
+   "frames": [
+    {
+     "fleg": "dangle",
+     "bleg": "dangle",
+     "farm": "armWide",
+     "barm": "armWide",
+     "hair": "hairUpA"
+    },
+    {
+     "fleg": "dangle",
+     "bleg": "dangle",
+     "farm": "armWide",
+     "barm": "armWide",
+     "hair": "hairUpB"
+    }
+   ]
+  },
+  "Land": {
+   "fps": 12,
+   "loop": false,
+   "layers": [
+    {
+     "key": "hair",
+     "x": 9,
+     "y": 30,
+     "default": "hairRunA"
+    },
+    {
+     "key": "barm",
+     "x": 16,
+     "y": 40,
+     "default": "armDown",
+     "recolor": "back"
+    },
+    {
+     "key": "bleg",
+     "x": 19,
+     "y": 48,
+     "default": "stand",
+     "recolor": "back"
+    },
+    {
+     "key": "fleg",
+     "x": 24,
+     "y": 48,
+     "default": "stand",
+     "recolor": "front"
+    },
+    {
+     "key": "torso",
+     "x": 17,
+     "y": 35,
+     "default": "torso"
+    },
+    {
+     "key": "head",
+     "x": 13,
+     "y": 12,
+     "default": "head",
+     "lean": true
+    },
+    {
+     "key": "farm",
+     "x": 29,
+     "y": 40,
+     "default": "armDown",
+     "recolor": "front"
+    }
+   ],
+   "frames": [
+    {
+     "bob": 3,
+     "fleg": "squat",
+     "bleg": "squat",
+     "farm": "armDown",
+     "barm": "armDown",
+     "hair": "hairIdleA"
+    }
+   ]
+  },
+  "Float": {
+   "fps": 4,
+   "loop": true,
+   "layers": [
+    {
+     "key": "hair",
+     "x": 9,
+     "y": 30,
+     "default": "hairRunA"
+    },
+    {
+     "key": "barm",
+     "x": 16,
+     "y": 40,
+     "default": "armDown",
+     "recolor": "back"
+    },
+    {
+     "key": "bleg",
+     "x": 19,
+     "y": 48,
+     "default": "stand",
+     "recolor": "back"
+    },
+    {
+     "key": "fleg",
+     "x": 24,
+     "y": 48,
+     "default": "stand",
+     "recolor": "front"
+    },
+    {
+     "key": "torso",
+     "x": 17,
+     "y": 35,
+     "default": "torso"
+    },
+    {
+     "key": "head",
+     "x": 13,
+     "y": 12,
+     "default": "head",
+     "lean": true
+    },
+    {
+     "key": "farm",
+     "x": 29,
+     "y": 40,
+     "default": "armDown",
+     "recolor": "front"
+    }
+   ],
+   "frames": [
+    {
+     "bob": 0,
+     "fleg": "dangle",
+     "bleg": "dangle",
+     "farm": "armWide",
+     "barm": "armWide",
+     "hair": "hairFloatA"
+    },
+    {
+     "bob": 1,
+     "fleg": "dangle",
+     "bleg": "dangle",
+     "farm": "armWide",
+     "barm": "armWide",
+     "hair": "hairFloatB"
+    }
+   ]
+  },
+  "Dash": {
+   "fps": 14,
+   "loop": true,
+   "layers": [
+    {
+     "key": "hair",
+     "x": 9,
+     "y": 30,
+     "default": "hairRunA"
+    },
+    {
+     "key": "barm",
+     "x": 16,
+     "y": 40,
+     "default": "armDown",
+     "recolor": "back"
+    },
+    {
+     "key": "bleg",
+     "x": 19,
+     "y": 48,
+     "default": "stand",
+     "recolor": "back"
+    },
+    {
+     "key": "fleg",
+     "x": 24,
+     "y": 48,
+     "default": "stand",
+     "recolor": "front"
+    },
+    {
+     "key": "torso",
+     "x": 17,
+     "y": 35,
+     "default": "torso"
+    },
+    {
+     "key": "head",
+     "x": 13,
+     "y": 12,
+     "default": "head",
+     "lean": true
+    },
+    {
+     "key": "farm",
+     "x": 29,
+     "y": 40,
+     "default": "armDown",
+     "recolor": "front"
+    }
+   ],
+   "frames": [
+    {
+     "lean": 2,
+     "fleg": "knee",
+     "bleg": "back",
+     "farm": "armBack",
+     "barm": "armBack",
+     "hair": "hairDashA"
+    },
+    {
+     "lean": 2,
+     "fleg": "knee",
+     "bleg": "back",
+     "farm": "armBack",
+     "barm": "armBack",
+     "hair": "hairDashB"
+    }
+   ]
+  },
+  "Push": {
+   "fps": 6,
+   "loop": true,
+   "layers": [
+    {
+     "key": "hair",
+     "x": 9,
+     "y": 30,
+     "default": "hairRunA"
+    },
+    {
+     "key": "barm",
+     "x": 16,
+     "y": 40,
+     "default": "armDown",
+     "recolor": "back"
+    },
+    {
+     "key": "bleg",
+     "x": 19,
+     "y": 48,
+     "default": "stand",
+     "recolor": "back"
+    },
+    {
+     "key": "fleg",
+     "x": 24,
+     "y": 48,
+     "default": "stand",
+     "recolor": "front"
+    },
+    {
+     "key": "torso",
+     "x": 17,
+     "y": 35,
+     "default": "torso"
+    },
+    {
+     "key": "head",
+     "x": 13,
+     "y": 12,
+     "default": "head",
+     "lean": true
+    },
+    {
+     "key": "farm",
+     "x": 29,
+     "y": 40,
+     "default": "armDown",
+     "recolor": "front"
+    }
+   ],
+   "frames": [
+    {
+     "lean": 2,
+     "fleg": "stand",
+     "bleg": "back",
+     "farm": "armOut",
+     "barm": "armOut",
+     "hair": "hairIdleA"
+    },
+    {
+     "lean": 2,
+     "bob": 1,
+     "fleg": "fwd",
+     "bleg": "back",
+     "farm": "armOut",
+     "barm": "armOut",
+     "hair": "hairIdleB"
+    },
+    {
+     "lean": 2,
+     "fleg": "back",
+     "bleg": "stand",
+     "farm": "armOut",
+     "barm": "armOut",
+     "hair": "hairIdleA"
+    },
+    {
+     "lean": 2,
+     "bob": 1,
+     "fleg": "back",
+     "bleg": "fwd",
+     "farm": "armOut",
+     "barm": "armOut",
+     "hair": "hairIdleB"
+    }
+   ]
+  },
+  "Cast": {
+   "fps": 12,
+   "loop": false,
+   "layers": [
+    {
+     "key": "hair",
+     "x": 9,
+     "y": 30,
+     "default": "hairRunA"
+    },
+    {
+     "key": "barm",
+     "x": 16,
+     "y": 40,
+     "default": "armDown",
+     "recolor": "back"
+    },
+    {
+     "key": "bleg",
+     "x": 19,
+     "y": 48,
+     "default": "stand",
+     "recolor": "back"
+    },
+    {
+     "key": "fleg",
+     "x": 24,
+     "y": 48,
+     "default": "stand",
+     "recolor": "front"
+    },
+    {
+     "key": "torso",
+     "x": 17,
+     "y": 35,
+     "default": "torso"
+    },
+    {
+     "key": "head",
+     "x": 13,
+     "y": 12,
+     "default": "head",
+     "lean": true
+    },
+    {
+     "key": "farm",
+     "x": 29,
+     "y": 40,
+     "default": "armDown",
+     "recolor": "front"
+    }
+   ],
+   "frames": [
+    {
+     "bob": 1,
+     "fleg": "fwd",
+     "bleg": "back",
+     "farm": "armBack",
+     "barm": "armDown",
+     "hair": "hairIdleB"
+    },
+    {
+     "bob": 1,
+     "lean": 1,
+     "fleg": "fwd",
+     "bleg": "back",
+     "farm": "armOut",
+     "barm": "armBack",
+     "hair": "hairRunA"
+    },
+    {
+     "bob": 1,
+     "lean": 1,
+     "fleg": "fwd",
+     "bleg": "back",
+     "farm": "armOut",
+     "barm": "armBack",
+     "hair": "hairRunB"
+    }
+   ]
   }
  }
 }

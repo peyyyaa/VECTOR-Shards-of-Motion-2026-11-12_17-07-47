@@ -57,6 +57,9 @@ public class KineticBurst : MonoBehaviour
 
     private readonly HashSet<Rigidbody2D> alreadyHit = new HashSet<Rigidbody2D>();
 
+    /// <summary>Time.time of the last burst (read by PlayerAnimator for the cast pose).</summary>
+    public float LastFireTime { get; private set; } = float.NegativeInfinity;
+
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
@@ -105,6 +108,7 @@ public class KineticBurst : MonoBehaviour
     private void Fire()
     {
         cooldownRemaining = cooldown;
+        LastFireTime = Time.time;
 
         Vector2 origin = body.position;
         Vector2 facing = new Vector2(movement.FacingDirection, 0f);

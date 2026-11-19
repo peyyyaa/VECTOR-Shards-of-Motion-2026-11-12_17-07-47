@@ -209,6 +209,118 @@
    "...TTT",
    "..TTTt",
    "SSTtt."
+  ],
+  "armUp": [
+   "....SS",
+   "...TTS",
+   "..TTT.",
+   ".TTT..",
+   "tTT...",
+   "tTT..."
+  ],
+  "armOut": [
+   "TTTTTT...",
+   "tTTTTTTSS",
+   ".ttttttSS"
+  ],
+  "armWide": [
+   "......SS",
+   "....TTSS",
+   "..TTTT..",
+   "tTTT....",
+   "tT......"
+  ],
+  "legDangle": [
+   "LLLL",
+   "LLLL",
+   "LLLL",
+   ".LLLL",
+   ".LLLL",
+   ".LLLL",
+   "..FFF",
+   "..FFF",
+   "..FF."
+  ],
+  "legSquat": [
+   "LLLLL.",
+   "LLLLLL",
+   "..LLLL",
+   ".LLLL.",
+   "LLLL..",
+   "FFFFF.",
+   "FFFFFF"
+  ],
+  "capeUpA": [
+   "cc..........",
+   "cCc.........",
+   "cCCc........",
+   ".cCCc.......",
+   ".cCkCc......",
+   "..cCkCCc....",
+   "..cCCkCCc...",
+   "...cCCkCCCc.",
+   "...cCCCCCCCC",
+   "....cCCCCCCC",
+   ".....ccCCCCC",
+   "......cCCCCC",
+   ".......ccCCC"
+  ],
+  "capeUpB": [
+   ".cc.........",
+   ".cCc........",
+   "cCCc........",
+   "cCCCc.......",
+   ".cCkCc......",
+   "..cCkCCc....",
+   "..cCCkCCc...",
+   "...cCCkCCCc.",
+   "...cCCCCCCCC",
+   "....cCCCCCCC",
+   ".....ccCCCCC",
+   "......cCCCCC",
+   ".......ccCCC"
+  ],
+  "capeFloatA": [
+   "....cccc........",
+   "..ccCCCCcc......",
+   ".cCCCkkCCCcc....",
+   "cCCkkCCCCCCCc...",
+   "cCkCCCCCCCCCCc..",
+   ".c.cCCCkCCCCCCc.",
+   ".....cCCCkCCCCCc",
+   "......ccCCCCCCCC",
+   "........cCCCCCCC",
+   ".........ccCCCCC",
+   "...........cCCCC",
+   "............cCCC"
+  ],
+  "capeFloatB": [
+   "................",
+   "...cccc.........",
+   ".ccCCCCccc......",
+   "cCCCkkCCCCcc....",
+   "cCkkCCCCCCCCc...",
+   ".ccCCCkCCCCCCc..",
+   "....cCCCkCCCCCc.",
+   "......ccCCCCCCCc",
+   "........cCCCCCCC",
+   ".........ccCCCCC",
+   "...........cCCCC",
+   "............cCCC"
+  ],
+  "capeDashA": [
+   "...............cCCCCCC",
+   "......cccccCCCCCCCCCCC",
+   "ccCCCCCCkkkkCCCCCCCCCC",
+   "..cccccCCCCCCCCCCccc..",
+   "........ccccccc......."
+  ],
+  "capeDashB": [
+   "................cCCCCC",
+   ".......ccccCCCCCCCCCCC",
+   ".cCCCCCCCkkkkCCCCCCCCC",
+   "ccccccCCCCCCCCCCCccc..",
+   ".......cccccc........."
   ]
  },
  "poses": {
@@ -254,6 +366,51 @@
   "capeRunB": {
    "part": "capeRunB",
    "dx": -9
+  },
+  "armUp": {
+   "part": "armUp",
+   "dy": -4
+  },
+  "armOut": {
+   "part": "armOut"
+  },
+  "armWide": {
+   "part": "armWide",
+   "dy": -2
+  },
+  "dangle": {
+   "part": "legDangle"
+  },
+  "squat": {
+   "part": "legSquat"
+  },
+  "capeUpA": {
+   "part": "capeUpA",
+   "dx": -4,
+   "dy": -10
+  },
+  "capeUpB": {
+   "part": "capeUpB",
+   "dx": -4,
+   "dy": -10
+  },
+  "capeFloatA": {
+   "part": "capeFloatA",
+   "dx": -8,
+   "dy": -9
+  },
+  "capeFloatB": {
+   "part": "capeFloatB",
+   "dx": -8,
+   "dy": -9
+  },
+  "capeDashA": {
+   "part": "capeDashA",
+   "dx": -14
+  },
+  "capeDashB": {
+   "part": "capeDashB",
+   "dx": -14
   }
  },
  "anims": {
@@ -327,6 +484,7 @@
      "cape": "capeIdleA"
     }
    ],
+   "loop": true,
    "fps": 6
   },
   "Run": {
@@ -435,7 +593,523 @@
      "cape": "capeRunB"
     }
    ],
+   "loop": true,
    "fps": 12
+  },
+  "Jump": {
+   "fps": 10,
+   "loop": false,
+   "layers": [
+    {
+     "key": "cape",
+     "x": 10,
+     "y": 37,
+     "default": "capeRunA"
+    },
+    {
+     "key": "barm",
+     "x": 16,
+     "y": 38,
+     "default": "armDown",
+     "recolor": "back"
+    },
+    {
+     "key": "bleg",
+     "x": 19,
+     "y": 48,
+     "default": "stand",
+     "recolor": "back"
+    },
+    {
+     "key": "fleg",
+     "x": 24,
+     "y": 48,
+     "default": "stand",
+     "recolor": "front"
+    },
+    {
+     "key": "torso",
+     "x": 17,
+     "y": 35,
+     "default": "torso"
+    },
+    {
+     "key": "head",
+     "x": 13,
+     "y": 13,
+     "default": "head",
+     "lean": true
+    },
+    {
+     "key": "farm",
+     "x": 29,
+     "y": 38,
+     "default": "armDown",
+     "recolor": "front"
+    }
+   ],
+   "frames": [
+    {
+     "bob": 0,
+     "fleg": "knee",
+     "bleg": "kick",
+     "farm": "armUp",
+     "barm": "armUp",
+     "cape": "capeIdleA"
+    },
+    {
+     "bob": -1,
+     "fleg": "knee",
+     "bleg": "kick",
+     "farm": "armUp",
+     "barm": "armUp",
+     "cape": "capeIdleB"
+    }
+   ]
+  },
+  "Fall": {
+   "fps": 8,
+   "loop": true,
+   "layers": [
+    {
+     "key": "cape",
+     "x": 10,
+     "y": 37,
+     "default": "capeRunA"
+    },
+    {
+     "key": "barm",
+     "x": 16,
+     "y": 38,
+     "default": "armDown",
+     "recolor": "back"
+    },
+    {
+     "key": "bleg",
+     "x": 19,
+     "y": 48,
+     "default": "stand",
+     "recolor": "back"
+    },
+    {
+     "key": "fleg",
+     "x": 24,
+     "y": 48,
+     "default": "stand",
+     "recolor": "front"
+    },
+    {
+     "key": "torso",
+     "x": 17,
+     "y": 35,
+     "default": "torso"
+    },
+    {
+     "key": "head",
+     "x": 13,
+     "y": 13,
+     "default": "head",
+     "lean": true
+    },
+    {
+     "key": "farm",
+     "x": 29,
+     "y": 38,
+     "default": "armDown",
+     "recolor": "front"
+    }
+   ],
+   "frames": [
+    {
+     "fleg": "dangle",
+     "bleg": "dangle",
+     "farm": "armWide",
+     "barm": "armWide",
+     "cape": "capeUpA"
+    },
+    {
+     "fleg": "dangle",
+     "bleg": "dangle",
+     "farm": "armWide",
+     "barm": "armWide",
+     "cape": "capeUpB"
+    }
+   ]
+  },
+  "Land": {
+   "fps": 12,
+   "loop": false,
+   "layers": [
+    {
+     "key": "cape",
+     "x": 10,
+     "y": 37,
+     "default": "capeRunA"
+    },
+    {
+     "key": "barm",
+     "x": 16,
+     "y": 38,
+     "default": "armDown",
+     "recolor": "back"
+    },
+    {
+     "key": "bleg",
+     "x": 19,
+     "y": 48,
+     "default": "stand",
+     "recolor": "back"
+    },
+    {
+     "key": "fleg",
+     "x": 24,
+     "y": 48,
+     "default": "stand",
+     "recolor": "front"
+    },
+    {
+     "key": "torso",
+     "x": 17,
+     "y": 35,
+     "default": "torso"
+    },
+    {
+     "key": "head",
+     "x": 13,
+     "y": 13,
+     "default": "head",
+     "lean": true
+    },
+    {
+     "key": "farm",
+     "x": 29,
+     "y": 38,
+     "default": "armDown",
+     "recolor": "front"
+    }
+   ],
+   "frames": [
+    {
+     "bob": 3,
+     "fleg": "squat",
+     "bleg": "squat",
+     "farm": "armDown",
+     "barm": "armDown",
+     "cape": "capeIdleA"
+    }
+   ]
+  },
+  "Float": {
+   "fps": 4,
+   "loop": true,
+   "layers": [
+    {
+     "key": "cape",
+     "x": 10,
+     "y": 37,
+     "default": "capeRunA"
+    },
+    {
+     "key": "barm",
+     "x": 16,
+     "y": 38,
+     "default": "armDown",
+     "recolor": "back"
+    },
+    {
+     "key": "bleg",
+     "x": 19,
+     "y": 48,
+     "default": "stand",
+     "recolor": "back"
+    },
+    {
+     "key": "fleg",
+     "x": 24,
+     "y": 48,
+     "default": "stand",
+     "recolor": "front"
+    },
+    {
+     "key": "torso",
+     "x": 17,
+     "y": 35,
+     "default": "torso"
+    },
+    {
+     "key": "head",
+     "x": 13,
+     "y": 13,
+     "default": "head",
+     "lean": true
+    },
+    {
+     "key": "farm",
+     "x": 29,
+     "y": 38,
+     "default": "armDown",
+     "recolor": "front"
+    }
+   ],
+   "frames": [
+    {
+     "bob": 0,
+     "fleg": "dangle",
+     "bleg": "dangle",
+     "farm": "armWide",
+     "barm": "armWide",
+     "cape": "capeFloatA"
+    },
+    {
+     "bob": 1,
+     "fleg": "dangle",
+     "bleg": "dangle",
+     "farm": "armWide",
+     "barm": "armWide",
+     "cape": "capeFloatB"
+    }
+   ]
+  },
+  "Dash": {
+   "fps": 14,
+   "loop": true,
+   "layers": [
+    {
+     "key": "cape",
+     "x": 10,
+     "y": 37,
+     "default": "capeRunA"
+    },
+    {
+     "key": "barm",
+     "x": 16,
+     "y": 38,
+     "default": "armDown",
+     "recolor": "back"
+    },
+    {
+     "key": "bleg",
+     "x": 19,
+     "y": 48,
+     "default": "stand",
+     "recolor": "back"
+    },
+    {
+     "key": "fleg",
+     "x": 24,
+     "y": 48,
+     "default": "stand",
+     "recolor": "front"
+    },
+    {
+     "key": "torso",
+     "x": 17,
+     "y": 35,
+     "default": "torso"
+    },
+    {
+     "key": "head",
+     "x": 13,
+     "y": 13,
+     "default": "head",
+     "lean": true
+    },
+    {
+     "key": "farm",
+     "x": 29,
+     "y": 38,
+     "default": "armDown",
+     "recolor": "front"
+    }
+   ],
+   "frames": [
+    {
+     "lean": 2,
+     "fleg": "knee",
+     "bleg": "back",
+     "farm": "armBack",
+     "barm": "armBack",
+     "cape": "capeDashA"
+    },
+    {
+     "lean": 2,
+     "fleg": "knee",
+     "bleg": "back",
+     "farm": "armBack",
+     "barm": "armBack",
+     "cape": "capeDashB"
+    }
+   ]
+  },
+  "Push": {
+   "fps": 6,
+   "loop": true,
+   "layers": [
+    {
+     "key": "cape",
+     "x": 10,
+     "y": 37,
+     "default": "capeRunA"
+    },
+    {
+     "key": "barm",
+     "x": 16,
+     "y": 38,
+     "default": "armDown",
+     "recolor": "back"
+    },
+    {
+     "key": "bleg",
+     "x": 19,
+     "y": 48,
+     "default": "stand",
+     "recolor": "back"
+    },
+    {
+     "key": "fleg",
+     "x": 24,
+     "y": 48,
+     "default": "stand",
+     "recolor": "front"
+    },
+    {
+     "key": "torso",
+     "x": 17,
+     "y": 35,
+     "default": "torso"
+    },
+    {
+     "key": "head",
+     "x": 13,
+     "y": 13,
+     "default": "head",
+     "lean": true
+    },
+    {
+     "key": "farm",
+     "x": 29,
+     "y": 38,
+     "default": "armDown",
+     "recolor": "front"
+    }
+   ],
+   "frames": [
+    {
+     "lean": 2,
+     "fleg": "stand",
+     "bleg": "back",
+     "farm": "armOut",
+     "barm": "armOut",
+     "cape": "capeIdleA"
+    },
+    {
+     "lean": 2,
+     "bob": 1,
+     "fleg": "fwd",
+     "bleg": "back",
+     "farm": "armOut",
+     "barm": "armOut",
+     "cape": "capeIdleB"
+    },
+    {
+     "lean": 2,
+     "fleg": "back",
+     "bleg": "stand",
+     "farm": "armOut",
+     "barm": "armOut",
+     "cape": "capeIdleA"
+    },
+    {
+     "lean": 2,
+     "bob": 1,
+     "fleg": "back",
+     "bleg": "fwd",
+     "farm": "armOut",
+     "barm": "armOut",
+     "cape": "capeIdleB"
+    }
+   ]
+  },
+  "Cast": {
+   "fps": 12,
+   "loop": false,
+   "layers": [
+    {
+     "key": "cape",
+     "x": 10,
+     "y": 37,
+     "default": "capeRunA"
+    },
+    {
+     "key": "barm",
+     "x": 16,
+     "y": 38,
+     "default": "armDown",
+     "recolor": "back"
+    },
+    {
+     "key": "bleg",
+     "x": 19,
+     "y": 48,
+     "default": "stand",
+     "recolor": "back"
+    },
+    {
+     "key": "fleg",
+     "x": 24,
+     "y": 48,
+     "default": "stand",
+     "recolor": "front"
+    },
+    {
+     "key": "torso",
+     "x": 17,
+     "y": 35,
+     "default": "torso"
+    },
+    {
+     "key": "head",
+     "x": 13,
+     "y": 13,
+     "default": "head",
+     "lean": true
+    },
+    {
+     "key": "farm",
+     "x": 29,
+     "y": 38,
+     "default": "armDown",
+     "recolor": "front"
+    }
+   ],
+   "frames": [
+    {
+     "bob": 1,
+     "fleg": "fwd",
+     "bleg": "back",
+     "farm": "armBack",
+     "barm": "armDown",
+     "cape": "capeIdleB"
+    },
+    {
+     "bob": 1,
+     "lean": 1,
+     "fleg": "fwd",
+     "bleg": "back",
+     "farm": "armOut",
+     "barm": "armBack",
+     "cape": "capeRunA"
+    },
+    {
+     "bob": 1,
+     "lean": 1,
+     "fleg": "fwd",
+     "bleg": "back",
+     "farm": "armOut",
+     "barm": "armBack",
+     "cape": "capeRunB"
+    }
+   ]
   }
  }
 }

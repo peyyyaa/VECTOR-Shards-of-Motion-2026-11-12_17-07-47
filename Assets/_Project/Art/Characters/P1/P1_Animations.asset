@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20e8eb7f9e4f65c45ab3a094e1e279b6, type: 3}
+  m_Name: P1_Animations
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterAnimationSet
+  clips:
+  - name: Idle
+    frames:
+    - {fileID: 21300000, guid: 414320dad652aa249a1585d1eb159d53, type: 3}
+    - {fileID: 21300000, guid: b1f840eabf9f10a498394649e4bdd53e, type: 3}
+    - {fileID: 21300000, guid: c24aa6317e4f56140a419cf7b34fccf3, type: 3}
+    - {fileID: 21300000, guid: 48523d84a9aa2e445a7ec61e4ca1af2e, type: 3}
+    framesPerSecond: 6
+    loop: 1
+  - name: Run
+    frames:
+    - {fileID: 21300000, guid: c1eaf0dc880342e4eb9573b3d27ec837, type: 3}
+    - {fileID: 21300000, guid: 9d5f6aa442be25847b28fc9db7f95125, type: 3}
+    - {fileID: 21300000, guid: 7c4a4b2eb4cba4d47aed2f0f4a7181b4, type: 3}
+    - {fileID: 21300000, guid: 0b59f34d53fb1824ca2697b3b36931de, type: 3}
+    - {fileID: 21300000, guid: cd7577c1e18a822439887bfc7bccef45, type: 3}
+    - {fileID: 21300000, guid: f961bf3e997490444ba239f048afea88, type: 3}
+    framesPerSecond: 12
+    loop: 1
+  - name: Jump
+    frames:
+    - {fileID: 21300000, guid: 6a95449f70c89364fa9b072359928b8b, type: 3}
+    - {fileID: 21300000, guid: ac3dc10ba40ff1e478d495eb76eddc95, type: 3}
+    framesPerSecond: 10
+    loop: 0
+  - name: Fall
+    frames:
+    - {fileID: 21300000, guid: 13d5f04c52c7756408c393cdee6d2fff, type: 3}
+    - {fileID: 21300000, guid: 3b0fc33b3c7d8aa41a51624d3a3348a6, type: 3}
+    framesPerSecond: 8
+    loop: 1
+  - name: Land
+    frames:
+    - {fileID: 21300000, guid: 2730737d01f42a84ab8349ee9109c3f8, type: 3}
+    framesPerSecond: 12
+    loop: 0
+  - name: Float
+    frames:
+    - {fileID: 21300000, guid: d46f87538d3a593428441b16dbbf818e, type: 3}
+    - {fileID: 21300000, guid: f0fbd8de6cea09348816ddfe67ed762e, type: 3}
+    framesPerSecond: 4
+    loop: 1
+  - name: Dash
+    frames:
+    - {fileID: 21300000, guid: 3a32142d0f7d82a408561044c8503e76, type: 3}
+    - {fileID: 21300000, guid: 678d1b4e528ac1e42853c1b75325373c, type: 3}
+    framesPerSecond: 14
+    loop: 1
+  - name: Push
+    frames:
+    - {fileID: 21300000, guid: 8461e0cb02949044aa51f783335fc438, type: 3}
+    - {fileID: 21300000, guid: 7b18471e8579eec4dbadf0c8022584e7, type: 3}
+    - {fileID: 21300000, guid: afc1aca0fc4d225489f565c98c19c3f2, type: 3}
+    - {fileID: 21300000, guid: d25e5c7817e7aec4ab5d2473ba71a1e1, type: 3}
+    framesPerSecond: 6
+    loop: 1
+  - name: Cast
+    frames:
+    - {fileID: 21300000, guid: 0d52de3c0b427564eac977e689cbd83a, type: 3}
+    - {fileID: 21300000, guid: 29d6a635f74731042b4ef8a54737c771, type: 3}
+    - {fileID: 21300000, guid: 92368c8a6ab65df42812f2e9b8650515, type: 3}
+    framesPerSecond: 12
+    loop: 0

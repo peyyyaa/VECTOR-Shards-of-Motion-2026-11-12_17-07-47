@@ -20,6 +20,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.7254902
       objectReference: {fileID: 0}
+    - target: {fileID: 4044977677864508583, guid: 4b11affa6a368144f9872c4891c37341, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 84fafa410d8a25a498ef7ab9dac9c707, type: 3}
     - target: {fileID: 4542471611263350291, guid: 4b11affa6a368144f9872c4891c37341, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -64,6 +68,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player2
       objectReference: {fileID: 0}
+    - target: {fileID: 6118006750498931938, guid: 4b11affa6a368144f9872c4891c37341, type: 3}
+      propertyPath: animationSet
+      value: 
+      objectReference: {fileID: 11400000, guid: 488c6c9fd9aab8f429b13e8e7e09e455, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -126,7 +134,7 @@ LineRenderer:
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: -1562869607
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Positions:

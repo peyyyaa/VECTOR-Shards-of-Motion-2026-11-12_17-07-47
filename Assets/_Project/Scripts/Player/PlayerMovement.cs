@@ -72,6 +72,12 @@ public class PlayerMovement : MonoBehaviour
     /// script (e.g., PlayerDash) can fully control the Rigidbody2D.</summary>
     public bool ControlLocked { get; set; }
 
+    /// <summary>True while walking into a pushable object on the ground (read by PlayerAnimator).</summary>
+    public bool IsPushing { get; private set; }
+
+    /// <summary>True while being launched by equipment (projectile flight, no control).</summary>
+    public bool IsLaunched => isLaunched;
+
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
@@ -109,6 +115,8 @@ public class PlayerMovement : MonoBehaviour
         {
             launchAvailable = true; // landed: can be launched again
         }
+
+        IsPushing = false; // set again by LimitByPushable while touching a pushable object
 
         if (ControlLocked)
         {
@@ -227,6 +235,7 @@ public class PlayerMovement : MonoBehaviour
         bool touching = hit.distance <= pushReach;
         if (touching && isGrounded && pushForce > 0f)
         {
+            IsPushing = true;
             // Continuous force (newtons), applied every physics step while pushing.
             target.AddForce(new Vector2(direction * pushForce * Mathf.Abs(moveInput), 0f), ForceMode2D.Force);
         }
