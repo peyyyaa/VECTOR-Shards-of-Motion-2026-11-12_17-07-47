@@ -4,7 +4,8 @@ using UnityEngine;
 /// The scene's UI canvas (prefab "UI_Canvas", placed under _Managers). Holds:
 /// - Labels: the container that world-pinned labels (prompts, mass labels, plate readouts) are created in,
 ///   using the Label prefab (restyle that prefab to change how every label looks);
-/// - Journal: the Motion Journal panel at the bottom of the screen.
+/// - Journal: the Motion Journal notebook panel.
+/// While the journal is open, the world labels (prompts, mass labels) fade out so they don't poke out around it.
 ///
 /// One per scene. Created by Tools > Shards of Motion > Create UI Prefabs (Add To Scene).
 /// </summary>
@@ -14,6 +15,11 @@ public class UIRoot : MonoBehaviour
     [SerializeField] private RectTransform labelContainer;
     [SerializeField] private ScreenLabel labelPrefab;
     [SerializeField] private JournalPanel journal;
+
+    [Tooltip("Seconds for the world labels to fade out/in when the journal opens/closes.")]
+    [SerializeField, Min(0.01f)] private float labelFadeTime = 0.12f;
+
+    private CanvasGroup labelGroup;
 
     public static UIRoot Instance { get; private set; }
 
@@ -29,6 +35,19 @@ public class UIRoot : MonoBehaviour
             return;
         }
         Instance = this;
+        if (labelContainer != null)
+        {
+            labelGroup = labelContainer.GetComponent<CanvasGroup>();
+            if (labelGroup == null) labelGroup = labelContainer.gameObject.AddComponent<CanvasGroup>();
+            labelGroup.blocksRaycasts = false;
+        }
+    }
+
+    private void Update()
+    {
+        if (labelGroup == null) return;
+        float target = journal != null && journal.IsOpen ? 0f : 1f;
+        labelGroup.alpha = Mathf.MoveTowards(labelGroup.alpha, target, Time.unscaledDeltaTime / labelFadeTime);
     }
 
     private void OnDestroy()

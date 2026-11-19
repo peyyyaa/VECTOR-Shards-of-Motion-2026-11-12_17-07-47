@@ -7912,6 +7912,10 @@ PrefabInstance:
         a Tether.'
       objectReference: {fileID: 0}
     - target: {fileID: 47988600166616349, guid: e4160907936849c4c81dfebe8db680b9, type: 3}
+      propertyPath: entry
+      value: 
+      objectReference: {fileID: 11400000, guid: 254686cbc4e49ff4483fb992e21c5f6f, type: 2}
+    - target: {fileID: 47988600166616349, guid: e4160907936849c4c81dfebe8db680b9, type: 3}
       propertyPath: title
       value: Float
       objectReference: {fileID: 0}
@@ -8029,6 +8033,10 @@ PrefabInstance:
         weight, W = m\xB7g: one player 29.4 N, the keystone (2 kg) 58.9 N, the crate
         (3 kg) 88.3 N."
       objectReference: {fileID: 0}
+    - target: {fileID: 47988600166616349, guid: e4160907936849c4c81dfebe8db680b9, type: 3}
+      propertyPath: entry
+      value: 
+      objectReference: {fileID: 11400000, guid: 3bf24c99d6e8e9e458e263a2bf9f9463, type: 2}
     - target: {fileID: 47988600166616349, guid: e4160907936849c4c81dfebe8db680b9, type: 3}
       propertyPath: title
       value: "1 \xB7 The First Exchange"

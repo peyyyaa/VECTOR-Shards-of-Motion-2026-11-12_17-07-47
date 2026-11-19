@@ -59,7 +59,10 @@ public class PlayerInteractor : MonoBehaviour
     {
         FindTarget();
 
-        if (input.InteractPressedThisFrame && target != null && target.CanInteract(this))
+        // While the journal is open, Interact belongs to it (tap = next page, hold = close), so a lever
+        // next to a journal stone isn't pulled by accident.
+        bool journalOpen = UIRoot.Instance != null && UIRoot.Instance.Journal != null && UIRoot.Instance.Journal.IsOpen;
+        if (!journalOpen && input.InteractPressedThisFrame && target != null && target.CanInteract(this))
         {
             target.Interact(this);
         }

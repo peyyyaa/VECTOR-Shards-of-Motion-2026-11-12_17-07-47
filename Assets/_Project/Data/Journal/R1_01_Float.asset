@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad496817cc2ac7b498b32f0fc2de6fb3, type: 3}
+  m_Name: R1_01_Float
+  m_EditorClassIdentifier: Assembly-CSharp::JournalEntry
+  title: Float
+  pages:
+  - bigIdea: Less gravity means a slower fall, so you stay in the air longer and
+      go further.
+    notes: 'Hold Jump while falling and the shard''s glow takes most of your weight
+      away, for one second per jump. It never lifts you, it only slows the fall.
+      (Real people can''t switch gravity off, of course: that part is shard magic.
+      The rest is honest physics.)'
+    lookCloser: "Float gravity: 29.43 \xF7 6 \u2248 4.9 m/s\xB2, so weight <color=#8a5a2e>29.4
+      N</color> \u2192 <color=#8a5a2e>4.9 N</color>. Fall capped at 2 m/s, 1 s per
+      jump.\nJump alone: about 4.9 m across.   With float: about 9.6 m."
+    funFact: The Moon's gravity is about 1/6 of Earth's. Floating here feels like
+      a Moon walk.
+    marginP1: Float, then Burst from the air!
+    marginP2: Hang time = aiming time.
+    diagram:
+      show: 1
+      objectLabel: 'Player
+
+        1 kg'
+      forces:
+      - label: Weight (float)
+        newtons: 4.9
+        direction: 3
+        kind: 3
+        unit: N
+      caption: Normally 29.4 N. While floating, only 4.9 N.

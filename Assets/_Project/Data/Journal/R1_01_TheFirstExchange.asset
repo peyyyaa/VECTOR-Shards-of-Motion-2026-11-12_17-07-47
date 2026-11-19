@@ -1,0 +1,101 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad496817cc2ac7b498b32f0fc2de6fb3, type: 3}
+  m_Name: R1_01_TheFirstExchange
+  m_EditorClassIdentifier: Assembly-CSharp::JournalEntry
+  title: "1 \xB7 The First Exchange"
+  pages:
+  - bigIdea: Things stay still (or keep moving) until a net force changes them.
+    notes: 'Day one at the ruins. That crate has not moved in a hundred years, and
+      two of us leaning on it didn''t change its mind. Not because it''s "heavy",
+      exactly: <color=#7d3029>friction</color> pushes back just as hard as we <color=#a26029>push</color>,
+      so the forces cancel. Net force zero, motion zero. Newton''s First Law, in
+      stone.'
+    lookCloser: "Friction can grip with up to  f = \u03BC\xB7m\xB7g = (1/3) \xD7
+      3 kg \xD7 29.43 m/s\xB2 \u2248 <color=#7d3029>29.4 N</color>\nTwo pushes: 12
+      N + 12 N = <color=#a26029>24 N</color> < <color=#7d3029>29.4 N</color>, so
+      friction wins.\nThe tether alone: <color=#267682>24 N</color>. Same story."
+    funFact: '"Inertia" comes from the Latin for idleness. Objects really are lazy.'
+    marginP1: Pushing harder? We ARE pushing harder.
+    marginP2: Then we need a different kind of force...
+    diagram:
+      show: 1
+      objectLabel: 'Crate
+
+        3 kg'
+      forces:
+      - label: Two pushes
+        newtons: 24
+        direction: 0
+        kind: 0
+        unit: N
+      - label: Friction
+        newtons: 24
+        direction: 1
+        kind: 2
+        unit: N
+      caption: 'Balanced: friction matches the push (up to 29.4 N). Net force = 0.'
+  - bigIdea: An impulse is a big force for a short moment. It changes velocity right
+      away.
+    notes: The Kinetic Burst doesn't lean on the crate, it SLAMS it. All of the push
+      arrives in an instant, so the crate jumps straight to a new speed before friction
+      can settle the argument. Heavier things get less speed from the same burst.
+    lookCloser: "Impulse  J = F\xB7\u0394t = m\xB7\u0394v,  so  \u0394v = J \xF7
+      m\nCrate:  <color=#896923>15 N\xB7s</color> \xF7 3 kg = 5 m/s\nKeystone:  <color=#896923>15
+      N\xB7s</color> \xF7 2 kg = 7.5 m/s"
+    funFact: A tennis racket touches the ball for about 5 thousandths of a second.
+      That's an impulse.
+    marginP1: Short and sharp. That's my style.
+    marginP2: I'll take steady and from a distance.
+    diagram:
+      show: 1
+      objectLabel: 'Crate
+
+        3 kg'
+      forces:
+      - label: Burst
+        newtons: 15
+        direction: 0
+        kind: 5
+        unit: "N\xB7s"
+      caption: "One burst: \u0394v = 15 \xF7 3 = 5 m/s, all at once."
+  - bigIdea: "Weight is the pull of gravity: W = m\xB7g. Plates feel weight, not
+      size."
+    notes: The old pressure plates are scales. Each one waits for a certain weight
+      before it clicks. Gravity here is three times stronger than back home, so everything
+      weighs three times more. A plate counts everything stacked on it, so a player
+      on the keystone adds up.
+    lookCloser: "W = m \xD7 29.43 m/s\xB2\nPlayer 1 kg \u2192 <color=#8a5a2e>29.4
+      N</color>     Keystone 2 kg \u2192 <color=#8a5a2e>58.9 N</color>\nCrate 3 kg
+      \u2192 <color=#8a5a2e>88.3 N</color>   (the plate pushes back <color=#42612b>88.3
+      N</color>)"
+    funFact: "On Earth, g is 9.81 m/s\xB2. This world's 29.43 is exactly three times
+      that."
+    marginP1: So I'm a 29.4 N hero. Noted.
+    marginP2: Stand on the keystone. Instant 88.3 N.
+    diagram:
+      show: 1
+      objectLabel: 'Crate
+
+        3 kg'
+      forces:
+      - label: Support
+        newtons: 88.3
+        direction: 2
+        kind: 4
+        unit: N
+      - label: Weight
+        newtons: 88.3
+        direction: 3
+        kind: 3
+        unit: N
+      caption: The plate pushes up exactly as hard as the crate weighs.

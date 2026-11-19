@@ -37,6 +37,7 @@ public class PlayerInputReader : MonoBehaviour
     public bool AbilityPressedThisFrame => Ready() && ability.WasPressedThisFrame();
     public bool AbilityHeld => Ready() && ability.IsPressed();
     public bool InteractPressedThisFrame => Ready() && interact.WasPressedThisFrame();
+    public bool InteractHeld => Ready() && interact.IsPressed();
 
     /// <summary>The Interact key/button for THIS player's controls (e.g., "E", "Enter", "Y"), for prompts.</summary>
     public string InteractDisplayName => DisplayName(interact, "Interact");
