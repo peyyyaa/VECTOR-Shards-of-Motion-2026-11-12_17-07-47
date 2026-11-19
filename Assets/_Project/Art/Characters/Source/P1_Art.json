@@ -1,0 +1,441 @@
+{
+ "name": "P1",
+ "note": "P1 (Kinetic Burst) pixel art source, 48x60 canvas for the 0.8 x 1.5 unit player body. Edit the parts/frames here, then run Tools > Shards of Motion > Characters > 1. Build Character Sprites. Letters map to palette colours; . is empty. Outline is added automatically. Facing right.",
+ "width": 48,
+ "height": 60,
+ "outline": "2b1b17",
+ "palette": {
+  "h": "5e3a24",
+  "H": "8a5a3a",
+  "j": "b07a4e",
+  "S": "f2c49b",
+  "s": "d99a74",
+  "r": "eb9a86",
+  "m": "b5654f",
+  "E": "2a1c1a",
+  "W": "fff6e8",
+  "C": "c9402e",
+  "c": "8f2a22",
+  "k": "e8674a",
+  "T": "e9dcc0",
+  "t": "bfae8c",
+  "u": "9c8c6c",
+  "B": "6b4a2e",
+  "G": "e3b341",
+  "P": "4a3b4f",
+  "p": "33283a",
+  "O": "7a5236",
+  "o": "4f3422",
+  "g": "b8862c",
+  "e": "7a4a2e"
+ },
+ "recolors": {
+  "front": {
+   "L": "P",
+   "F": "O"
+  },
+  "back": {
+   "L": "p",
+   "F": "o",
+   "T": "t",
+   "t": "u",
+   "S": "s"
+  }
+ },
+ "parts": {
+  "head": [
+   "..........h..h........",
+   ".......h.hHh.hH..h....",
+   ".....hhHhHHHhHHhhH....",
+   "....hHHHHHjHHHHjHHh...",
+   "...hHHHjjHHHHHjjHHHh..",
+   "..hHHHjjHHHHHjjHHHHHh.",
+   "..hHHHHHHHHHHHHHHHHHHh",
+   ".hHHHHHHHHHHHHHHHHHHHh",
+   "hhHHHHHHHHHHHHHHHHHHHH",
+   ".hHHHHHHHHHHHHHHHHHHHH",
+   "hhHHHHHHHHHHHhHHHHhHHH",
+   ".hHHHHHHHHHHhShHHHhSHh",
+   ".hHHHHHHhHHhSSShHhSSSS",
+   ".hHHHHHhSSHSSSSSSSSSSS",
+   ".hHHHHHsSSSSEEESSEESSS",
+   ".hHHhHsSSSSSWEESSWESSS",
+   "..hHhHsSSSSSEeESSEeSSS",
+   "..hHhhsSSSSSEeESSEeSSS",
+   "..hhHhssSSSSrrSSmSSrrS",
+   "...h.hssSSSSSSSSSSSSSs",
+   "......ssSSSSSSSSSSSSs.",
+   "........sssSSSSSSss..."
+  ],
+  "torso": [
+   "...CCCCCCCC...",
+   "..CCkkCCCGCC..",
+   ".CCkCCCCGgGCC.",
+   ".tTTTTTTTTTTt.",
+   ".tTTTTTTTTTTt.",
+   ".tTTTTtTTTTTt.",
+   ".tTTTTTTTTTTt.",
+   ".BBBBBBBBGBBB.",
+   ".tOOTTTTTTTTt.",
+   ".tOoTTTTTTTTt.",
+   ".ttTTTTTTTTtt.",
+   ".pPPPPPPPPPPp.",
+   ".pPPPPPPPPPPp."
+  ],
+  "capeIdleA": [
+   "...ccCCCCC",
+   "...ccCCCCC",
+   "..cCCCCCCC",
+   "..cCCkCCCC",
+   "..cCCkCCCC",
+   "..cCCkCCCC",
+   "ccCCCkCCCC",
+   "ccCCCkCCCC",
+   "ccCCCCkkCC",
+   "ccCCCCkkCC",
+   "ccCCCCkkCC",
+   "ccCCCCCCCC",
+   "ccCCCCCCCc",
+   "ccCCCCCCCc",
+   "cccCCCCCcc",
+   "..cccCccc.",
+   "..cccCccc.",
+   "...cc.cc.."
+  ],
+  "capeIdleB": [
+   "...ccCCCCC",
+   "...ccCCCCC",
+   "..cCCCCCCC",
+   "..cCCkCCCC",
+   "..cCCkCCCC",
+   "..cCCkCCCC",
+   "..cCCkCCCC",
+   "..cCCkCCCC",
+   "ccCCCCkkCC",
+   "ccCCCCkkCC",
+   "ccCCCCkkCC",
+   "ccCCCCCCCC",
+   "..cCCCCCCc",
+   "..cCCCCCCc",
+   "..cccCCCcc",
+   "...cccCCc.",
+   "...cccCCc.",
+   ".....c..c."
+  ],
+  "capeRunA": [
+   ".........ccCCCCCC.",
+   ".........ccCCCCCC.",
+   ".....cccCCCCCCCCCC",
+   "..cCCCCCkCCCCCCCCC",
+   "..cCCCCCkCCCCCCCCC",
+   "ccCCCkkkCCCCCCCcc.",
+   "..cccCCCCCCccc....",
+   "..cccCCCCCCccc....",
+   ".....ccc.ccc......"
+  ],
+  "capeRunB": [
+   "...........cCCCCC.",
+   "...........cCCCCC.",
+   "......cccCCCCCCCCC",
+   "...ccCCCCkkCCCCCCC",
+   "...ccCCCCkkCCCCCCC",
+   "cccCCCkkCCCCCCCcc.",
+   "ccCCCCCCcccccc....",
+   "ccCCCCCCcccccc....",
+   "..ccc............."
+  ],
+  "legStand": [
+   "LLLL",
+   "LLLL",
+   "LLLL",
+   "LLLL",
+   "LLLL",
+   "LLLL",
+   "FFFF",
+   "FFFF",
+   "FFFF",
+   "FFFFF"
+  ],
+  "legFwd": [
+   "LLLLL.....",
+   "LLLLL.....",
+   "..LLLL....",
+   "...LLLLL..",
+   "...LLLLL..",
+   ".....FFFF.",
+   ".....FFFFF"
+  ],
+  "legBack": [
+   ".....LLLL",
+   ".....LLLL",
+   "...LLLLL.",
+   "..LLLL...",
+   "..LLLL...",
+   "FFFFF....",
+   "FFF......"
+  ],
+  "legKnee": [
+   "LLLLLL...",
+   "LLLLLL...",
+   "LLLLLLLL.",
+   ".....LLL.",
+   ".....LLL.",
+   ".....FFFF"
+  ],
+  "legKick": [
+   "...LLLL",
+   "...LLLL",
+   "FFLLLL.",
+   "FFFLL.."
+  ],
+  "armDown": [
+   "tTT",
+   "tTT",
+   "tTT",
+   "tTT",
+   "tTT",
+   "tTT",
+   "SSS",
+   "sSS"
+  ],
+  "armFwd": [
+   "TTT....",
+   "TTT....",
+   "ttTTT..",
+   "..tTTTS"
+  ],
+  "armBack": [
+   "...TTT",
+   "...TTT",
+   "..TTTt",
+   "SSTtt."
+  ]
+ },
+ "poses": {
+  "stand": {
+   "part": "legStand"
+  },
+  "fwd": {
+   "part": "legFwd",
+   "dy": 2
+  },
+  "back": {
+   "part": "legBack",
+   "dx": -4,
+   "dy": 2
+  },
+  "knee": {
+   "part": "legKnee"
+  },
+  "kick": {
+   "part": "legKick",
+   "dx": -3
+  },
+  "armDown": {
+   "part": "armDown"
+  },
+  "armFwd": {
+   "part": "armFwd"
+  },
+  "armBack": {
+   "part": "armBack",
+   "dx": -3
+  },
+  "capeIdleA": {
+   "part": "capeIdleA"
+  },
+  "capeIdleB": {
+   "part": "capeIdleB"
+  },
+  "capeRunA": {
+   "part": "capeRunA",
+   "dx": -9
+  },
+  "capeRunB": {
+   "part": "capeRunB",
+   "dx": -9
+  }
+ },
+ "anims": {
+  "Idle": {
+   "layers": [
+    {
+     "key": "cape",
+     "x": 10,
+     "y": 37,
+     "default": "capeIdleA"
+    },
+    {
+     "key": "barm",
+     "x": 16,
+     "y": 38,
+     "default": "armDown",
+     "recolor": "back"
+    },
+    {
+     "key": "bleg",
+     "x": 19,
+     "y": 48,
+     "default": "stand",
+     "recolor": "back",
+     "bob": false
+    },
+    {
+     "key": "fleg",
+     "x": 24,
+     "y": 48,
+     "default": "stand",
+     "recolor": "front",
+     "bob": false
+    },
+    {
+     "key": "torso",
+     "x": 17,
+     "y": 35,
+     "default": "torso"
+    },
+    {
+     "key": "head",
+     "x": 13,
+     "y": 13,
+     "default": "head",
+     "lean": true
+    },
+    {
+     "key": "farm",
+     "x": 29,
+     "y": 38,
+     "default": "armDown",
+     "recolor": "front"
+    }
+   ],
+   "frames": [
+    {
+     "bob": 0,
+     "cape": "capeIdleA"
+    },
+    {
+     "bob": 0,
+     "cape": "capeIdleB"
+    },
+    {
+     "bob": 1,
+     "cape": "capeIdleB"
+    },
+    {
+     "bob": 1,
+     "cape": "capeIdleA"
+    }
+   ],
+   "fps": 6
+  },
+  "Run": {
+   "layers": [
+    {
+     "key": "cape",
+     "x": 10,
+     "y": 37,
+     "default": "capeRunA"
+    },
+    {
+     "key": "barm",
+     "x": 16,
+     "y": 38,
+     "default": "armDown",
+     "recolor": "back"
+    },
+    {
+     "key": "bleg",
+     "x": 19,
+     "y": 48,
+     "default": "stand",
+     "recolor": "back"
+    },
+    {
+     "key": "fleg",
+     "x": 24,
+     "y": 48,
+     "default": "stand",
+     "recolor": "front"
+    },
+    {
+     "key": "torso",
+     "x": 17,
+     "y": 35,
+     "default": "torso"
+    },
+    {
+     "key": "head",
+     "x": 13,
+     "y": 13,
+     "default": "head",
+     "lean": true
+    },
+    {
+     "key": "farm",
+     "x": 29,
+     "y": 38,
+     "default": "armDown",
+     "recolor": "front"
+    }
+   ],
+   "frames": [
+    {
+     "bob": 1,
+     "lean": 1,
+     "fleg": "fwd",
+     "bleg": "back",
+     "farm": "armBack",
+     "barm": "armFwd",
+     "cape": "capeRunA"
+    },
+    {
+     "bob": 0,
+     "lean": 1,
+     "fleg": "stand",
+     "bleg": "kick",
+     "farm": "armDown",
+     "barm": "armDown",
+     "cape": "capeRunB"
+    },
+    {
+     "bob": 0,
+     "lean": 1,
+     "fleg": "back",
+     "bleg": "knee",
+     "farm": "armFwd",
+     "barm": "armBack",
+     "cape": "capeRunA"
+    },
+    {
+     "bob": 1,
+     "lean": 1,
+     "fleg": "back",
+     "bleg": "fwd",
+     "farm": "armFwd",
+     "barm": "armBack",
+     "cape": "capeRunB"
+    },
+    {
+     "bob": 0,
+     "lean": 1,
+     "fleg": "kick",
+     "bleg": "stand",
+     "farm": "armDown",
+     "barm": "armDown",
+     "cape": "capeRunA"
+    },
+    {
+     "bob": 0,
+     "lean": 1,
+     "fleg": "knee",
+     "bleg": "back",
+     "farm": "armBack",
+     "barm": "armFwd",
+     "cape": "capeRunB"
+    }
+   ],
+   "fps": 12
+  }
+ }
+}
