@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 177f5fc724ab6e9458b65b562dc0a959, type: 3}
+  m_Name: RP_Props_Interactive
+  m_EditorClassIdentifier: Assembly-CSharp-Editor::RecolorProfile
+  source: {fileID: 2800000, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
+  outputName: Props_Interactive
+  copyTilePalette: 0
+  sourcePalette: {fileID: 0}
+  rules:
+  - label: Ladder rungs -> dark iron gate bars
+    onlySprites:
+    - TX Village Props - Ladder 01 T
+    - TX Village Props - Ladder 01 M
+    - TX Village Props - Ladder 01 B
+    hueFrom: 0
+    hueTo: 60
+    minSaturation: 0
+    targetHue: 215
+    saturationMultiply: 0.3
+    valueMultiply: 0.7
+  - label: Fence rails -> brass pressure-plate slabs
+    onlySprites:
+    - TX Village Props - Fence 01 Rail 01
+    - TX Village Props - Fence 01 Rail 02
+    - TX Village Props - Fence 01 Rail 03
+    hueFrom: 0
+    hueTo: 60
+    minSaturation: 0
+    targetHue: 40
+    saturationMultiply: 1.35
+    valueMultiply: 1.25

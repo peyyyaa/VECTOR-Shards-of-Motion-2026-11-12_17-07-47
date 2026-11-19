@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 177f5fc724ab6e9458b65b562dc0a959, type: 3}
+  m_Name: RP_Props_Forest
+  m_EditorClassIdentifier: Assembly-CSharp-Editor::RecolorProfile
+  source: {fileID: 2800000, guid: 7810966f0f690954c87305933cabf2b0, type: 3}
+  outputName: Props_Forest
+  copyTilePalette: 0
+  sourcePalette: {fileID: 0}
+  rules:
+  - label: Banner -> forest green
+    onlySprites:
+    - TX Village Props - Banner
+    hueFrom: 340
+    hueTo: 40
+    minSaturation: 0.3
+    targetHue: 120
+    saturationMultiply: 0.9
+    valueMultiply: 0.85
+  - label: Foliage -> deeper green
+    onlySprites: []
+    hueFrom: 42
+    hueTo: 95
+    minSaturation: 0.2
+    targetHue: 100
+    saturationMultiply: 1.15
+    valueMultiply: 0.92

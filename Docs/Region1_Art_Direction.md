@@ -7,8 +7,10 @@ the style is applied to the other seven rooms only after Room 1 is signed off.
 
 ## 1. Visual identity
 
-- 2D pixel art, polished fantasy **forest ruins**: an abandoned forest civilization reclaimed by nature.
-- Rich greenery, moss-covered stone, wooden mechanisms, waterfalls, ancient magical elements.
+- 2D pixel art: an **overgrown forest village, ruined**: an abandoned settlement (cobbled streets, stone
+  walls, wooden mechanisms, lanterns) reclaimed by nature. Built entirely from **Village Props**, recolored
+  (section 3.1).
+- Rich greenery, moss-covered stone, wooden mechanisms, ancient magical elements (the Stone of Recall shrines).
 - **Cyan/teal magic** contrasting with natural forest colors; **gold** marks interactive objects.
 - Readable silhouettes. Gameplay paths and physics objects must stay easy to read: decoration never
   clutters the play space.
@@ -40,14 +42,28 @@ Art is fitted to the graybox, not the other way round.
 
 ## 3. Decisions (approved)
 
-### 3.1 Ruins tileset, foliage and backgrounds: hybrid
-1. **Find compatible free** pixel-art assets first: mossy ruins / stone terrain, foliage, forest backgrounds.
-   They must match the technical rules (section 2) and the palette. **Don't add visually incompatible packs**
-   just to fill a category.
-2. **Village Props** (already imported) for wooden mechanisms, selected props, rocks, logs, lanterns, signs.
-3. **Make or customize** the missing details: moss overlays, hanging vines, puzzle markings,
-   region-specific decorations.
-4. Don't build a whole tileset from scratch unless nothing compatible exists.
+### 3.1 Asset sources: Village Props only, recolored (revised)
+1. **All tiles and props come from Village Props.** No other tileset or prop packs (different creators'
+   styles don't mix). Only **backgrounds** and **characters** are searched for externally.
+2. **Recoloring** (Tools > Shards of Motion > Recolor) makes project-owned copies in `Art/Recolors/`:
+   the tool shifts hue ranges and scales saturation/brightness, so the original shading is kept. The
+   originals are never modified; the rules live in `Art/Recolors/Profiles` and can be re-tuned and rebuilt.
+   - `Ground_RuinStone`: cobble → cool grey-blue stone, grass → deep moss (main terrain).
+   - `Ground_Wet`: bluer stone with teal moss (low-friction surfaces).
+   - `Ground_Mossy`: green-covered stone, thick bright moss (high-friction surfaces).
+   - `Props_Forest`: deeper-green foliage, green banner.
+   - `Props_Interactive`: dark-iron ladder rungs (gate bars), brass fence rails (pressure-plate slabs).
+   Each ground recolor comes with its own **Tile Palette** (`Art/Recolors/Palettes/TP Ground_…`).
+3. **Tints and lighting** for depth and mood: darker, bluer tilemap tint for back walls; 2D lights for
+   lanterns, shrines and exits. Crates use weight tints (1 kg pale, 2 kg normal, 3 kg dark).
+4. **Style note:** the Village palette is warm and muted (even its "iron" is a warm grey). Recolors move
+   toward the reference's greens and cool stone **without over-saturating**, so recolored and untouched
+   wooden props still sit together.
+5. **One small custom sprite:** the lever (16 × 32), drawn with colors sampled from Village Props
+   (`Art/Sprites/Props/SP_Lever.png`). Artists may refine it.
+6. **Backgrounds and characters (searched for):** same pixel scale as Village Props (one art pixel = one
+   Village pixel), soft shading, no thick black outlines. Backgrounds: separate, horizontally seamless
+   parallax layers (≥ 640 px wide). Characters: ~48 px tall, side view (see section 7).
 
 ### 3.2 Rotation by object type
 | Object | Rotation |
@@ -74,33 +90,40 @@ tumbling is accepted.
 
 ---
 
-## 4. Asset mapping (existing vs. missing)
+## 4. Asset mapping (Village Props only)
 
-| Reference element | Existing asset | Fit |
+| Role | Village source | Treatment |
 |---|---|---|
-| Mossy stone terrain, walls | Village `TX Tileset Ground` (brown dirt cobble) | Poor — placeholder only |
-| Broken ruins (arches, pillars) | Village brick-rubble pile | Partial (one piece) |
-| Wooden bridges, scaffolds, stairs | Village platforms, scaffolds, stairs | **Good** |
-| Movable blocks | Village crates | Partial (placeholder; stone blocks with mass glyphs preferred) |
-| Seesaw | Village `Seesaw 01` (our Seesaw prefab) | **Good** |
-| Moving platform / lift | Village planks, `Elevator` art (our Mover) | **Good** |
-| Reset shrine | Village `Stone of Recall` (cyan glyph) | **Very good** |
-| Journal stone | Village signs | Partial (stone tablet with book icon preferred) |
-| Lanterns, torches | Village lantern, torch, fire bowl (animated flames) | **Good** |
-| Banners | Village red banner | Partial (needs green/gold) |
-| Trees, bushes, grass, flowers | Village trees, bushes, grass | Partial (shapes OK, palette too muted/olive) |
-| Rocks, logs, stumps | Village rocks, logs, stump | **Good** |
-| Water pools / channels / hazards | Interactive Pixel Water (Clear, Acid, Lava, Poisonous, Muddy) | **Good** |
-| Waterfalls | — | Missing |
-| Vines, roots, moss overlays | — | Missing |
-| Pressure plate, lever, gate, water gate, current FX | — (graybox) | Missing |
-| Region landmark (shard) | — | Missing |
-| Characters | — | Missing |
-| Backgrounds (parallax) | — | Missing |
-| UI frames, key icons | Built-in rounded panel; Pixie font (headings) | Partial |
+| Main terrain (ruins) | `TX Tileset Ground` (cobble + grass: edges, corners, blocks, 1-tile strips) | Recolor **Ground_RuinStone** |
+| Back walls | Same tiles | Ruin Stone + darker, bluer tilemap tint |
+| Wet stone (low friction) | Same tiles | Recolor **Ground_Wet** |
+| Moss (high friction) | Same tiles | Recolor **Ground_Mossy** |
+| Hanging moss / vines | Grass tufts (`Grass 01`–`09`) | Flipped upside down under ledges, Props_Forest green |
+| Wood and mechanisms | Platforms 01/02 (L/M/R caps), scaffolds, stairs, bridge, posts, planks | Original colors |
+| Lift | `Elevator` (platform + chains) | Original |
+| Seesaw | `Seesaw 01` | Original |
+| Blocks 1 / 2 / 3 kg | Crates | Weight tints (pale / normal / dark) — must read when rotated |
+| Gate / portcullis | `Ladder 01 T/M/B` rungs | Recolor **Props_Interactive** (dark iron) |
+| Pressure plate | `Fence 01 Rail` slabs | Recolor **Props_Interactive** (brass) |
+| Lever | — | **Custom** `SP_Lever` (16 × 32, Village colors) |
+| Reset shrine | `Stone of Recall` | Original |
+| Motion Journal | `Billboard` (notice board) or `Sign` | Original |
+| Exit landmark | `Statue` + `Brick Wall` rubble, cyan 2D light | Rubble in Ruin Stone colors |
+| Banners | `Banner` | Recolor **Props_Forest** (green) |
+| Foliage | Trees, bushes, grass, flowers | Recolor **Props_Forest** (deeper green) |
+| Lights | Lantern, torch, fire bowl, campfire (animated) | Original + 2D lights |
+| Water / hazards | Interactive Pixel Water (Clear tinted teal, Acid), `Spike` | Original |
+| Water gate | Posts, planks, cart wheel + Clear water | Assembled |
+| Waterfall | — | Only if the background search provides one |
+| Burst / Tether / respawn FX | — | Simple Unity particles (made in-project) |
+| UI key icons | — | Text keys for now |
 
-**Not used in Region 1:** wheat, scarecrows, market stall, graveyard, weapons, farm tools (village/farm theme);
+**Not used in Region 1:** wheat, sunflowers, scarecrows, market stall, graveyard, weapons, farm tools;
 Jump and Bounding Platforms (saved for Region 2).
+
+**Tilemaps vs. sprites:** some graybox pieces are half-tile thick (0.5 units) or end on half units. Grid-aligned
+terrain uses Tilemaps (Grid offset +0.5 in y so cells line up with the floor top at y −4.5); platforms and
+ledges use Tiled/sliced sprites stretched to the graybox size. Colliders never change to fit the art.
 
 **Import notes:** Village textures currently use compression → set to **None** (import setting only).
 Village materials are unlit → use project-owned Sprite-Lit copies (3.3).
