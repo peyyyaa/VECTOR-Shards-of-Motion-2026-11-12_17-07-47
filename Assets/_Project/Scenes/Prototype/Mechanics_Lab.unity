@@ -5443,7 +5443,7 @@ MonoBehaviour:
   signal: {fileID: 1911000104}
   invertSignal: 0
   waitAtEnds: 0.75
-  stopIfBlocked: 0
+  stopIfBlocked: 1
   blockingLayers:
     serializedVersion: 2
     m_Bits: 0

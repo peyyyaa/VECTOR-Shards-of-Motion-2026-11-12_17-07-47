@@ -18,8 +18,8 @@ using UnityEngine;
 /// and blocks are dragged along by friction.
 ///
 /// Stop If Blocked: before each step, checks whether a player or block is directly in its path
-/// and stops if so, so a closing gate doesn't crush anything. Use it on gates, NOT on lifts:
-/// a lift carrying a player upward would count the rider as "in the way" and stop.
+/// and stops if so (waits, then carries on once the way is clear), so gates and lifts never crush
+/// or shove anything. Riders standing on top of a rising lift are carried, not counted as blocking.
 ///
 /// Setup: Rigidbody2D (Body Type Kinematic, Interpolate on) + a Collider2D, usually on the
 /// Ground layer so players can stand and jump on it. Kinetic Burst and Wind Tether ignore it
@@ -121,18 +121,26 @@ public class Mover : MonoBehaviour, IRoomResettable
 
     private void Stop() => body.linearVelocity = Vector2.zero;
 
-    // Something on Blocking Layers directly ahead, with its surface facing us (a rider sitting
-    // on top while we move sideways has a sideways-facing contact, so it doesn't count).
+    // Something on Blocking Layers directly ahead, with its surface facing us.
+    // - A rider on top while we move sideways has a sideways-facing contact, so it doesn't count.
+    // - While moving UP, anything already touching our top is a rider being carried, not an obstacle;
+    //   only things we haven't reached yet can block us. (Moving down, anything below us counts:
+    //   a lift stops above a player instead of shoving them aside.)
+    private const float RiderContactDistance = 0.05f;
+
     private bool IsBlocked(Vector2 direction, float distance)
     {
         ContactFilter2D filter = new ContactFilter2D();
         filter.SetLayerMask(blockingLayers);
         filter.useTriggers = false;
 
+        bool movingUp = direction.y > 0.5f;
         int count = body.Cast(direction, filter, hits, distance + 0.02f);
         for (int i = 0; i < count; i++)
         {
-            if (Vector2.Dot(hits[i].normal, direction) < -0.5f) return true;
+            if (Vector2.Dot(hits[i].normal, direction) >= -0.5f) continue; // not in our path
+            if (movingUp && hits[i].distance <= RiderContactDistance) continue; // riding on top
+            return true;
         }
         return false;
     }

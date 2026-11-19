@@ -39,14 +39,16 @@ public class PlayerInputReader : MonoBehaviour
     public bool InteractPressedThisFrame => Ready() && interact.WasPressedThisFrame();
 
     /// <summary>The Interact key/button for THIS player's controls (e.g., "E", "Enter", "Y"), for prompts.</summary>
-    public string InteractDisplayName
+    public string InteractDisplayName => DisplayName(interact, "Interact");
+
+    /// <summary>The Jump key/button for THIS player's controls (e.g., "W", "Up Arrow", "A"), for hints.</summary>
+    public string JumpDisplayName => DisplayName(jump, "Jump");
+
+    private string DisplayName(InputAction action, string fallback)
     {
-        get
-        {
-            if (!Ready()) return "Interact";
-            string shown = interact.GetBindingDisplayString(group: playerInput.currentControlScheme);
-            return string.IsNullOrEmpty(shown) ? "Interact" : shown;
-        }
+        if (!Ready()) return fallback;
+        string shown = action.GetBindingDisplayString(group: playerInput.currentControlScheme);
+        return string.IsNullOrEmpty(shown) ? fallback : shown;
     }
 
     private void Awake()
