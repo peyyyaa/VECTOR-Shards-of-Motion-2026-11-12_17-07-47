@@ -46,6 +46,16 @@ public class PressurePlate : SignalSource
     [SerializeField] private Color releasedColor = new Color(0.6f, 0.6f, 0.2f);
     [SerializeField] private Color pressedColor = new Color(0.2f, 0.9f, 0.3f);
 
+    [Header("Sinking slab (optional, visual only)")]
+    [Tooltip("The slab art. It sinks as weight is added, like a scale: a little when something steps on, " +
+             "all the way (Max Sink Pixels) when pressed. Only this visual moves; colliders and the trigger stay put.")]
+    [SerializeField] private Transform slab;
+    [SerializeField, Min(0)] private int maxSinkPixels = 3;
+    [Tooltip("Pixels per unit of the art, so the slab moves in whole pixels.")]
+    [SerializeField] private float pixelsPerUnit = 32f;
+    [Tooltip("How fast the slab moves, in pixels per second.")]
+    [SerializeField] private float sinkSpeed = 30f;
+
     [Header("Events")]
     [SerializeField] private UnityEvent onPressed;
     [SerializeField] private UnityEvent onReleased;
@@ -64,6 +74,9 @@ public class PressurePlate : SignalSource
     private readonly ContactPoint2D[] contacts = new ContactPoint2D[16];
 
     private bool isPressed;
+    private Vector3 slabRest;
+    private bool slabRestKnown;
+    private float sinkPixels;
 
     public bool IsPressed => isPressed;
 
@@ -186,6 +199,22 @@ public class PressurePlate : SignalSource
         bool verticalContact = Mathf.Abs(contact.normal.y) > 0.7f;
         bool isHigher = above.worldCenterOfMass.y > below.worldCenterOfMass.y;
         return verticalContact && isHigher;
+    }
+
+    // Slab depth: 0 = empty; anything touching it = at least 1 px; then in proportion to weight / required;
+    // pressed = all the way down. (Visual only: it shows "more weight, more press", like a scale.)
+    private void Update()
+    {
+        if (slab == null) return;
+        if (!slabRestKnown) { slabRest = slab.position; slabRestKnown = true; }
+
+        float target = 0f;
+        if (isPressed) target = maxSinkPixels;
+        else if (bodiesOnPlate.Count > 0 || currentWeight > 0f)
+            target = Mathf.Clamp(Mathf.Round(currentWeight / Mathf.Max(0.01f, requiredWeight) * maxSinkPixels), 1f, Mathf.Max(1f, maxSinkPixels - 1f));
+
+        sinkPixels = Mathf.MoveTowards(sinkPixels, target, sinkSpeed * Time.deltaTime);
+        slab.position = slabRest + Vector3.down * (Mathf.Round(sinkPixels) / pixelsPerUnit);
     }
 
     private void UpdateColor()

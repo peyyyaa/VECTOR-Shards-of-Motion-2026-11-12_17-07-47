@@ -140,7 +140,10 @@ public static class Room1VisualPass
         // --- Interactive objects (visual children; they move with their objects)
         Transform lift = Find(room, "Lift");
         SpriteRenderer plank = Visual(lift, "Platform", village["TX Village Props - Elevator Platform"], "Interactables", 0);
-        PlaceCenter(plank, lift.position);
+        // The Elevator Platform sprite is 10 px tall, but only its bottom 7 rows are plank (the top 3 rows are
+        // just the chain rings). Put the plank's top on the collider's top so players stand ON the wood.
+        float liftTop = BoxEdgeY(lift, top: true);
+        PlaceBottom(plank, new Vector2(lift.position.x, liftTop - 7f / 32f));
         foreach (float side in new[] { -0.85f, 0.85f })
         {
             // Chains run UP from the lift's top edge (past the top of the screen).
@@ -159,9 +162,15 @@ public static class Room1VisualPass
             Transform plate = Find(room, plateName);
             SpriteRenderer slab = Visual(plate, "Slab", interactive["TX Village Props - Fence 01 Rail 01"], "Interactables", 0);
             Tiled(slab, new Vector2(1.5f, 9f / 32f));
-            PlaceBottom(slab, new Vector2(plate.position.x, plate.position.y - 0.05f));
+            // The slab sits in a recess: drawn just behind the ground tiles, with its top 4 px above the floor.
+            // PressurePlate sinks it up to 3 px as weight is added (visual only).
+            slab.sortingLayerName = "BackDecor";
+            slab.sortingOrder = 20;
+            float floor = BoxEdgeY(plate, top: false);
+            PlaceBottom(slab, new Vector2(plate.position.x, floor + 4f / 32f - 9f / 32f));
             SerializedObject p = new SerializedObject(plate.GetComponent<PressurePlate>());
             p.FindProperty("plateRenderer").objectReferenceValue = slab;
+            p.FindProperty("slab").objectReferenceValue = slab.transform;
             p.FindProperty("releasedColor").colorValue = Color.white;
             p.FindProperty("pressedColor").colorValue = new Color(0.75f, 1f, 0.8f);
             p.ApplyModifiedPropertiesWithoutUndo();
@@ -345,6 +354,15 @@ public static class Room1VisualPass
         Bounds local = LocalBounds(sr);
         Vector3 scale = sr.transform.lossyScale;
         sr.transform.position = new Vector3(center.x - local.center.x * scale.x, center.y - local.center.y * scale.y, 0f);
+    }
+
+    // World y of a BoxCollider2D's top or bottom edge (from its size/offset, so it works inside an edited prefab).
+    private static float BoxEdgeY(Transform t, bool top)
+    {
+        BoxCollider2D box = t.GetComponent<BoxCollider2D>();
+        if (box == null) return t.position.y;
+        Vector2 local = box.offset + new Vector2(0f, (top ? 0.5f : -0.5f) * box.size.y);
+        return t.TransformPoint(local).y;
     }
 
     private static void Clear(Transform room)
