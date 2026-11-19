@@ -376,6 +376,7 @@ public static class Region1Setup
         ppc.assetsPPU = 32;
         ppc.refResolutionX = 640;
         ppc.refResolutionY = 360;
+        ppc.cropFrame = PixelPerfectCamera.CropFrame.Windowbox; // show exactly the room, black bars if the window shape differs
         go.AddComponent<AudioListener>();
         return go.transform;
     }

@@ -61,9 +61,16 @@ Art is fitted to the graybox, not the other way round.
    wooden props still sit together.
 5. **One small custom sprite:** the lever (16 × 32), drawn with colors sampled from Village Props
    (`Art/Sprites/Props/SP_Lever.png`). Artists may refine it.
-6. **Backgrounds and characters (searched for):** same pixel scale as Village Props (one art pixel = one
-   Village pixel), soft shading, no thick black outlines. Backgrounds: separate, horizontally seamless
-   parallax layers (≥ 640 px wide). Characters: ~48 px tall, side view (see section 7).
+6. **Backgrounds (chosen):** four AI-generated images in `Art/Backgrounds/` (source images kept unchanged;
+   check the generator's terms allow use in the game). They're pixel-*style* (soft, noisy), so
+   Tools > Shards of Motion > Backgrounds converts them to clean pixel art: one room screen = 320 × 180 px at
+   16 PPU (each background pixel = 2 × 2 game pixels), a 48-color palette, room-sized crops
+   (`Art/Backgrounds/Processed/BG_*`). The camera doesn't scroll inside a room, so each room gets its own
+   fixed background (no parallax or seamless tiling needed), tinted per room for readability.
+   Progression: rooms 1–2 Mountain Vista (open sky) · 3–5 Misty Ruins (Room 4: waterfall crop) ·
+   6–8 Forest Canopy, darker. Mossy Ruins only as an option (its ground-level ruins compete with gameplay).
+7. **Characters (searched for):** same pixel scale as Village Props, soft shading, no thick black outlines,
+   ~48 px tall, side view (see section 7).
 
 ### 3.2 Rotation by object type
 | Object | Rotation |

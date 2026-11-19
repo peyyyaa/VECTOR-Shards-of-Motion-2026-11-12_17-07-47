@@ -152,6 +152,7 @@ public static class HierarchyOrganizer
         if (go.GetComponentInChildren<HazardZone>(true)) return "Hazards";
 
         Rigidbody2D rb = go.GetComponent<Rigidbody2D>();
+        if (go.GetComponent<MotionShard>()) return "Objects";
         if (go.GetComponent<BlockHome>() || (rb != null && rb.bodyType == RigidbodyType2D.Dynamic && go.GetComponent<Joint2D>() == null))
             return "Objects";
 
