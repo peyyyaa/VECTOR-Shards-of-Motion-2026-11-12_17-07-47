@@ -17,7 +17,7 @@ using UnityEngine.Events;
 /// Inputs are checked every physics step, so the result never depends on which input
 /// changed first. A relay is itself a SignalSource, so relays can feed other relays.
 /// </summary>
-public class PuzzleRelay : SignalSource
+public class PuzzleRelay : SignalSource, IRoomResettable
 {
     public enum RelayMode { All, Any }
 
@@ -70,6 +70,10 @@ public class PuzzleRelay : SignalSource
 
         return invert ? !result : result;
     }
+
+    public Vector2 HomePoint => transform.position;
+
+    public void ResetToStart() => ResetRelay();
 
     /// <summary>Clears the latch and turns the relay off (used by a room reset).</summary>
     public void ResetRelay()

@@ -90,6 +90,39 @@ public class RoomManager : MonoBehaviour
         transitioning = true;
     }
 
+    /// <summary>Sends one player back to where they entered the current room (e.g., touched a hazard).</summary>
+    public void RespawnPlayer(Rigidbody2D playerBody)
+    {
+        if (playerBody == null || spawner == null || currentRoom == null) return;
+
+        IReadOnlyList<PlayerInput> players = spawner.Players;
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (players[i] != null && players[i].GetComponent<Rigidbody2D>() == playerBody)
+            {
+                PlacePlayer(players[i], EntryFor(i));
+                return;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Resets the current room: its blocks, levers, relays and doors return to their starting
+    /// state, and both players return to where they entered the room.
+    /// </summary>
+    public void ResetCurrentRoom()
+    {
+        if (transitioning || currentRoom == null || spawner == null) return;
+
+        currentRoom.ResetRoom();
+
+        IReadOnlyList<PlayerInput> players = spawner.Players;
+        for (int i = 0; i < players.Count; i++)
+        {
+            PlacePlayer(players[i], EntryFor(i));
+        }
+    }
+
     private void FixedUpdate()
     {
         if (transitioning || currentRoom == null || spawner == null) return;

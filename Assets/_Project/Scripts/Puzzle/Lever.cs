@@ -14,7 +14,7 @@ using UnityEngine.Events;
 /// Optional: a SpriteRenderer to show on/off by color (graybox) or by flipping the sprite.
 /// </summary>
 [RequireComponent(typeof(Collider2D))]
-public class Lever : SignalSource, IInteractable
+public class Lever : SignalSource, IInteractable, IRoomResettable
 {
     public enum LeverMode { Toggle, Timed }
 
@@ -81,6 +81,16 @@ public class Lever : SignalSource, IInteractable
         {
             SetOn(!isOn);
         }
+    }
+
+    public Vector2 HomePoint => transform.position;
+
+    /// <summary>Room reset: back to the starting position.</summary>
+    public void ResetToStart()
+    {
+        cooldownRemaining = 0f;
+        autoOffRemaining = 0f;
+        SetOn(startOn);
     }
 
     /// <summary>Sets the lever directly (e.g., from a room reset). Fires events only if it changes.</summary>

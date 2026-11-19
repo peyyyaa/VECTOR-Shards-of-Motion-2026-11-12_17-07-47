@@ -36,6 +36,28 @@ public class Room : MonoBehaviour
         return Mathf.Abs(offset.x) <= half.x && Mathf.Abs(offset.y) <= half.y;
     }
 
+    /// <summary>
+    /// Returns every resettable object that belongs to this room to its starting state
+    /// (see IRoomResettable for how membership is decided). Players are handled by RoomManager.
+    /// </summary>
+    public void ResetRoom()
+    {
+        foreach (MonoBehaviour behaviour in FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None))
+        {
+            if (behaviour is IRoomResettable resettable && BelongsHere(behaviour, resettable))
+            {
+                resettable.ResetToStart();
+            }
+        }
+    }
+
+    private bool BelongsHere(MonoBehaviour behaviour, IRoomResettable resettable)
+    {
+        Room parentRoom = behaviour.GetComponentInParent<Room>();
+        if (parentRoom != null) return parentRoom == this;
+        return Contains(resettable.HomePoint);
+    }
+
     // Always drawn (not just when selected) so the room layout is visible while building levels.
     private void OnDrawGizmos()
     {

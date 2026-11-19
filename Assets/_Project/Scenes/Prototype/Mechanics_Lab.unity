@@ -2733,6 +2733,7 @@ GameObject:
   - component: {fileID: 1541859540}
   - component: {fileID: 1541859539}
   - component: {fileID: 1541859538}
+  - component: {fileID: 1900000001}
   m_Layer: 8
   m_Name: PhysicsBlock
   m_TagString: Untagged
@@ -2740,6 +2741,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1900000001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1541859537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db213c73844860a5835271cd86dd10da, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::BlockHome
+  lostMargin: 1
 --- !u!50 &1541859538
 Rigidbody2D:
   serializedVersion: 5
@@ -3615,6 +3629,247 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   currentWeight: 0
+--- !u!1001 &1900000101
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 200000, guid: 388d685d3e4a5a8107cd68242cd1ef33, type: 3}
+      propertyPath: m_Name
+      value: Shrine_Room01
+      objectReference: {fileID: 0}
+    - target: {fileID: 200001, guid: 388d685d3e4a5a8107cd68242cd1ef33, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -8
+      objectReference: {fileID: 0}
+    - target: {fileID: 200001, guid: 388d685d3e4a5a8107cd68242cd1ef33, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 200001, guid: 388d685d3e4a5a8107cd68242cd1ef33, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 388d685d3e4a5a8107cd68242cd1ef33, type: 3}
+--- !u!1001 &1900000102
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 200000, guid: 388d685d3e4a5a8107cd68242cd1ef33, type: 3}
+      propertyPath: m_Name
+      value: Shrine_Room02
+      objectReference: {fileID: 0}
+    - target: {fileID: 200001, guid: 388d685d3e4a5a8107cd68242cd1ef33, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 11.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 200001, guid: 388d685d3e4a5a8107cd68242cd1ef33, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 200001, guid: 388d685d3e4a5a8107cd68242cd1ef33, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 388d685d3e4a5a8107cd68242cd1ef33, type: 3}
+--- !u!1001 &1900000103
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 200000, guid: 388d685d3e4a5a8107cd68242cd1ef33, type: 3}
+      propertyPath: m_Name
+      value: Shrine_Room03
+      objectReference: {fileID: 0}
+    - target: {fileID: 200001, guid: 388d685d3e4a5a8107cd68242cd1ef33, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 34.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 200001, guid: 388d685d3e4a5a8107cd68242cd1ef33, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -3.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 200001, guid: 388d685d3e4a5a8107cd68242cd1ef33, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 388d685d3e4a5a8107cd68242cd1ef33, type: 3}
+--- !u!1001 &1900000111
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 101000, guid: d346dff172a36b5a220cf0b3d6de6ed6, type: 3}
+      propertyPath: m_Name
+      value: Block_1kg_R2
+      objectReference: {fileID: 0}
+    - target: {fileID: 101001, guid: d346dff172a36b5a220cf0b3d6de6ed6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 14.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 101001, guid: d346dff172a36b5a220cf0b3d6de6ed6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4
+      objectReference: {fileID: 0}
+    - target: {fileID: 101001, guid: d346dff172a36b5a220cf0b3d6de6ed6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d346dff172a36b5a220cf0b3d6de6ed6, type: 3}
+--- !u!1001 &1900000112
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 101000, guid: d346dff172a36b5a220cf0b3d6de6ed6, type: 3}
+      propertyPath: m_Name
+      value: Block_1kg_R3
+      objectReference: {fileID: 0}
+    - target: {fileID: 101001, guid: d346dff172a36b5a220cf0b3d6de6ed6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 39.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 101001, guid: d346dff172a36b5a220cf0b3d6de6ed6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4
+      objectReference: {fileID: 0}
+    - target: {fileID: 101001, guid: d346dff172a36b5a220cf0b3d6de6ed6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d346dff172a36b5a220cf0b3d6de6ed6, type: 3}
+--- !u!1001 &1900000113
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 103000, guid: 78fcc3db371bc2b83a98038d82769e48, type: 3}
+      propertyPath: m_Name
+      value: Block_3kg_R3
+      objectReference: {fileID: 0}
+    - target: {fileID: 103001, guid: 78fcc3db371bc2b83a98038d82769e48, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 42
+      objectReference: {fileID: 0}
+    - target: {fileID: 103001, guid: 78fcc3db371bc2b83a98038d82769e48, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4
+      objectReference: {fileID: 0}
+    - target: {fileID: 103001, guid: 78fcc3db371bc2b83a98038d82769e48, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 78fcc3db371bc2b83a98038d82769e48, type: 3}
+--- !u!1001 &1900000121
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1866009694136763843, guid: d879a7d15fa7f2c4bb9893231f5611ef, type: 3}
+      propertyPath: m_Name
+      value: Hazard_Acid_Pool_R2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866009694136763868, guid: d879a7d15fa7f2c4bb9893231f5611ef, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 16.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866009694136763868, guid: d879a7d15fa7f2c4bb9893231f5611ef, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866009694136763868, guid: d879a7d15fa7f2c4bb9893231f5611ef, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866009694136763840, guid: d879a7d15fa7f2c4bb9893231f5611ef, type: 3}
+      propertyPath: size.x
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866009694136763840, guid: d879a7d15fa7f2c4bb9893231f5611ef, type: 3}
+      propertyPath: size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1866009694136763840, guid: d879a7d15fa7f2c4bb9893231f5611ef, type: 3}
+      propertyPath: interactionLayerMask.m_Bits
+      value: 384
+      objectReference: {fileID: 0}
+    - target: {fileID: 9021447951967945863, guid: d879a7d15fa7f2c4bb9893231f5611ef, type: 3}
+      propertyPath: m_Density
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1866009694136763843, guid: d879a7d15fa7f2c4bb9893231f5611ef, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1900000123}
+  m_SourcePrefab: {fileID: 100100000, guid: d879a7d15fa7f2c4bb9893231f5611ef, type: 3}
+--- !u!1 &1900000122 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1866009694136763843, guid: d879a7d15fa7f2c4bb9893231f5611ef, type: 3}
+  m_PrefabInstance: {fileID: 1900000121}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1900000123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1900000122}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd6a26cce15a6e791b0195d6e4456d3d, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::HazardZone
+  respawnPlayers: 1
+  returnBlocks: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -3624,3 +3879,10 @@ SceneRoots:
   - {fileID: 1621083665}
   - {fileID: 22653976}
   - {fileID: 399821899}
+  - {fileID: 1900000101}
+  - {fileID: 1900000102}
+  - {fileID: 1900000103}
+  - {fileID: 1900000111}
+  - {fileID: 1900000112}
+  - {fileID: 1900000113}
+  - {fileID: 1900000121}

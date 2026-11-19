@@ -11,7 +11,7 @@ using UnityEngine;
 ///   2. A trigger one (Is Trigger ON) — detects the player in the doorway.
 /// Call Open() / Close() from another script or a UnityEvent (e.g., PressurePlate's On Pressed / On Released).
 /// </summary>
-public class ExitDoor : MonoBehaviour
+public class ExitDoor : MonoBehaviour, IRoomResettable
 {
     [Header("References")]
     [Tooltip("The non-trigger collider that blocks the doorway while closed.")]
@@ -39,6 +39,15 @@ public class ExitDoor : MonoBehaviour
 
     private void Start()
     {
+        SetOpen(startOpen);
+    }
+
+    public Vector2 HomePoint => transform.position;
+
+    /// <summary>Room reset: back to the starting state (also clears the stay-open latch).</summary>
+    public void ResetToStart()
+    {
+        roomCompleted = false;
         SetOpen(startOpen);
     }
 
