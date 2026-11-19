@@ -67,6 +67,12 @@ public class PressurePlate : SignalSource
 
     public bool IsPressed => isPressed;
 
+    /// <summary>Weight currently counted on the plate, in newtons (for readouts).</summary>
+    public float CurrentWeight => currentWeight;
+
+    /// <summary>The weight needed to press the plate, in newtons.</summary>
+    public float RequiredWeight => requiredWeight;
+
     /// <summary>SignalSource: on while pressed, so a PuzzleRelay can use this plate as an input.</summary>
     public override bool IsActive => isPressed;
 

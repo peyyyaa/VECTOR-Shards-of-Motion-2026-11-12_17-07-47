@@ -98,7 +98,7 @@ public class RoomExit : MonoBehaviour
         return playersFound.Count;
     }
 
-    // Scene view: the zone (green) and lines to where the players will arrive.
+    // Scene view: the zone (green) always; select the exit to see lines to where the players arrive.
     private void OnDrawGizmos()
     {
         Collider2D col = zone != null ? zone : GetComponent<Collider2D>();
@@ -106,7 +106,14 @@ public class RoomExit : MonoBehaviour
 
         Gizmos.color = new Color(0.2f, 1f, 0.4f, 0.8f);
         Gizmos.DrawWireCube(col.bounds.center, col.bounds.size);
+    }
 
+    private void OnDrawGizmosSelected()
+    {
+        Collider2D col = zone != null ? zone : GetComponent<Collider2D>();
+        if (col == null) return;
+
+        Gizmos.color = new Color(0.2f, 1f, 0.4f, 0.8f);
         if (targetEntryPlayer1 != null) Gizmos.DrawLine(col.bounds.center, targetEntryPlayer1.position);
         if (targetEntryPlayer2 != null) Gizmos.DrawLine(col.bounds.center, targetEntryPlayer2.position);
     }

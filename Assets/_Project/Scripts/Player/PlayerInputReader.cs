@@ -38,6 +38,17 @@ public class PlayerInputReader : MonoBehaviour
     public bool AbilityHeld => Ready() && ability.IsPressed();
     public bool InteractPressedThisFrame => Ready() && interact.WasPressedThisFrame();
 
+    /// <summary>The Interact key/button for THIS player's controls (e.g., "E", "Enter", "Y"), for prompts.</summary>
+    public string InteractDisplayName
+    {
+        get
+        {
+            if (!Ready()) return "Interact";
+            string shown = interact.GetBindingDisplayString(group: playerInput.currentControlScheme);
+            return string.IsNullOrEmpty(shown) ? "Interact" : shown;
+        }
+    }
+
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();

@@ -86,8 +86,14 @@ public class PuzzleRelay : SignalSource, IRoomResettable
         }
     }
 
-    // Scene view: a line from each input to the relay (green = that input is on).
+    // Scene view: a small box always; select the relay to see a line to each input (green = that input is on).
     private void OnDrawGizmos()
+    {
+        Gizmos.color = Application.isPlaying && isActive ? Color.green : Color.white;
+        Gizmos.DrawWireCube(transform.position, Vector3.one * 0.4f);
+    }
+
+    private void OnDrawGizmosSelected()
     {
         if (inputs == null) return;
         foreach (SignalSource source in inputs)
@@ -96,7 +102,5 @@ public class PuzzleRelay : SignalSource, IRoomResettable
             Gizmos.color = Application.isPlaying && source.IsActive ? Color.green : new Color(1f, 0.8f, 0.2f, 0.8f);
             Gizmos.DrawLine(source.transform.position, transform.position);
         }
-        Gizmos.color = Application.isPlaying && isActive ? Color.green : Color.white;
-        Gizmos.DrawWireCube(transform.position, Vector3.one * 0.4f);
     }
 }

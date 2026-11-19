@@ -35,6 +35,8 @@ public class ResetShrine : MonoBehaviour, IInteractable
 
     public bool CanInteract(PlayerInteractor player) => isActiveAndEnabled && manager != null && cooldownRemaining <= 0f;
 
+    public string InteractVerb => "Reset room";
+
     public void Interact(PlayerInteractor player)
     {
         cooldownRemaining = cooldown;

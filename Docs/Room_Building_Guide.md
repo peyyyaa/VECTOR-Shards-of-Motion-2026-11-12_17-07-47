@@ -115,11 +115,40 @@ match that room's entry points, so respawns return players to where they started
 - [ ] Every height and gap the solution needs fits section 2, and the ones meant to be impossible really are.
 - [ ] The puzzle needs both players (no single-player solution, unless that's intended).
 - [ ] Blocks that should cross a doorway really do slide across (see the floor seam note below).
+- [ ] Run **Tools → Shards of Motion → Organize Hierarchy** (section 7).
 - [ ] **Ctrl+S** (scene) and, after any Project Settings change, **File → Save Project**.
 
 ---
 
-## 7. Known limitations
+## 7. Hierarchy organization
+
+Every scene uses the same Hierarchy layout. Run **Tools → Shards of Motion → Organize Hierarchy** after
+building or changing a room. It sorts everything automatically, keeps every object's position and size, and
+can be undone with Ctrl+Z.
+
+```
+_Managers       camera, lights, RoomManager, CoopSpawner, spawn points
+Room01          the Room object (rooms listed left to right), containing:
+   Layout       floors, walls, ledges, shelves (static geometry)
+   Puzzle       plates, levers, relays, doors/gates, movers, currents, shrines, seesaws
+   Objects      blocks / crates
+   Hazards      acid / lava pools
+   Info         signs, Motion Journal stones
+Connections     doorways, room exits, player barriers, arrival points
+_Unsorted       anything outside every room's area (check these!)
+```
+
+Rules:
+- An object belongs to the room whose area contains its **centre**.
+- **Doorways and room exits always go in Connections, never inside a Room.** An exit finds its room through
+  its parent Room first, and a doorway sits on the boundary between two rooms. Nested under one of them,
+  the exit leading the other way would think it belongs to the wrong room.
+- Anything that ends up in **_Unsorted** is outside every room. Usually it's misplaced: move it into a room
+  and run the tool again.
+
+---
+
+## 8. Known limitations
 
 - **No vertical doorway yet.** Rooms can be stacked, but there is only a sideways doorway prefab. A doorway
   in the floor or ceiling (shafts, drops) is a planned addition.

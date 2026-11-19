@@ -68,6 +68,8 @@ public class Lever : SignalSource, IInteractable, IRoomResettable
 
     public bool CanInteract(PlayerInteractor player) => isActiveAndEnabled && cooldownRemaining <= 0f;
 
+    public string InteractVerb => "Use";
+
     public void Interact(PlayerInteractor player)
     {
         cooldownRemaining = pressCooldown;

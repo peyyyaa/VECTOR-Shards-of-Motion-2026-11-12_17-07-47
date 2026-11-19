@@ -1,7 +1,7 @@
 /// <summary>
-/// Anything a player can use with the Interact button (levers, later the reset shrine and
-/// journal stones). Found by PlayerInteractor through a physics query, so the object needs a
-/// Collider2D (usually a trigger) on the Interactable layer.
+/// Anything a player can use with the Interact button (levers, reset shrines, journal stones).
+/// Found by PlayerInteractor through a physics query, so the object needs a Collider2D
+/// (usually a trigger) on the Interactable layer.
 ///
 /// It's an interface (not a base class) so a component can be BOTH interactable and a
 /// SignalSource, like a Lever.
@@ -13,4 +13,7 @@ public interface IInteractable
 
     /// <summary>Called once when a player in range presses Interact.</summary>
     void Interact(PlayerInteractor player);
+
+    /// <summary>Word shown in the prompt after the key, e.g. "P1: E  Use". Empty = key only.</summary>
+    string InteractVerb => "";
 }

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 101003}
   - component: {fileID: 101004}
   - component: {fileID: 101050}
+  - component: {fileID: 101060}
   m_Layer: 8
   m_Name: Block_1kg
   m_TagString: Untagged
@@ -20,6 +21,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &101060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 101000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8af6f0048be67e64e8387cce4b81a4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MassLabel
+  offset: {x: 0, y: 0.85}
+  fontSizePx: 26
+  textColor: {r: 1, g: 1, b: 1, a: 1}
+  font: {fileID: 0}
 --- !u!4 &101001
 Transform:
   m_ObjectHideFlags: 0
