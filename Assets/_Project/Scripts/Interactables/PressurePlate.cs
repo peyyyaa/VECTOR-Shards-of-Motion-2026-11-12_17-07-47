@@ -30,9 +30,10 @@ using UnityEngine.Events;
 ///
 /// Setup: needs a Collider2D with "Is Trigger" ticked. Wire On Pressed / On Released in the
 /// Inspector to whatever should react (e.g., ExitDoor.Open / ExitDoor.Close).
+/// If several plates/levers control one thing, put them in a PuzzleRelay's Inputs instead.
 /// </summary>
 [RequireComponent(typeof(Collider2D))]
-public class PressurePlate : MonoBehaviour
+public class PressurePlate : SignalSource
 {
     [Header("Activation")]
     [Tooltip("Total weight needed to press the plate, in newtons (N). With g = 29.43: 1 kg ≈ 29.4 N, 2 kg ≈ 58.9 N.")]
@@ -65,6 +66,9 @@ public class PressurePlate : MonoBehaviour
     private bool isPressed;
 
     public bool IsPressed => isPressed;
+
+    /// <summary>SignalSource: on while pressed, so a PuzzleRelay can use this plate as an input.</summary>
+    public override bool IsActive => isPressed;
 
     private void Reset()
     {

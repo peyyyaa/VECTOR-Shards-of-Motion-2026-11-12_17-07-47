@@ -11,7 +11,7 @@ using UnityEngine.InputSystem;
 /// so Player 1's keys never move Player 2.
 ///
 /// Action names must match the "Player" map in InputSystem_Actions:
-/// Move, Jump, Dash, Ability.
+/// Move, Jump, Dash, Ability, Interact.
 /// </summary>
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerInputReader : MonoBehaviour
@@ -21,6 +21,7 @@ public class PlayerInputReader : MonoBehaviour
     private InputAction jump;
     private InputAction dash;
     private InputAction ability;
+    private InputAction interact;
     private bool initialized;
     private bool setupFailed;
 
@@ -35,6 +36,7 @@ public class PlayerInputReader : MonoBehaviour
     public bool DashPressedThisFrame => Ready() && dash.WasPressedThisFrame();
     public bool AbilityPressedThisFrame => Ready() && ability.WasPressedThisFrame();
     public bool AbilityHeld => Ready() && ability.IsPressed();
+    public bool InteractPressedThisFrame => Ready() && interact.WasPressedThisFrame();
 
     private void Awake()
     {
@@ -61,6 +63,7 @@ public class PlayerInputReader : MonoBehaviour
         jump = actions.FindAction("Player/Jump", throwIfNotFound: true);
         dash = actions.FindAction("Player/Dash", throwIfNotFound: true);
         ability = actions.FindAction("Player/Ability", throwIfNotFound: true);
+        interact = actions.FindAction("Player/Interact", throwIfNotFound: true);
         initialized = true;
         return true;
     }
