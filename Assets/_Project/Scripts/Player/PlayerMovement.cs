@@ -61,8 +61,8 @@ public class PlayerMovement : MonoBehaviour
     /// Other player scripts (e.g., PlayerFloat) read this.</summary>
     public bool IsGrounded => isGrounded;
 
-    /// <summary>The moving body we're standing on (e.g., a block), or null
-    /// when on static ground or in the air.</summary>
+    /// <summary>The moving body we're standing on (a block or a moving platform), or null
+    /// when on fixed ground or in the air.</summary>
     public Rigidbody2D GroundBody { get; private set; }
 
     /// <summary>+1 = facing right, -1 = facing left. Updated from the last horizontal input.</summary>
@@ -125,8 +125,8 @@ public class PlayerMovement : MonoBehaviour
             inputVelocityX = LimitByPushable(inputVelocityX);
         }
 
-        // Riding: when standing on something that moves (e.g., a block sliding after a
-        // Kinetic Burst), move along with it. Physically, friction under your feet would drag you along; our
+        // Riding: when standing on something that moves (a block sliding after a
+        // Kinetic Burst, or a moving platform), move along with it. Physically, friction under your feet would drag you along; our
         // collider is frictionless (so it doesn't stick to walls), so we add the speed directly.
         float carryVelocityX = GroundBody != null ? GroundBody.linearVelocity.x : 0f;
 
@@ -270,8 +270,9 @@ public class PlayerMovement : MonoBehaviour
 
     /// <summary>
     /// Checks a thin box just under the player's feet. Also records what we're standing on:
-    /// GroundBody is set only when standing on a dynamic body (e.g., a block) and NOT also
-    /// on static ground — standing half on the floor shouldn't make you ride a block.
+    /// GroundBody is set only when standing on something that moves (a block, or a Kinematic
+    /// moving platform) and NOT also on fixed ground — standing half on the floor shouldn't
+    /// make you ride a block or platform.
     /// Our own collider is skipped, in case the Player layer is ever added to Ground Layers.
     /// </summary>
     private bool CheckGrounded()
@@ -288,7 +289,7 @@ public class PlayerMovement : MonoBehaviour
 
         bool grounded = false;
         bool onStatic = false;
-        Rigidbody2D dynamicBelow = null;
+        Rigidbody2D movingBelow = null;
 
         for (int i = 0; i < count; i++)
         {
@@ -296,11 +297,13 @@ public class PlayerMovement : MonoBehaviour
             if (rb == body) continue; // never count our own collider as ground
 
             grounded = true;
-            if (rb == null || rb.bodyType != RigidbodyType2D.Dynamic) onStatic = true;
-            else if (dynamicBelow == null) dynamicBelow = rb;
+            // Things that can move under us: Dynamic bodies (blocks) and Kinematic bodies
+            // (moving platforms, lifts). Anything without a Rigidbody2D, or Static, is fixed ground.
+            if (rb == null || rb.bodyType == RigidbodyType2D.Static) onStatic = true;
+            else if (movingBelow == null) movingBelow = rb;
         }
 
-        GroundBody = onStatic ? null : dynamicBelow;
+        GroundBody = onStatic ? null : movingBelow;
         return grounded;
     }
 
