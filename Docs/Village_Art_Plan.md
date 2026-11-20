@@ -19,9 +19,9 @@ The order is unchanged. Room-local x positions:
 
 | Screen | Objects (x positions) |
 |---|---|
-| **Wren's Lab** (x 0) | Lab −5.3, Wren −0.6, wall map 1.7, research table 4.2, lamp 8.2 |
+| **Wren's Lab** (x 0) | Lab −5.3, Wren −0.6, notes chest 1.7, research table 4.2, lamp 8.2 |
 | **Market Square** (x 20) | Cottage −7.0, Mira −3.6, lamp −2.6, board −1.2, fruit stall 1.4, shrine 5.0, well 8.4 |
-| **Forge & East Road** (x 40) | Forge −3.6, Bram −4.4 (at the hearth), lamp 2.2, road sign 5.6, region gate 8.3 |
+| **Forge & East Road** (x 40) | Forge −3.6, Bram −3.5 (at the hearth), lamp 0.5, trailhead: trail-map board 1.8, closed-roads signpost 3.4, gateway 5.6–8.0 with rune stones 6.3 / 7.3 |
 
 The tables below are the original plan. Where they differ from this revision, the revision wins.
 

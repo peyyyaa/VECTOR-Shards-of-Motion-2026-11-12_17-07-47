@@ -10,11 +10,12 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// Tools > Shards of Motion > Game Shell > Build Village.
 /// Builds Alderbrook, the village hub: three screens side by side, joined by normal doorways (Docs/Village_Art_Plan.md):
-///   WREN'S LAB (west, x 0; a new game starts here): the lab and observatory, Wren Alder (he) reading outside, the wall map
-///     (Interact: map screen, WallMap) and his research table with the machine parts found so far (PartsDisplay).
+///   WREN'S LAB (west, x 0; a new game starts here): the lab and observatory, Wren Alder (he) reading outside, a chest of
+///     notes and his research table with the machine parts found so far (PartsDisplay).
 ///   MARKET SQUARE (x 20): Mira's cottage and Mira, the Field Requests board, the fruit stall, the shard shrine, the well.
-///   FORGE &amp; EAST ROAD (x 40): Bram's forge (Bram opens the Village Fund ledger, FundPanel), the road east to the Shattered Grounds
-///     (RegionGate) with the closed roads to the other regions signposted.
+///   FORGE &amp; EAST ROAD (x 40): Bram's forge (Bram opens the Village Fund ledger, FundPanel), the trailhead: the trail-map board
+///     (Interact: map screen, WallMap), the closed roads signposted, and the gateway to the Shattered Grounds (RegionGate:
+///     both players on the rune stones). Built in VillageBuilder.Trailhead.cs.
 /// Restoration projects (RestorationProject: well, lamps, garden, shrine) show broken until funded.
 /// Buildings: PixelLab art adapted to Art/Village/ (sources in Art/Village/Source), on the Midground layer behind the
 /// play space; pack props on Props; villagers on Player. Rooms are prefabs in Prefabs/Rooms/Village/ (RoomDresser does the
@@ -22,7 +23,7 @@ using UnityEngine.SceneManagement;
 /// Needs: Characters > 1. Build Character Sprites (Wren, Bram, Mira), Effects > 1. Build Effect Sprites, Create UI Prefabs,
 /// Rooms > Set Up Adjustable Doorway. Re-runnable.
 /// </summary>
-public static class VillageBuilder
+public static partial class VillageBuilder
 {
     private const string RoomFolder = "Assets/_Project/Prefabs/Rooms/Village";
     private const string LabPath = RoomFolder + "/Village_Lab.prefab";
@@ -199,13 +200,8 @@ public static class VillageBuilder
         // Wren reads outside, facing the players coming out of the lab.
         Person(people, "Wren", wren, -0.6f, true).EditorSetup("Wren Alder", NameInk, FirstVisit, PartsFound, Idle);
 
-        // The wall map: Interact opens the map screen (WallMap -> MapPanel on UI_Canvas).
-        SpriteRenderer wallMap = PackProp(props, "Wall_Map", "Billboard", 1.7f, Floor);
-        wallMap.gameObject.layer = LayerMask.NameToLayer("Interactable");
-        wallMap.gameObject.AddComponent<BoxCollider2D>().isTrigger = true;
-        wallMap.gameObject.AddComponent<WallMap>();
-        PackProp(wallMap.transform, "Note A", "Billboard Noti 02", 1.35f, wallMap.bounds.center.y - 0.05f, "Props", 1);
-        PackProp(wallMap.transform, "Note B", "Billboard Noti 04", 2.05f, wallMap.bounds.center.y + 0.05f, "Props", 1);
+        // Wren's chest of field notes (the map moved to the trailhead, where the road leaves the village).
+        PackProp(props, "Notes_Chest", "Chest Wooden", 1.7f, Floor);
 
         GameObject table = PackProp(props, "Research_Table", "Table", 4.2f, Floor).gameObject;
         PartsDisplay display = table.AddComponent<PartsDisplay>();
@@ -303,22 +299,10 @@ public static class VillageBuilder
         bramTalk.EditorSetup("Bram", BramInk, BramFirst, BramParts, BramIdle);
         bramTalk.EditorOpensVillageFund(true);
         PackProp(props, "Anvil", "Anvil", -4.3f, Floor, "Props", 1); // where his hammer lands
-        PackProp(props, "Wood_Logs", "Wood Logs", 0.9f, Floor, "Props", -1);
-        Lamp(props, 2.2f);
+        Lamp(props, 0.5f); // just past the forge, leaving the rest of the screen to the trailhead
 
-        // The road east: Shattered Grounds (open), the other regions signposted as closed.
-        GameObject gate = new GameObject("Gate_Region1");
-        gate.transform.SetParent(exit, false);
-        gate.transform.position = new Vector3(8.3f, Floor + 1.5f, 0f);
-        BoxCollider2D gc = gate.AddComponent<BoxCollider2D>();
-        gc.isTrigger = true;
-        gc.size = new Vector2(2.2f, 3f);
-        gate.AddComponent<RegionGate>().EditorSetup("Region1", "the Shattered Grounds");
-        PackProp(exit, "Road_Sign", "Road Sign 01", 5.6f, Floor);
-        PointLight(exit, "Gate_Light", new Vector3(8.6f, Floor + 1.8f, 0f), new Color(0.45f, 0.9f, 1f), 1f, 3f);
-        Sign(exit, "Sign_Region1", "The Shattered Grounds  >", new Vector2(5.6f, -1.4f), 4f);
-        Sign(exit, "Sign_Region2", "The Gravity Divide\n(road closed: coming soon)", new Vector2(4.2f, -0.4f), 3f);
-        Sign(exit, "Sign_Region3", "The Mechanical Depths\n(road closed: coming soon)", new Vector2(4.2f, 0.9f), 3f);
+        // The road east: the trailhead (map board, closed-roads signpost, gateway with rune stones). See VillageBuilder.Trailhead.cs.
+        BuildTrailhead(exit);
     }
 
     // ------------------------------------------------------------------ pieces
@@ -432,18 +416,6 @@ public static class VillageBuilder
         return l;
     }
 
-    private static void Sign(Transform parent, string name, string text, Vector2 pos, float showDistance)
-    {
-        GameObject go = new GameObject(name);
-        go.transform.SetParent(parent, false);
-        go.transform.position = pos;
-        SerializedObject so = new SerializedObject(go.AddComponent<WorldSign>());
-        so.FindProperty("text").stringValue = text;
-        so.FindProperty("width").floatValue = 4.5f;
-        so.FindProperty("fontSizePx").floatValue = 24f;
-        so.FindProperty("showDistance").floatValue = showDistance;
-        so.ApplyModifiedPropertiesWithoutUndo();
-    }
 
     private static void AddPart(PartsDisplay display, Transform table, string sprite, string id, float x, float top)
     {

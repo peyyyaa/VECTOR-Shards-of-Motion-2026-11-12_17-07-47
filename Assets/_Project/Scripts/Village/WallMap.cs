@@ -1,7 +1,7 @@
 using UnityEngine;
 
 /// <summary>
-/// The wall map in Wren's Lab: Interact opens the map screen (MapPanel on UI_Canvas). Either player can open it;
+/// A map board (the trail-map board at the village trailhead): Interact opens the map screen (MapPanel on UI_Canvas). Either player can open it;
 /// the map stops time and both players' controls until it's closed (or they travel).
 /// Setup: a trigger Collider2D on the Interactable layer, plus the map board's sprite (VillageBuilder adds both).
 /// </summary>
