@@ -27,6 +27,7 @@ public static class RoomSketchTool
         (1, "Assets/_Project/Prefabs/Rooms/Region1/R1_Room01.prefab", "R1_01_TheFirstExchange"),
         (2, "Assets/_Project/Prefabs/Rooms/Region1/R1_Room02.prefab", "R1_02_WeightOfThings"),
         (3, "Assets/_Project/Prefabs/Rooms/Region1/R1_Room03.prefab", "R1_03_TogetherWeMove"),
+        (4, "Assets/_Project/Prefabs/Rooms/Region1/R1_Room04.prefab", "R1_04_BrokenCrossing"),
     };
 
     private static readonly Color32 Ink = new Color32(74, 47, 28, 255), InkSoft = new Color32(74, 47, 28, 110), Hatch = new Color32(74, 47, 28, 45);
@@ -78,7 +79,7 @@ public static class RoomSketchTool
             return Rect.MinMaxRect(Mathf.Min(a.x, b.x), Mathf.Min(a.y, b.y), Mathf.Max(a.x, b.x), Mathf.Max(a.y, b.y));
         }
 
-        bool IsSpecial(GameObject go) => go.GetComponentInParent<Rigidbody2D>() != null || go.GetComponent<PressurePlate>() != null ||
+        bool IsSpecial(GameObject go) => go.GetComponent<BreakableWall>() != null || go.GetComponentInParent<Rigidbody2D>() != null || go.GetComponent<PressurePlate>() != null ||
             go.GetComponent<HazardZone>() != null || go.GetComponent<ResetShrine>() != null || go.GetComponent<JournalStone>() != null ||
             go.GetComponent<Lever>() != null || go.GetComponent<QuestItem>() != null || go.GetComponent<MotionShard>() != null;
 
@@ -93,6 +94,28 @@ public static class RoomSketchTool
         if (leftExists && leftBottom > 0.01f) Stone(Rect.MinMaxRect(-HalfW, -5.5f, -HalfW + 3.5f, -4.5f + leftBottom));
         if (rightExists && rightBottom > 0.01f) Stone(Rect.MinMaxRect(HalfW - 3.5f, -5.5f, HalfW, -4.5f + rightBottom));
         if (rightExists) ExitMarker(-4.5f + rightBottom + Mathf.Min(rightHeight, 4f) * 0.5f);
+
+        // Rubble walls: cross-hatched, labelled with the momentum they need (P = momentum).
+        foreach (BreakableWall wall in root.GetComponentsInChildren<BreakableWall>(true))
+        {
+            Rect r = LocalRect(wall.GetComponent<BoxCollider2D>());
+            Vector2Int a = P(r.xMin, r.yMin), b = P(r.xMax, r.yMax);
+            for (int y = a.y; y < b.y; y++) for (int x = a.x; x < b.x; x++) if ((x + y) % 3 == 0 || (x - y + 300) % 3 == 0) Set(x, y, InkSoft);
+            Outline(r, Ink);
+            float need = new SerializedObject(wall).FindProperty("requiredMomentum").floatValue;
+            Text(P(r.center.x, -4.5f + 2.6f), $"P{need:0}", Ink);
+        }
+
+        // Water currents: light blue band with arrows in the push direction.
+        foreach (AreaEffector2D eff in root.GetComponentsInChildren<AreaEffector2D>(true))
+        {
+            if (!eff.TryGetComponent(out BoxCollider2D zb)) continue;
+            Rect r = LocalRect(zb);
+            Fill(r, new Color32(80, 150, 200, 60));
+            Vector2 dir = new Vector2(Mathf.Cos(eff.forceAngle * Mathf.Deg2Rad), Mathf.Sin(eff.forceAngle * Mathf.Deg2Rad));
+            for (float x = r.xMin + 0.6f; x < r.xMax - 0.6f; x += 2f)
+                Arrow(P(x, r.center.y), P(x + dir.x * 1.1f, r.center.y + dir.y * 1.1f), new Color32(40, 110, 170, 255), dotted: false);
+        }
 
         // Acid.
         foreach (HazardZone hz in root.GetComponentsInChildren<HazardZone>(true))
@@ -142,6 +165,17 @@ public static class RoomSketchTool
             Line(b, t, Ink);
             Fill(Rect.MinMaxRect(p.x - 0.25f, p.y - 0.45f, p.x + 0.25f, p.y - 0.3f), Ink);
             Disc(t, 2, Ink);
+        }
+
+        // Connections to things a signal switches on (e.g. the sluice lever -> the current).
+        foreach (SignalActivator act in root.GetComponentsInChildren<SignalActivator>(true))
+        {
+            SignalSource src = new SerializedObject(act).FindProperty("signal").objectReferenceValue as SignalSource;
+            if (src == null || src.transform.IsChildOf(act.transform)) continue;
+            if (act.GetComponent<AreaEffector2D>() == null && act.GetComponent<Mover>() == null) continue; // lights etc.: not puzzle info
+            Vector2 to = act.TryGetComponent(out BoxCollider2D ab) ? LocalRect(ab).center : (Vector2)L(act.transform.position);
+            Vector2 from = L(src.transform.position) + Vector2.up * 0.4f;
+            Arrow(P(from.x, from.y), P(to.x, to.y), Link, dotted: true);
         }
 
         // Connections: arrow from each plate/lever to the mover it powers.

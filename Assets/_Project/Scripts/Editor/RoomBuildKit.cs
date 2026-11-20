@@ -120,6 +120,18 @@ public static class RoomBuildKit
         return go;
     }
 
+    /// <summary>
+    /// Moves the room's own entry points (Entry_P1 / Entry_P2: used by room reset, the reset shrine, respawns after
+    /// Dev jumps) to where players should stand, e.g. on a raised arrival landing. Positions are the players' centres.
+    /// </summary>
+    public static void SetEntries(Transform room, Vector2 p1, Vector2 p2)
+    {
+        Transform e1 = Find(room, "Entry_P1"), e2 = Find(room, "Entry_P2");
+        if (e1 != null) e1.position = room.TransformPoint(p1); // room-local, whatever group the entry sits in
+        if (e2 != null) e2.position = room.TransformPoint(p2);
+        if (e1 == null || e2 == null) Debug.LogWarning($"Room builder: {room.name} has no Entry_P1/Entry_P2 to move.");
+    }
+
     /// <summary>Removes objects built by a previous run (by name), so a builder can be re-run.</summary>
     public static void RemoveBuilt(Transform room, params string[] names)
     {

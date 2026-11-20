@@ -45,7 +45,93 @@ public static class JournalTool
         Save("R1_01_Float", Float());
         SaveRoom2Entry();
         SaveRoom3Entry();
+        SaveRoom4Entry();
         Debug.Log("Journal tool: all entries updated in " + Folder + ".");
+    }
+
+    public static JournalEntry SaveRoom4Entry()
+    {
+        Directory.CreateDirectory(Folder);
+        return Save("R1_04_BrokenCrossing", BrokenCrossing());
+    }
+
+    private static JournalEntry BrokenCrossing()
+    {
+        JournalEntry e = ScriptableObject.CreateInstance<JournalEntry>();
+        e.title = "4 · Broken Crossing";
+        e.tip = "Walls only break for crates, and only for enough momentum. The heavy crate loses its momentum too fast; the light one " +
+                "keeps it. For the second wall, open the sluice so the current helps your Burst.";
+
+        e.pages.Add(new JournalPage
+        {
+            bigIdea = "Momentum is mass times velocity: p = m·v. It's how much \"oomph\" a moving thing carries.",
+            notes = "When the aqueduct collapsed, its rubble sealed the way. Pushing won't move it, but a crate that hits hard enough " +
+                    "will smash through. Not just fast, not just heavy: both. Each wall shows the momentum it needs.",
+            lookCloser = $"p = m × v   (kg·m/s)\n" +
+                         $"A Burst is an impulse, and impulse = change in momentum: J = Δp\n" +
+                         $"So every crate gets {Imp("15 kg·m/s")}: 1 kg at 15 m/s, 3 kg at 5 m/s.",
+            funFact = "A tennis ball and a bowling ball can have the same momentum. The tennis ball just has to be much, much faster.",
+            marginP1 = "Same Burst. Same momentum. Huh.",
+            marginP2 = "But the light one goes way faster.",
+            diagram = new ForceDiagram
+            {
+                show = true,
+                objectLabel = "Crate\n1 kg",
+                forces = new List<DiagramForce>
+                {
+                    new DiagramForce { label = "Burst", newtons = 15f, unit = "N·s", direction = DiagramForce.Direction.Right, kind = DiagramForce.Kind.Impulse },
+                },
+                caption = "Same impulse, same momentum: 15 kg·m/s for any crate.",
+            },
+        });
+
+        e.pages.Add(new JournalPage
+        {
+            bigIdea = "Friction takes momentum away every second. Heavy crates lose it faster.",
+            notes = "Here's the catch: the heavy crate leaves with the same 15 kg·m/s, but friction grips it three times harder, " +
+                    "so it's stopped before it reaches the rubble. The light crate keeps sliding.",
+            lookCloser = $"Friction removes μ·m·g of momentum every second:\n" +
+                         $"1 kg {Fric("9.8")}   2 kg {Fric("19.6")}   3 kg {Fric("29.4")}  kg·m/s each second\n" +
+                         "After a Burst: 3 kg stops in 15 ÷ 29.4 ≈ 0.5 s, 1 kg lasts 15 ÷ 9.8 ≈ 1.5 s.",
+            funFact = "This is why a heavy truck needs good brakes: the brakes must take away a lot of momentum.",
+            marginP1 = "The big one just... gave up.",
+            marginP2 = "Friction won. Use the small one.",
+            diagram = new ForceDiagram
+            {
+                show = true,
+                objectLabel = "Crate\n3 kg",
+                forces = new List<DiagramForce>
+                {
+                    new DiagramForce { label = "Friction", newtons = 29.4f, direction = DiagramForce.Direction.Left, kind = DiagramForce.Kind.Friction },
+                },
+                caption = "Friction: −29.4 kg·m/s every second for the heavy crate.",
+            },
+        });
+
+        e.pages.Add(new JournalPage
+        {
+            bigIdea = "Momentum adds up: push something that's already moving and the impulses stack.",
+            notes = "The sluice still works. Its current pushes gently but never stops, and a small force for a long time is an " +
+                    "impulse too: J = F × t. Ride a Burst on top of the current and the crate arrives with far more.",
+            lookCloser = $"Current {Pull("25 N")} on 1 kg, friction {Fric("9.8 N")} → net 15.2 N\n" +
+                         "→ the crate gains 15.2 kg·m/s every second it rides the current.\n" +
+                         $"Burst {Imp("15")} + current over 3.5 m ≈ 18 kg·m/s; Burst alone ≈ 12.",
+            funFact = "Rockets work this way: a modest push, kept up for minutes, adds up to enormous momentum.",
+            marginP1 = "I kick it, the water carries it.",
+            marginP2 = "Opening the sluice!",
+            diagram = new ForceDiagram
+            {
+                show = true,
+                objectLabel = "Crate\n1 kg",
+                forces = new List<DiagramForce>
+                {
+                    new DiagramForce { label = "Current", newtons = 25f, direction = DiagramForce.Direction.Right, kind = DiagramForce.Kind.Pull },
+                    new DiagramForce { label = "Friction", newtons = 9.8f, direction = DiagramForce.Direction.Left, kind = DiagramForce.Kind.Friction },
+                },
+                caption = "Net 15.2 N: +15.2 kg·m/s every second.",
+            },
+        });
+        return e;
     }
 
     /// <summary>Creates (or rewrites) the Room 2 entry asset; Room2Builder assigns it to the room's journal stone.</summary>

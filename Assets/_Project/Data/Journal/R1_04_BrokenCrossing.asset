@@ -1,0 +1,102 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad496817cc2ac7b498b32f0fc2de6fb3, type: 3}
+  m_Name: R1_04_BrokenCrossing
+  m_EditorClassIdentifier: Assembly-CSharp::JournalEntry
+  title: "4 \xB7 Broken Crossing"
+  pages:
+  - bigIdea: "Momentum is mass times velocity: p = m\xB7v. It's how much \"oomph\"
+      a moving thing carries."
+    notes: 'When the aqueduct collapsed, its rubble sealed the way. Pushing won''t
+      move it, but a crate that hits hard enough will smash through. Not just fast,
+      not just heavy: both. Each wall shows the momentum it needs.'
+    lookCloser: "p = m \xD7 v   (kg\xB7m/s)\nA Burst is an impulse, and impulse =
+      change in momentum: J = \u0394p\nSo every crate gets <color=#896923>15 kg\xB7m/s</color>:
+      1 kg at 15 m/s, 3 kg at 5 m/s."
+    funFact: A tennis ball and a bowling ball can have the same momentum. The tennis
+      ball just has to be much, much faster.
+    marginP1: Same Burst. Same momentum. Huh.
+    marginP2: But the light one goes way faster.
+    diagram:
+      show: 1
+      objectLabel: 'Crate
+
+        1 kg'
+      forces:
+      - label: Burst
+        newtons: 15
+        direction: 0
+        kind: 5
+        unit: "N\xB7s"
+      caption: "Same impulse, same momentum: 15 kg\xB7m/s for any crate."
+    sketch: {fileID: 0}
+  - bigIdea: Friction takes momentum away every second. Heavy crates lose it faster.
+    notes: "Here's the catch: the heavy crate leaves with the same 15 kg\xB7m/s,
+      but friction grips it three times harder, so it's stopped before it reaches
+      the rubble. The light crate keeps sliding."
+    lookCloser: "Friction removes \u03BC\xB7m\xB7g of momentum every second:\n1 kg
+      <color=#7d3029>9.8</color>   2 kg <color=#7d3029>19.6</color>   3 kg <color=#7d3029>29.4</color> 
+      kg\xB7m/s each second\nAfter a Burst: 3 kg stops in 15 \xF7 29.4 \u2248 0.5
+      s, 1 kg lasts 15 \xF7 9.8 \u2248 1.5 s."
+    funFact: 'This is why a heavy truck needs good brakes: the brakes must take away
+      a lot of momentum.'
+    marginP1: The big one just... gave up.
+    marginP2: Friction won. Use the small one.
+    diagram:
+      show: 1
+      objectLabel: 'Crate
+
+        3 kg'
+      forces:
+      - label: Friction
+        newtons: 29.4
+        direction: 1
+        kind: 2
+        unit: N
+      caption: "Friction: \u221229.4 kg\xB7m/s every second for the heavy crate."
+    sketch: {fileID: 0}
+  - bigIdea: 'Momentum adds up: push something that''s already moving and the impulses
+      stack.'
+    notes: "The sluice still works. Its current pushes gently but never stops, and
+      a small force for a long time is an impulse too: J = F \xD7 t. Ride a Burst
+      on top of the current and the crate arrives with far more."
+    lookCloser: "Current <color=#267682>25 N</color> on 1 kg, friction <color=#7d3029>9.8
+      N</color> \u2192 net 15.2 N\n\u2192 the crate gains 15.2 kg\xB7m/s every second
+      it rides the current.\nBurst <color=#896923>15</color> + current over 3.5 m
+      \u2248 18 kg\xB7m/s; Burst alone \u2248 12."
+    funFact: 'Rockets work this way: a modest push, kept up for minutes, adds up
+      to enormous momentum.'
+    marginP1: I kick it, the water carries it.
+    marginP2: Opening the sluice!
+    diagram:
+      show: 1
+      objectLabel: 'Crate
+
+        1 kg'
+      forces:
+      - label: Current
+        newtons: 25
+        direction: 0
+        kind: 1
+        unit: N
+      - label: Friction
+        newtons: 9.8
+        direction: 1
+        kind: 2
+        unit: N
+      caption: "Net 15.2 N: +15.2 kg\xB7m/s every second."
+    sketch: {fileID: 0}
+  tip: Walls only break for crates, and only for enough momentum. The heavy crate
+    loses its momentum too fast; the light one keeps it. For the second wall, open
+    the sluice so the current helps your Burst.
+  sketch: {fileID: 21300000, guid: a223fd49583fb204ab08b5d58242512e, type: 3}
+  sketchCaption: 'Arrows: what powers what.'

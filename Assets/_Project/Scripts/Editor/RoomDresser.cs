@@ -121,6 +121,8 @@ public static class RoomDresser
             DressMovers(root.transform, ctx);
             DressShrinesAndJournals(root.transform, ctx);
             DressHazards(root.transform, visuals);
+            DressBreakableWalls(root.transform);
+            DressCurrents(root.transform);
             ExitLight(root.transform, ctx);
 
             Transform grid = Find(layout, "Grid");
@@ -151,6 +153,7 @@ public static class RoomDresser
     // ------------------------------------------------------------------ automatic dressing
 
     private static bool IsSpecial(GameObject go) =>
+        go.GetComponent<BreakableWall>() != null ||
         go.GetComponent<Rigidbody2D>() != null || go.GetComponent<PressurePlate>() != null || go.GetComponent<Mover>() != null ||
         go.GetComponent<ResetShrine>() != null || go.GetComponent<JournalStone>() != null || go.GetComponent<HazardZone>() != null;
 
@@ -301,6 +304,41 @@ public static class RoomDresser
         }
     }
 
+    // Rubble walls: stone block art as a CHILD of the wall (counter-scaled), so it disappears when the wall breaks,
+    // tinted a little warmer and darker so cracked walls read differently from solid stone.
+    private static void DressBreakableWalls(Transform room)
+    {
+        foreach (BreakableWall wall in room.GetComponentsInChildren<BreakableWall>(true))
+        {
+            Transform t = wall.transform;
+            if (t.TryGetComponent(out SpriteRenderer own)) own.enabled = false;
+            Rect r = BoxRect(t.GetComponent<BoxCollider2D>());
+            Transform holder = NewChild(t, "Rubble" + VisualTag);
+            Vector3 s = t.lossyScale;
+            holder.localScale = new Vector3(1f / s.x, 1f / s.y, 1f);
+            Block(holder, "Rubble", r.xMin, r.yMin, r.xMax, r.yMax, grounded: true);
+            foreach (SpriteRenderer sr in holder.GetComponentsInChildren<SpriteRenderer>(true)) sr.color = new Color(0.85f, 0.78f, 0.7f);
+        }
+    }
+
+    // Water currents (AreaEffector2D zones): a soft water tint + flowing streaks while the current is on (CurrentVisual).
+    private static void DressCurrents(Transform room)
+    {
+        FxLibrary fx = AssetDatabase.LoadAssetAtPath<FxLibrary>("Assets/_Project/Art/FX/FX_Library.asset");
+        foreach (AreaEffector2D effector in room.GetComponentsInChildren<AreaEffector2D>(true))
+        {
+            SpriteRenderer water = effector.GetComponent<SpriteRenderer>();
+            if (water != null)
+            {
+                water.color = new Color(0.45f, 0.75f, 0.95f, 0.28f);
+                water.sortingLayerName = "Water";
+            }
+            CurrentVisual cv = effector.GetComponent<CurrentVisual>();
+            if (cv == null) cv = effector.gameObject.AddComponent<CurrentVisual>();
+            cv.EditorSetup(fx, water);
+        }
+    }
+
     private static void ExitLight(Transform room, Context ctx)
     {
         Transform relay = Find(room, "Relay_Exit"), gate = Find(room, "Gate_Exit");
@@ -339,8 +377,10 @@ public static class RoomDresser
     {
         Transform group = NewChild(parent, name + VisualTag);
         float w = xMax - xMin, h = yMax - yMin;
-        (float a, float b, int col)[] cols = w < 2f
-            ? new[] { (xMin, xMax, 1) }
+        // Narrow blocks: under 1 m only the middle tiles fit; 1-2 m wide uses the left and right edge tiles side by side
+        // (lit, mossy edges) instead of the dark interior tile, so pillars and walls read as stone, not as dark poles.
+        (float a, float b, int col)[] cols = w < 1f ? new[] { (xMin, xMax, 1) }
+            : w < 2f ? new[] { (xMin, xMin + w * 0.5f, 0), (xMin + w * 0.5f, xMax, 2) }
             : new[] { (xMin, xMin + 1f, 0), (xMin + 1f, xMax - 1f, 1), (xMax - 1f, xMax, 2) };
         List<(float a, float b, int row)> rows = new List<(float, float, int)>();
         if (h <= 1f) rows.Add((yMin, yMax, 0));
