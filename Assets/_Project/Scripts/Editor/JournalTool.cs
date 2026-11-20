@@ -36,7 +36,93 @@ public static class JournalTool
         }
     }
 
+    /// <summary>Creates (or rewrites) the Room 2 entry asset; Room2Builder assigns it to the room's journal stone.</summary>
+    public static JournalEntry SaveRoom2Entry()
+    {
+        Directory.CreateDirectory(Folder);
+        return Save("R1_02_WeightOfThings", WeightOfThings());
+    }
+
     // ------------------------------------------------------------------ content
+
+    private static JournalEntry WeightOfThings()
+    {
+        JournalEntry e = ScriptableObject.CreateInstance<JournalEntry>();
+        e.title = "2 · Weight of Things";
+
+        e.pages.Add(new JournalPage
+        {
+            bigIdea = "Mass is how much stuff something has. Weight is how hard gravity pulls on it: W = m·g.",
+            notes = "This hall was a testing room. Three crates, the same size, no markings. The three pedestals by the gate only light up " +
+                    "when they get the weight they want, and they ignore people. The old test scale by the door still reads any weight. " +
+                    "Size tells you nothing here. Mass does.",
+            lookCloser = $"W = m × 29.43 m/s²\n" +
+                         $"1 kg → {Wt("29.4 N")}     2 kg → {Wt("58.9 N")}     3 kg → {Wt("88.3 N")}\n" +
+                         "The three scales need 25 N, 55 N and 85 N.",
+            funFact = "On the Moon your mass is exactly the same. Your weight is only about 1/6.",
+            marginP1 = "They all look the same to me.",
+            marginP2 = "Then let's weigh them.",
+            diagram = new ForceDiagram
+            {
+                show = true,
+                objectLabel = "Crate\n? kg",
+                forces = new List<DiagramForce>
+                {
+                    new DiagramForce { label = "Support", newtons = 58.9f, direction = DiagramForce.Direction.Up, kind = DiagramForce.Kind.Normal },
+                    new DiagramForce { label = "Weight", newtons = 58.9f, direction = DiagramForce.Direction.Down, kind = DiagramForce.Kind.Weight },
+                },
+                caption = "On a scale, the support force equals the weight. That's what it reads.",
+            },
+        });
+
+        e.pages.Add(new JournalPage
+        {
+            bigIdea = "The same force moves a light object more: a = net force ÷ m.",
+            notes = "A quick test without a scale: push it. Friction grips each crate with μ·m·g, so heavier crates grip harder. " +
+                    "If one of you can move it alone, it's the light one.",
+            lookCloser = $"Friction μ·m·g:  1 kg {Fric("9.8 N")}   2 kg {Fric("19.6 N")}   3 kg {Fric("29.4 N")}\n" +
+                         $"One push {Push("12 N")}: moves only 1 kg  (a = 2.2 ÷ 1 = 2.2 m/s²)\n" +
+                         $"Two pushes {Push("24 N")}: moves 2 kg too  (a = 4.4 ÷ 2 = 2.2 m/s²). 3 kg: no.",
+            funFact = "Newton's second law fits in three letters: F = ma.",
+            marginP1 = "If it won't budge, it's my turn.",
+            marginP2 = "My tether pulls 24 N on its own.",
+            diagram = new ForceDiagram
+            {
+                show = true,
+                objectLabel = "Crate\n2 kg",
+                forces = new List<DiagramForce>
+                {
+                    new DiagramForce { label = "Two pushes", newtons = 24f, direction = DiagramForce.Direction.Right, kind = DiagramForce.Kind.Push },
+                    new DiagramForce { label = "Friction", newtons = 19.6f, direction = DiagramForce.Direction.Left, kind = DiagramForce.Kind.Friction },
+                },
+                caption = "Net force 4.4 N, so a = 4.4 ÷ 2 = 2.2 m/s².",
+            },
+        });
+
+        e.pages.Add(new JournalPage
+        {
+            bigIdea = "One burst, different speeds: Δv = J ÷ m. Lighter crates go faster and slide further.",
+            notes = "Careful near the acid. A burst that nudges the heavy crate sends the light one flying across the hall. " +
+                    "Friction slows every sliding crate at the same rate, μ·g ≈ 9.8 m/s², so speed decides the distance. Count your bursts.",
+            lookCloser = $"Δv = {Imp("15 N·s")} ÷ m:   3 kg → 5 m/s     1 kg → 15 m/s\n" +
+                         "Slide on flat ground:  d = v² ÷ (2·μ·g) = v² ÷ 19.6\n" +
+                         "5 m/s → about 1.3 m      15 m/s → about 11.5 m",
+            funFact = "Mass doesn't change how fast friction slows a slide: heavy and light crates both lose 9.8 m/s every second.",
+            marginP1 = "Gentle is not my style.",
+            marginP2 = "Then I'll fetch the small one.",
+            diagram = new ForceDiagram
+            {
+                show = true,
+                objectLabel = "Crate\n3 kg",
+                forces = new List<DiagramForce>
+                {
+                    new DiagramForce { label = "Burst", newtons = 15f, unit = "N·s", direction = DiagramForce.Direction.Right, kind = DiagramForce.Kind.Impulse },
+                },
+                caption = "Δv = 15 ÷ 3 = 5 m/s, then it slides about 1.3 m.",
+            },
+        });
+        return e;
+    }
 
     private static JournalEntry FirstExchange()
     {

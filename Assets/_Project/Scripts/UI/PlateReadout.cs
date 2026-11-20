@@ -16,6 +16,10 @@ public class PlateReadout : FloatingLabel
     [SerializeField] private float belowDistance = 0.4f;
     [Tooltip("Seconds the readout stays after the weight on the plate changes.")]
     [SerializeField] private float linger = 3f;
+    public enum Display { ReadingAndTarget, TargetOnly, ReadingOnly }
+    [Tooltip("ReadingAndTarget: \"58.9 / 45 N\". TargetOnly: a locked pedestal that shows only the weight it needs and turns green " +
+             "when reached, never what is on it. ReadingOnly: a test scale that just weighs (\"58.9 N\").")]
+    [SerializeField] private Display display = Display.ReadingAndTarget;
 
     private PressurePlate plate;
     private float lastWeight;
@@ -41,7 +45,10 @@ public class PlateReadout : FloatingLabel
             lastWeight = plate.CurrentWeight;
             busyUntil = Time.time + linger;
         }
-        SetText($"{plate.CurrentWeight:0.0} / {plate.RequiredWeight:0.#} N");
-        SetColor(plate.IsPressed ? pressedColor : textColor);
+        string text = display == Display.TargetOnly ? $"{plate.RequiredWeight:0.#} N"
+                   : display == Display.ReadingOnly ? $"{plate.CurrentWeight:0.0} N"
+                   : $"{plate.CurrentWeight:0.0} / {plate.RequiredWeight:0.#} N";
+        SetText(text);
+        SetColor(plate.IsPressed && display != Display.ReadingOnly ? pressedColor : textColor);
     }
 }

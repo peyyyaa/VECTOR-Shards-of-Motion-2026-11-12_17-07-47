@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad496817cc2ac7b498b32f0fc2de6fb3, type: 3}
+  m_Name: R1_02_WeightOfThings
+  m_EditorClassIdentifier: Assembly-CSharp::JournalEntry
+  title: "2 \xB7 Weight of Things"
+  pages:
+  - bigIdea: "Mass is how much stuff something has. Weight is how hard gravity pulls
+      on it: W = m\xB7g."
+    notes: This hall was a testing room. Three crates, the same size, no markings.
+      The three pedestals by the gate only light up when they get the weight they
+      want, and they ignore people. The old test scale by the door still reads any
+      weight. Size tells you nothing here. Mass does.
+    lookCloser: "W = m \xD7 29.43 m/s\xB2\n1 kg \u2192 <color=#8a5a2e>29.4 N</color>    
+      2 kg \u2192 <color=#8a5a2e>58.9 N</color>     3 kg \u2192 <color=#8a5a2e>88.3
+      N</color>\nThe three scales need 25 N, 55 N and 85 N."
+    funFact: On the Moon your mass is exactly the same. Your weight is only about
+      1/6.
+    marginP1: They all look the same to me.
+    marginP2: Then let's weigh them.
+    diagram:
+      show: 1
+      objectLabel: 'Crate
+
+        ? kg'
+      forces:
+      - label: Support
+        newtons: 58.9
+        direction: 2
+        kind: 4
+        unit: N
+      - label: Weight
+        newtons: 58.9
+        direction: 3
+        kind: 3
+        unit: N
+      caption: On a scale, the support force equals the weight. That's what it reads.
+  - bigIdea: "The same force moves a light object more: a = net force \xF7 m."
+    notes: "A quick test without a scale: push it. Friction grips each crate with
+      \u03BC\xB7m\xB7g, so heavier crates grip harder. If one of you can move it
+      alone, it's the light one."
+    lookCloser: "Friction \u03BC\xB7m\xB7g:  1 kg <color=#7d3029>9.8 N</color>  
+      2 kg <color=#7d3029>19.6 N</color>   3 kg <color=#7d3029>29.4 N</color>\nOne
+      push <color=#a26029>12 N</color>: moves only 1 kg  (a = 2.2 \xF7 1 = 2.2 m/s\xB2)\nTwo
+      pushes <color=#a26029>24 N</color>: moves 2 kg too  (a = 4.4 \xF7 2 = 2.2 m/s\xB2).
+      3 kg: no."
+    funFact: 'Newton''s second law fits in three letters: F = ma.'
+    marginP1: If it won't budge, it's my turn.
+    marginP2: My tether pulls 24 N on its own.
+    diagram:
+      show: 1
+      objectLabel: 'Crate
+
+        2 kg'
+      forces:
+      - label: Two pushes
+        newtons: 24
+        direction: 0
+        kind: 0
+        unit: N
+      - label: Friction
+        newtons: 19.6
+        direction: 1
+        kind: 2
+        unit: N
+      caption: "Net force 4.4 N, so a = 4.4 \xF7 2 = 2.2 m/s\xB2."
+  - bigIdea: "One burst, different speeds: \u0394v = J \xF7 m. Lighter crates go
+      faster and slide further."
+    notes: "Careful near the acid. A burst that nudges the heavy crate sends the
+      light one flying across the hall. Friction slows every sliding crate at the
+      same rate, \u03BC\xB7g \u2248 9.8 m/s\xB2, so speed decides the distance. Count
+      your bursts."
+    lookCloser: "\u0394v = <color=#896923>15 N\xB7s</color> \xF7 m:   3 kg \u2192
+      5 m/s     1 kg \u2192 15 m/s\nSlide on flat ground:  d = v\xB2 \xF7 (2\xB7\u03BC\xB7g)
+      = v\xB2 \xF7 19.6\n5 m/s \u2192 about 1.3 m      15 m/s \u2192 about 11.5 m"
+    funFact: 'Mass doesn''t change how fast friction slows a slide: heavy and light
+      crates both lose 9.8 m/s every second.'
+    marginP1: Gentle is not my style.
+    marginP2: Then I'll fetch the small one.
+    diagram:
+      show: 1
+      objectLabel: 'Crate
+
+        3 kg'
+      forces:
+      - label: Burst
+        newtons: 15
+        direction: 0
+        kind: 5
+        unit: "N\xB7s"
+      caption: "\u0394v = 15 \xF7 3 = 5 m/s, then it slides about 1.3 m."

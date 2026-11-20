@@ -40,6 +40,9 @@ public class PressurePlate : SignalSource
     [SerializeField] private float requiredWeight = 45f;
     [Tooltip("A body in the plate's zone only counts once it's moving slower than this (m/s), so a block sliding or passing over doesn't trigger the plate.")]
     [SerializeField] private float maxRestingSpeed = 0.5f;
+    [Tooltip("Off = players (and anything they stand on top of the stack) are ignored: a cargo scale that only weighs objects. " +
+             "Use it where a player standing on the plate would skip the puzzle.")]
+    [SerializeField] private bool countPlayers = true;
 
     [Header("Feedback (optional)")]
     [SerializeField] private SpriteRenderer plateRenderer;
@@ -135,7 +138,7 @@ public class PressurePlate : SignalSource
             }
             // Only bodies that have settled count; something sliding across doesn't press the plate.
             bool resting = rb.linearVelocity.magnitude <= maxRestingSpeed;
-            if (rb.bodyType == RigidbodyType2D.Dynamic && resting && stack.Add(rb))
+            if (rb.bodyType == RigidbodyType2D.Dynamic && resting && Counts(rb) && stack.Add(rb))
             {
                 toVisit.Enqueue(rb);
             }
@@ -153,7 +156,7 @@ public class PressurePlate : SignalSource
             for (int i = 0; i < count; i++)
             {
                 Rigidbody2D above = OtherBody(contacts[i], below);
-                if (above != null && IsRestingOn(above, below, contacts[i]) && stack.Add(above))
+                if (above != null && Counts(above) && IsRestingOn(above, below, contacts[i]) && stack.Add(above))
                 {
                     toVisit.Enqueue(above);
                 }
@@ -180,6 +183,8 @@ public class PressurePlate : SignalSource
             else onReleased.Invoke();
         }
     }
+
+    private bool Counts(Rigidbody2D rb) => countPlayers || !rb.TryGetComponent(out PlayerMovement _);
 
     // The body on the other side of a contact from 'self' (or null for static colliders).
     private static Rigidbody2D OtherBody(ContactPoint2D contact, Rigidbody2D self)
