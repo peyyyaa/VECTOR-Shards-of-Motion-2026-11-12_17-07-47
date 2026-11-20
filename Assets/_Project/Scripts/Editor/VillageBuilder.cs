@@ -303,6 +303,15 @@ public static partial class VillageBuilder
 
         // The road east: the trailhead (map board, closed-roads signpost, gateway with rune stones). See VillageBuilder.Trailhead.cs.
         BuildTrailhead(exit);
+
+        // Coming home (trail home gate, Return to Village) starts on this screen: arrive at the trailhead,
+        // between the signpost and the gateway, as if walking in along the road.
+        foreach ((string entry, float x) in new[] { ("Entry_P1", 4.3f), ("Entry_P2", 4.9f) })
+        {
+            Transform t = root.GetComponentsInChildren<Transform>(true).FirstOrDefault(c => c.name == entry);
+            if (t != null) t.position = new Vector3(x, Floor + 0.75f, 0f);
+            else Debug.LogWarning("Village: forge screen has no " + entry + "; players coming home will start at its default spot.");
+        }
     }
 
     // ------------------------------------------------------------------ pieces

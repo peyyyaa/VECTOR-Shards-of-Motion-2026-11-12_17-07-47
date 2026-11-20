@@ -47,6 +47,8 @@ public class RegionMapData : ScriptableObject
     [Tooltip("Region id used by the save and GameFlow (e.g. Region1).")]
     public string regionId = "Region1";
     public string regionName = "The Shattered Grounds";
+    [Tooltip("Shown under the name on the transition card, e.g. \"Region 1 · Forces & Momentum\".")]
+    public string subtitle = "Region 1 · Forces & Momentum";
     [Tooltip("The ink drawing (path, village, trees, fog), drawn by Map > Draw Region Map.")]
     public Sprite mapArt;
     [Tooltip("Size of the map art in pixels; shown at 3x on screen.")]
@@ -75,6 +77,18 @@ public class RegionMapData : ScriptableObject
     public bool PartFound(int index) => HasPart(index) && SaveSystem.Data.questItems.Contains(rooms[index].partId);
     public bool HasJournal(int index) => rooms[index].journal != null;
     public bool JournalRead(int index) => JournalStone.IsRead(rooms[index].journal);
+    public bool IsSolved(int index) => SaveSystem.HasEvent(RoomManager.SolvedEventId(rooms[index].roomObject));
+
+    /// <summary>The room with this object name (e.g. R1_Room03), or -1.</summary>
+    public int IndexOf(string roomObject) => rooms.FindIndex(r => r.roomObject == roomObject);
+
+    /// <summary>Rooms solved (found) out of all rooms (total).</summary>
+    public (int found, int total) SolvedTotals()
+    {
+        int found = 0;
+        for (int i = 0; i < rooms.Count; i++) if (IsSolved(i)) found++;
+        return (found, rooms.Count);
+    }
 
     /// <summary>Region totals: (found, total) for shards, machine parts and journal entries.</summary>
     public (int found, int total) ShardTotals()

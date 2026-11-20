@@ -66,7 +66,7 @@ public class RoomExit : MonoBehaviour
 
         if (CountPlayersInside() >= requiredPlayers)
         {
-            manager.TransitionTo(targetRoom, targetEntryPlayer1, targetEntryPlayer2);
+            manager.TransitionTo(targetRoom, targetEntryPlayer1, targetEntryPlayer2, viaExit: true);
         }
     }
 

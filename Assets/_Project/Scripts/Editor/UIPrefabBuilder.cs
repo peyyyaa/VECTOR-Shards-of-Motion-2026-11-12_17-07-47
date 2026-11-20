@@ -11,7 +11,8 @@ using UnityEngine.UI;
 ///   Label      - a dark rounded panel with centered text; every world-pinned label is a copy.
 ///   UI_Canvas  - screen-space canvas (1920x1080 reference, pixel perfect) with a Labels container
 ///                and the Motion Journal notebook (centred, opens when a Journal stone is read),
-///                the pause menu, settings, the map screen (MapTool) and the Village Fund ledger (FundUIBuilder).
+///                the pause menu, settings, the map screen (MapTool), the Village Fund ledger (FundUIBuilder) and the
+///                room-solved ribbon (HudBuilder). Also builds Resources/SceneTransition (HudBuilder).
 /// After building, restyle the prefabs freely in the editor (font, colors, sprite, sizes);
 /// re-running the tool would overwrite those changes, so only run it again to reset them.
 /// </summary>
@@ -96,6 +97,8 @@ public static class UIPrefabBuilder
         MenuUIBuilder.PauseMenu(root.transform, settingsPanel);
         MapPanel map = MapTool.BuildPanel(root.transform); // the map screen (draws the map art first if it doesn't exist yet)
         FundPanel fund = FundUIBuilder.Build(root.transform); // Bram's Village Fund ledger
+        HudBuilder.SolvedBanner(root.transform, MapTool.EnsureData()); // "room solved" ribbon at the top of the screen
+        HudBuilder.SceneTransitionPrefab(new[] { MapTool.EnsureData() }); // Resources/SceneTransition (title card between scenes)
         settingsPanel.transform.SetAsLastSibling();
         MenuUIBuilder.EventSystemObject(root.transform);
 

@@ -114,6 +114,7 @@ public static class MapTool
         Save("Map_Marker", MapPainter.DrawMarker(out int w, out int h), w, h);
         Save("Map_Shard", MapPainter.DrawShard(out w, out h), w, h);
         Save("Map_Part", MapPainter.DrawPart(out w, out h), w, h);
+        Save("Map_Check", MapPainter.DrawCheck(out w, out h), w, h);
         EditorUtility.SetDirty(d);
         AssetDatabase.SaveAssets();
     }
@@ -146,7 +147,7 @@ public static class MapTool
     public static MapPanel BuildPanel(Transform canvas)
     {
         RegionMapData data = EnsureData();
-        if (data.mapArt == null || ArtSprite("Map_Marker") == null) Draw(data);
+        if (data.mapArt == null || ArtSprite("Map_Marker") == null || ArtSprite("Map_Check") == null) Draw(data);
 
         RectTransform root = MenuUIBuilder.Fullscreen(canvas, "MapPanel", new Color(0f, 0f, 0f, 0.6f));
         RectTransform card = MenuUIBuilder.Card(root, "Card", Vector2.zero, new Vector2(1640f, 1000f), "UI_Page");
@@ -203,6 +204,7 @@ public static class MapTool
         button.colors = c;
 
         RectTransform pin = Img(root, "Pin", KitSprite("UI_Seal"), new Vector2(26f, 26f), new Vector2(48f, 48f));
+        RectTransform check = Img(root, "Solved", ArtSprite("Map_Check"), new Vector2(-22f, 20f), new Vector2(9f, 9f) * Scale);
 
         RectTransform details = MenuUIBuilder.Rect(root, "Details", Vector2.zero, Vector2.zero);
         Vector2 row; float start; Vector2 namePos, namePivot; TextAlignmentOptions align;
@@ -229,6 +231,7 @@ public static class MapTool
 
         MapMarker marker = ring.gameObject.AddComponent<MapMarker>();
         marker.EditorSetup(button, pin.gameObject, details.gameObject, name, shards, journal, part);
+        marker.EditorSetupSolved(check.gameObject);
         return marker;
     }
 

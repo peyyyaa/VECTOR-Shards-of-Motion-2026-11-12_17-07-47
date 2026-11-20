@@ -28,8 +28,9 @@ public static class TrailheadPainter
     {
         return new List<Image>
         {
-            Post("Post", 86), Post("SignPost", 100), Beam(),
+            Post("Post", 86), Post("SignPost", 100), Beam("Beam", 96), Beam("Beam_Small", 76),
             HangingSign("Sign_Region1", new[] { "SHATTERED", "GROUNDS" }),
+            HangingSign("Sign_Home", new[] { "<ALDERBROOK" }), // the trail home, at the west edge of Region 1's first room
             ClosedPlank("Plank_Region2", new[] { "GRAVITY", "DIVIDE" }),
             ClosedPlank("Plank_Region3", new[] { "MECH.", "DEPTHS" }),
             RuneStone("Stone_Dark", false), RuneStone("Stone_Lit", true),
@@ -55,15 +56,15 @@ public static class TrailheadPainter
         return Done(name);
     }
 
-    // Crossbeam: 96 x 6, end caps.
-    private static Image Beam()
+    // Crossbeam: 6 px tall, end caps (gateway 96 px, trail home 76 px).
+    private static Image Beam(string name, int width)
     {
-        Begin(96, 6);
+        Begin(width, 6);
         for (int y = 0; y < H; y++)
             for (int x = 0; x < W; x++)
                 Set(x, y, y == 0 || y == H - 1 || x == 0 || x == W - 1 ? Edge : y == H - 2 ? WoodLight : y == 1 ? WoodDark : Wood);
         foreach (int x in new[] { 3, W - 4 }) { Set(x, 2, Edge); Set(x, 3, Edge); } // pegs
-        return Done("Beam");
+        return Done(name);
     }
 
     // A plank on two ropes; the top 5 px are rope (hung from the beam).
@@ -173,7 +174,7 @@ public static class TrailheadPainter
         { 'U', new[] { "#.#", "#.#", "#.#", "#.#", "###" } }, { 'V', new[] { "#.#", "#.#", "#.#", "#.#", ".#." } },
         { 'W', new[] { "#.#", "#.#", "###", "###", "#.#" } }, { 'X', new[] { "#.#", "#.#", ".#.", "#.#", "#.#" } },
         { 'Y', new[] { "#.#", "#.#", ".#.", ".#.", ".#." } }, { 'Z', new[] { "###", "..#", ".#.", "#..", "###" } },
-        { '.', new[] { "...", "...", "...", "...", ".#." } }, { ' ', new[] { "...", "...", "...", "...", "..." } },
+        { '.', new[] { "...", "...", "...", "...", ".#." } }, { '<', new[] { "..#", ".#.", "#..", ".#.", "..#" } }, { ' ', new[] { "...", "...", "...", "...", "..." } },
     };
 
     // Draws text with its bottom-left at (x, y); 4 px per letter.

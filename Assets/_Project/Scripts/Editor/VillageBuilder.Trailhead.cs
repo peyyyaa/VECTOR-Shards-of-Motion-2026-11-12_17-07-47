@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.IO;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 
@@ -13,17 +11,16 @@ using UnityEngine.Rendering.Universal;
 ///        SHATTERED GROUNDS sign; under it two rune stones (6.3, 7.3) are the RegionGate trigger, lit one per player.
 ///        It stays clear of the bushes that hide the screen's right edge wall (from about x 8.25).
 /// Move things with the constants below.
-/// The small pieces are drawn by TrailheadPainter into Art/Village/Trailhead (re-drawn on every build). No floating text.
+/// The small pieces are drawn by TrailheadPainter into Art/Village/Trailhead (TrailheadArt, re-drawn on every build). No floating text.
 /// </summary>
 public static partial class VillageBuilder
 {
-    private const string TrailFolder = ArtFolder + "/Trailhead";
     private static readonly Color RuneGlow = new Color(0.45f, 0.9f, 1f);
     private const float MapBoardX = 1.8f, SignPostX = 3.4f, GateLeftX = 5.6f, GateRightX = 8.0f;
 
     private static void BuildTrailhead(Transform exit)
     {
-        Dictionary<string, Sprite> art = TrailheadArt();
+        Dictionary<string, Sprite> art = TrailheadArt.Build();
         float px = 1f / PPU;
 
         // 1. Trail-map board.
@@ -94,72 +91,5 @@ public static partial class VillageBuilder
     {
         float w = art.TryGetValue(sprite, out Sprite s) ? s.rect.width / PPU : 0f;
         Trail(parent, sprite, art, sprite, postX - 2f / PPU + w * 0.5f, bottomY, 2);
-    }
-
-    // ------------------------------------------------------------------ art
-
-    /// <summary>Draws the trailhead pieces (TrailheadPainter) and the green banner, saves them to Art/Village/Trailhead.</summary>
-    private static Dictionary<string, Sprite> TrailheadArt()
-    {
-        Directory.CreateDirectory(TrailFolder);
-        List<string> paths = new List<string>();
-        foreach (TrailheadPainter.Image im in TrailheadPainter.DrawAll()) paths.Add(WritePng(im.name, im.px, im.w, im.h));
-        string banner = GreenBanner();
-        if (banner != null) paths.Add(banner);
-
-        Dictionary<string, Sprite> sprites = new Dictionary<string, Sprite>();
-        foreach (string path in paths)
-        {
-            AssetDatabase.ImportAsset(path, ImportAssetOptions.ForceUpdate);
-            TextureImporter importer = (TextureImporter)AssetImporter.GetAtPath(path);
-            importer.textureType = TextureImporterType.Sprite;
-            importer.spriteImportMode = SpriteImportMode.Single;
-            importer.spritePixelsPerUnit = PPU;
-            importer.filterMode = FilterMode.Point;
-            importer.textureCompression = TextureImporterCompression.Uncompressed;
-            importer.mipmapEnabled = false;
-            importer.alphaIsTransparency = true;
-            importer.wrapMode = TextureWrapMode.Clamp;
-            TextureImporterSettings s = new TextureImporterSettings();
-            importer.ReadTextureSettings(s);
-            s.spriteAlignment = (int)SpriteAlignment.BottomCenter;
-            s.spriteMeshType = SpriteMeshType.FullRect;
-            importer.SetTextureSettings(s);
-            importer.SaveAndReimport();
-            Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
-            if (sprite != null) sprites[Path.GetFileNameWithoutExtension(path)] = sprite;
-        }
-        return sprites;
-    }
-
-    // The pack's red banner, recoloured to Region 1 green (read from the pack PNG on disk, so the texture
-    // doesn't need Read/Write enabled).
-    private static string GreenBanner()
-    {
-        if (!village.TryGetValue("TX Village Props - Banner", out Sprite red) || !File.Exists(VillageTexture)) return null;
-        Texture2D sheet = new Texture2D(2, 2);
-        sheet.LoadImage(File.ReadAllBytes(VillageTexture));
-        Rect r = red.rect;
-        int w = (int)r.width, h = (int)r.height;
-        Color32[] all = sheet.GetPixels32();
-        Color32[] px = new Color32[w * h];
-        for (int y = 0; y < h; y++)
-            for (int x = 0; x < w; x++)
-            {
-                Color32 c = all[((int)r.y + y) * sheet.width + (int)r.x + x];
-                px[y * w + x] = c.a == 0 ? c : new Color32((byte)(c.g * 0.55f), (byte)Mathf.Min(255, c.r * 0.72f), (byte)Mathf.Min(255, c.b * 0.6f + 10), c.a);
-            }
-        Object.DestroyImmediate(sheet);
-        return WritePng("Banner_Green", px, w, h);
-    }
-
-    private static string WritePng(string name, Color32[] pixels, int w, int h)
-    {
-        Texture2D tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
-        tex.SetPixels32(pixels);
-        string path = $"{TrailFolder}/{name}.png";
-        File.WriteAllBytes(path, tex.EncodeToPNG());
-        Object.DestroyImmediate(tex);
-        return path;
     }
 }

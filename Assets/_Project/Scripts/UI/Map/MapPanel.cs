@@ -116,7 +116,8 @@ public class MapPanel : MonoBehaviour
         (int s, int sTotal) = map.ShardTotals();
         (int p, int pTotal) = map.PartTotals();
         (int j, int jTotal) = map.JournalTotals();
-        totals.text = $"Shards {s}/{sTotal}      Machine parts {p}/{pTotal}      Journal {j}/{jTotal}";
+        (int r, int rTotal) = map.SolvedTotals();
+        totals.text = $"Rooms solved {r}/{rTotal}      Shards {s}/{sTotal}      Machine parts {p}/{pTotal}      Journal {j}/{jTotal}";
 
         int furthest = map.ReachedRooms - 1;
         int count = Mathf.Min(markers.Length, map.rooms.Count);

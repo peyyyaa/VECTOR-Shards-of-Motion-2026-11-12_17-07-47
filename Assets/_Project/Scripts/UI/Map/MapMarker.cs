@@ -18,6 +18,8 @@ public class MapMarker : MonoBehaviour, ISelectHandler, IPointerEnterHandler
     [SerializeField] private TMP_Text shardText;
     [SerializeField] private Image journalIcon;
     [SerializeField] private Image partIcon;
+    [Tooltip("Small check shown once the room is solved (left through its exit into the next room).")]
+    [SerializeField] private GameObject solvedMark;
 
     private const float Dim = 0.3f; // icons for things not found / not read yet
     private MapPanel panel;
@@ -40,6 +42,7 @@ public class MapMarker : MonoBehaviour, ISelectHandler, IPointerEnterHandler
         button.interactable = reached;
         pin.SetActive(furthest);
         details.SetActive(reached);
+        if (solvedMark != null) solvedMark.SetActive(reached && map.IsSolved(index));
         if (!reached) return;
 
         nameText.text = room.displayName;
@@ -70,5 +73,7 @@ public class MapMarker : MonoBehaviour, ISelectHandler, IPointerEnterHandler
     {
         button = b; pin = pinObject; details = detailsObject; nameText = roomName; shardText = shards; journalIcon = journal; partIcon = part;
     }
+
+    public void EditorSetupSolved(GameObject mark) => solvedMark = mark;
 #endif
 }

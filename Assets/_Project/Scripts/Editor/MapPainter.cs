@@ -140,6 +140,18 @@ public static class MapPainter
         return px;
     }
 
+    /// <summary>Solved room, 9 x 9: a green check on a small paper disc.</summary>
+    public static Color32[] DrawCheck(out int w, out int h)
+    {
+        Begin(w = 9, h = 9);
+        Disc(new Vector2Int(4, 4), 4, Ink);
+        Disc(new Vector2Int(4, 4), 3, Paper);
+        Color32 green = new Color32(62, 120, 48, 255);
+        Vector2Int[] tick = { new Vector2Int(2, 4), new Vector2Int(3, 3), new Vector2Int(4, 2), new Vector2Int(5, 3), new Vector2Int(6, 4), new Vector2Int(7, 5) };
+        foreach (Vector2Int p in tick) { Set(p.x, p.y, green); Set(p.x, p.y + 1, green); }
+        return px;
+    }
+
     /// <summary>Machine part, 9 x 9: a brass cog.</summary>
     public static Color32[] DrawPart(out int w, out int h)
     {

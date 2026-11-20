@@ -44,6 +44,20 @@ public class RoomManager : MonoBehaviour
     /// <summary>Set before loading a region scene (e.g. Continue): start in this room number instead of the first. 0 = normal.</summary>
     public static int RequestedStartRoom;
 
+    /// <summary>
+    /// Raised the first time the players leave a room through its exit into the next room (that room is now "solved",
+    /// saved as the event "solved_&lt;room object&gt;"). Map travel and dev keys don't count. The room passed is the one left.
+    /// </summary>
+    public static event System.Action<Room> RoomSolved;
+
+    public static string SolvedEventId(string roomObject) => "solved_" + roomObject;
+
+    /// <summary>Raised whenever players are put somewhere directly (room change, travel, reset, respawn), not walked there.</summary>
+    public static event System.Action PlayersPlaced;
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics() { RoomSolved = null; PlayersPlaced = null; RequestedStartRoom = 0; }
+
     private Room[] roomsInOrder = new Room[0];
 
     private Room currentRoom;
@@ -81,18 +95,27 @@ public class RoomManager : MonoBehaviour
 
         roomsInOrder = FindObjectsByType<Room>(FindObjectsSortMode.None);
         System.Array.Sort(roomsInOrder, (a, b) => a.transform.position.x.CompareTo(b.transform.position.x));
-        if (saveProgress) SaveSystem.ReachedRoom(regionId, RoomNumber(startingRoom));
+        if (saveProgress)
+        {
+            SaveSystem.ReachedRoom(regionId, RoomNumber(startingRoom));
+            SaveSystem.MarkEvent("visited_" + regionId); // the transition card says "First visit" until then
+        }
 
         int requested = RequestedStartRoom;
         RequestedStartRoom = 0;
         if (requested > 1) StartCoroutine(GoToNextFrame(requested));
     }
 
-    // Wait one frame so the players have spawned, then jump.
+    // Wait one frame so the players have spawned, then jump there at once (no camera slide while the scene appears).
     private System.Collections.IEnumerator GoToNextFrame(int roomNumber)
     {
         yield return null;
         GoToRoomNumber(roomNumber);
+        if (transitioning && cameraTransform != null)
+        {
+            cameraTransform.position = slideTo;
+            transitioning = false;
+        }
     }
 
     /// <summary>Rooms in this region, left to right (room 1 first).</summary>
@@ -118,11 +141,15 @@ public class RoomManager : MonoBehaviour
     /// <summary>True if exits of 'room' may be used right now (it's the current room, not mid-slide).</summary>
     public bool CanLeave(Room room) => !transitioning && room != null && room == currentRoom;
 
-    /// <summary>Moves both players into 'target' and slides the camera there.</summary>
-    public void TransitionTo(Room target, Transform arrivalPlayer1, Transform arrivalPlayer2)
+    /// <summary>
+    /// Moves both players into 'target' and slides the camera there. viaExit: the players walked out through the room's
+    /// exit (RoomExit); going on to the next room that way solves the room they leave (RoomSolved).
+    /// </summary>
+    public void TransitionTo(Room target, Transform arrivalPlayer1, Transform arrivalPlayer2, bool viaExit = false)
     {
         if (transitioning || target == null || target == currentRoom || cameraTransform == null) return;
 
+        Room left = currentRoom;
         currentRoom = target;
         entryPlayer1 = arrivalPlayer1 != null ? arrivalPlayer1 : target.Player1Entry;
         entryPlayer2 = arrivalPlayer2 != null ? arrivalPlayer2 : target.Player2Entry;
@@ -139,6 +166,16 @@ public class RoomManager : MonoBehaviour
         transitioning = true;
 
         if (saveProgress) SaveSystem.ReachedRoom(regionId, RoomNumber(target)); // autosave: progress
+
+        if (viaExit && saveProgress && left != null && RoomNumber(target) == RoomNumber(left) + 1)
+        {
+            string id = SolvedEventId(left.name);
+            if (!SaveSystem.HasEvent(id))
+            {
+                SaveSystem.MarkEvent(id);
+                RoomSolved?.Invoke(left);
+            }
+        }
     }
 
     /// <summary>Sends one player back to where they entered the current room (e.g., touched a hazard).</summary>
@@ -215,6 +252,7 @@ public class RoomManager : MonoBehaviour
     private static void PlacePlayer(PlayerInput player, Transform point)
     {
         if (player == null || point == null) return;
+        PlayersPlaced?.Invoke();
 
         Rigidbody2D rb = player.GetComponent<Rigidbody2D>();
         Vector3 p = point.position;

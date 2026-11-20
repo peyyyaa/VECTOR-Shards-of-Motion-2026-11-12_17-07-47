@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -6,16 +5,20 @@ using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 /// <summary>
-/// The way out of the village into a region: the trailhead gateway, with two rune stones on the ground under it.
-/// Each player standing on the stones lights one of them (cyan); with both lit for Hold Time seconds, the screen fades
-/// to black and the region loads at the furthest room reached there (room 1 on a first visit).
+/// A gateway with two rune stones on the ground: the village trailhead (into a region) and the trail home at the
+/// west edge of a region's first room (To Village). Each player standing on the stones lights one of them (cyan);
+/// with both lit for Hold Time seconds the players leave (GameFlow: transition card while loading):
+///   into the region at the furthest room reached there (room 1 on a first visit), or home to the village trailhead.
+/// Armed only once nobody is on the stones: players who arrive standing on them (spawn points) must step off first.
 /// No text by default. If one player waits there alone for Hint Delay seconds, a small hint appears above the gateway:
 /// a dot per player (lit = on the stones) and "Together".
-/// Setup: a trigger Collider2D covering the stones (VillageBuilder makes it, with the stones and their lights).
+/// Setup: a trigger Collider2D covering the stones (VillageBuilder / Room 1 > Add Trail Home make it, with the stones).
 /// </summary>
 [RequireComponent(typeof(Collider2D))]
 public class RegionGate : MonoBehaviour
 {
+    [Tooltip("On: this gate leads home to the village (trail home). Off: into Region.")]
+    [SerializeField] private bool toVillage;
     [SerializeField] private string region = "Region1";
     [SerializeField] private string regionName = "the Shattered Grounds";
     [SerializeField, Min(0f)] private float holdTime = 0.6f;
@@ -28,11 +31,10 @@ public class RegionGate : MonoBehaviour
     [SerializeField] private Sprite stoneLit;
     [SerializeField, Min(0f)] private float stoneLightIntensity = 0.9f;
 
-    [Header("Hint and fade")]
+    [Header("Hint")]
     [Tooltip("Seconds one player waits alone on the stones before the hint shows.")]
     [SerializeField, Min(0f)] private float hintDelay = 1.5f;
     [SerializeField] private Vector2 hintOffset = new Vector2(0f, 1.8f);
-    [SerializeField, Min(0.01f)] private float fadeTime = 0.4f;
 
     private static readonly Color[] PlayerColors = { new Color32(232, 132, 48, 255), new Color32(72, 186, 206, 255) };
 
@@ -40,6 +42,8 @@ public class RegionGate : MonoBehaviour
     private float timer;
     private float aloneTimer;
     private bool leaving;
+    private bool armed;
+    private float disarmedUntil;
     private Hint hint;
 
     public string RegionName => regionName;
@@ -59,10 +63,11 @@ public class RegionGate : MonoBehaviour
     private void Update()
     {
         inside.RemoveWhere(p => p == null);
+        if (!armed && inside.Count == 0 && Time.time >= disarmedUntil) armed = true; // everyone has stepped off (or was never on)
         int players = FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None).Length;
-        int on = leaving ? Mathf.Max(inside.Count, 2) : inside.Count;
+        int on = leaving ? 2 : armed ? inside.Count : 0;
         UpdateStones(on);
-        if (leaving) return;
+        if (leaving || !armed) { if (!leaving) ShowHint(false); return; }
 
         bool all = players > 0 && inside.Count >= players;
         timer = all ? timer + Time.deltaTime : 0f;
@@ -73,7 +78,8 @@ public class RegionGate : MonoBehaviour
         {
             leaving = true;
             ShowHint(false);
-            StartCoroutine(FadeAndLeave());
+            if (toVillage) GameFlow.ToVillage();
+            else GameFlow.EnterRegion(region, SaveSystem.Data.region == region ? SaveSystem.Data.furthestRoom : 1);
         }
     }
 
@@ -89,31 +95,6 @@ public class RegionGate : MonoBehaviour
                 stoneLights[i].intensity = Mathf.MoveTowards(stoneLights[i].intensity, target, Time.deltaTime * 4f);
             }
         }
-    }
-
-    private IEnumerator FadeAndLeave()
-    {
-        Image black = null;
-        UIRoot ui = UIRoot.Instance;
-        if (ui != null)
-        {
-            GameObject go = new GameObject("Gate Fade", typeof(RectTransform));
-            go.transform.SetParent(ui.transform, false);
-            go.transform.SetAsLastSibling();
-            RectTransform rt = (RectTransform)go.transform;
-            rt.anchorMin = Vector2.zero; rt.anchorMax = Vector2.one; rt.offsetMin = rt.offsetMax = Vector2.zero;
-            black = go.AddComponent<Image>();
-            black.color = new Color(0f, 0f, 0f, 0f);
-            black.raycastTarget = false;
-        }
-        for (float t = 0f; t < fadeTime && black != null; t += Time.unscaledDeltaTime)
-        {
-            black.color = new Color(0f, 0f, 0f, t / fadeTime);
-            yield return null;
-        }
-        if (black != null) black.color = Color.black;
-        int room = SaveSystem.Data.region == region ? SaveSystem.Data.furthestRoom : 1;
-        GameFlow.EnterRegion(region, room);
     }
 
     // ------------------------------------------------------------------ the "Together" hint
@@ -137,7 +118,26 @@ public class RegionGate : MonoBehaviour
         return false;
     }
 
-    private void OnDisable() => ShowHint(false);
+    // Players put straight onto the stones (spawn, travel, reset) must step off before the gate works.
+    // A short wait lets the trigger notice them first.
+    private void OnEnable()
+    {
+        RoomManager.PlayersPlaced += Disarm;
+        disarmedUntil = Time.time + 0.25f;
+    }
+
+    private void Disarm()
+    {
+        if (leaving) return;
+        armed = false;
+        disarmedUntil = Time.time + 0.25f;
+    }
+
+    private void OnDisable()
+    {
+        RoomManager.PlayersPlaced -= Disarm;
+        ShowHint(false);
+    }
 
     /// <summary>Two player dots and "Together", in the interact-prompt style, pinned above the gateway.</summary>
     private class Hint
@@ -206,7 +206,9 @@ public class RegionGate : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    public void EditorSetup(string regionId, string displayName) { region = regionId; regionName = displayName; }
+    public void EditorSetup(string regionId, string displayName) { region = regionId; regionName = displayName; toVillage = false; }
+
+    public void EditorSetupHome() { toVillage = true; regionName = "Alderbrook"; }
 
     public void EditorSetupStones(SpriteRenderer[] renderers, Light2D[] lights, Sprite dark, Sprite lit)
     {

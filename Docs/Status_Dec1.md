@@ -65,6 +65,7 @@ A complete, playable game:
 - **Text:** `Journal > Update All Entries` (entries + tips; keeps drawn sketches).
 - **Map:** `Map > Draw Region Map` (creates/updates `Data/Map/Region1_Map.asset` and draws `Art/Map`), then
   `Create UI Prefabs` (the map screen is part of UI_Canvas). Re-run both after moving markers in the asset.
+- **Region 1 trail home:** `Room 1 > Add Trail Home` (gate back to the village at Room 1's west edge; re-runnable).
 - **Shell:** `Game Shell > Build Title Scene`, `Game Shell > Build Village` (run Characters > 1. Build Character Sprites
   first; Build Village before Build Title Scene, which uses the village crystal).
 - **Testing:** `Dev > Play From Room > Room N`; in play: PgDn/PgUp rooms, F9 reset, F10 hold gates.
