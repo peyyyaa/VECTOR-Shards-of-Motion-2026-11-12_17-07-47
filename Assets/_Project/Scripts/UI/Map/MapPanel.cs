@@ -35,7 +35,7 @@ public class MapPanel : MonoBehaviour
 
     private Action onBack;
     private Action onLeave;
-    private bool pausedHere;
+    private bool frozeHere;
     private float openedAt;
     private MapMarker lastSelected;
 
@@ -61,12 +61,7 @@ public class MapPanel : MonoBehaviour
         if (map == null) { Debug.LogWarning("MapPanel: no RegionMapData assigned.", this); return; }
         onBack = backTo;
         onLeave = leaving;
-        pausedHere = !PauseMenu.IsPaused;
-        if (pausedHere)
-        {
-            Time.timeScale = 0f;
-            SetPlayerControls(false);
-        }
+        frozeHere = MenuFreeze.Freeze(); // stops time and controls, unless the pause menu already did
         gameObject.SetActive(true);
         openedAt = Time.unscaledTime;
         Refresh();
@@ -169,28 +164,12 @@ public class MapPanel : MonoBehaviour
         gameObject.SetActive(false);
         ClosedFrame = Time.frameCount;
         onBack = onLeave = null;
-        if (pausedHere)
-        {
-            pausedHere = false;
-            Time.timeScale = 1f;
-            SetPlayerControls(true);
-        }
-    }
-
-    private static void SetPlayerControls(bool on)
-    {
-        LocalCoopSpawner spawner = FindFirstObjectByType<LocalCoopSpawner>();
-        if (spawner == null) return;
-        foreach (PlayerInput p in spawner.Players)
-        {
-            if (p == null) continue;
-            if (on) p.ActivateInput(); else p.DeactivateInput();
-        }
+        if (frozeHere) { frozeHere = false; MenuFreeze.Unfreeze(); }
     }
 
     private void OnDestroy()
     {
-        if (pausedHere) Time.timeScale = 1f; // never leave the game frozen when the scene changes
+        if (frozeHere) MenuFreeze.Unfreeze(); // never leave the game frozen when the scene changes
     }
 
 #if UNITY_EDITOR

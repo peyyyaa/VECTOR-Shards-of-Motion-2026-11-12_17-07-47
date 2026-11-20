@@ -62,6 +62,7 @@ public class PauseMenu : MonoBehaviour
         bool back = Gamepad.all.Any(g => g.buttonEast.wasPressedThisFrame);
         if (settingsPanel.IsOpen || Time.frameCount == SettingsPanel.ClosedFrame) return; // Settings handles its own Back
         if ((MapScreen != null && MapScreen.IsOpen) || Time.frameCount == MapPanel.ClosedFrame) return; // so does the map
+        if (MenuFreeze.Active || Time.frameCount == MenuFreeze.EndedFrame) return; // and the Village Fund ledger
 
         JournalPanel j = UIRoot.Instance != null ? UIRoot.Instance.Journal : null;
         if (!IsPaused && pressed && (j == null || !j.IsOpen)) Pause();

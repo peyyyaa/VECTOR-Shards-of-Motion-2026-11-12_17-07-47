@@ -6,6 +6,8 @@ using UnityEngine;
 ///   using the Label prefab (restyle that prefab to change how every label looks);
 /// - Journal: the Motion Journal notebook panel.
 /// - Map: the region map screen (opened from the lab's wall map and the pause menu).
+/// - Fund: the Village Fund ledger (opened by talking to Bram).
+/// - Prompt sprites: the key-cap and player dot used by interact prompts (InteractPrompt).
 /// While the journal is open, the world labels (prompts, mass labels) fade out so they don't poke out around it.
 ///
 /// One per scene. Created by Tools > Shards of Motion > Create UI Prefabs (Add To Scene).
@@ -17,6 +19,10 @@ public class UIRoot : MonoBehaviour
     [SerializeField] private ScreenLabel labelPrefab;
     [SerializeField] private JournalPanel journal;
     [SerializeField] private MapPanel map;
+    [SerializeField] private FundPanel fund;
+    [Header("Interact prompts")]
+    [SerializeField] private Sprite promptKeySprite;
+    [SerializeField] private Sprite promptDotSprite;
     [Header("Paper style (speech, notice boards)")]
     [SerializeField] private Sprite paperSprite;
     [SerializeField] private TMPro.TMP_FontAsset paperFont;
@@ -32,6 +38,9 @@ public class UIRoot : MonoBehaviour
     public ScreenLabel LabelPrefab => labelPrefab;
     public JournalPanel Journal => journal;
     public MapPanel Map => map;
+    public FundPanel Fund => fund;
+    public Sprite PromptKeySprite => promptKeySprite;
+    public Sprite PromptDotSprite => promptDotSprite;
     public Sprite PaperSprite => paperSprite;
     public TMPro.TMP_FontAsset PaperFont => paperFont;
 
@@ -68,6 +77,10 @@ public class UIRoot : MonoBehaviour
     public void EditorSetupPaper(Sprite sprite, TMPro.TMP_FontAsset font) { paperSprite = sprite; paperFont = font; }
 
     public void EditorSetupMap(MapPanel mapPanel) => map = mapPanel;
+
+    public void EditorSetupFund(FundPanel fundPanel) => fund = fundPanel;
+
+    public void EditorSetupPrompts(Sprite key, Sprite dot) { promptKeySprite = key; promptDotSprite = dot; }
 
     public void EditorSetup(RectTransform container, ScreenLabel prefab, JournalPanel journalPanel)
     {

@@ -11,7 +11,7 @@ using UnityEngine.UI;
 ///   Label      - a dark rounded panel with centered text; every world-pinned label is a copy.
 ///   UI_Canvas  - screen-space canvas (1920x1080 reference, pixel perfect) with a Labels container
 ///                and the Motion Journal notebook (centred, opens when a Journal stone is read),
-///                the pause menu, settings and the map screen (MapTool).
+///                the pause menu, settings, the map screen (MapTool) and the Village Fund ledger (FundUIBuilder).
 /// After building, restyle the prefabs freely in the editor (font, colors, sprite, sizes);
 /// re-running the tool would overwrite those changes, so only run it again to reset them.
 /// </summary>
@@ -95,12 +95,15 @@ public static class UIPrefabBuilder
         SettingsPanel settingsPanel = MenuUIBuilder.SettingsPanel(root.transform);
         MenuUIBuilder.PauseMenu(root.transform, settingsPanel);
         MapPanel map = MapTool.BuildPanel(root.transform); // the map screen (draws the map art first if it doesn't exist yet)
+        FundPanel fund = FundUIBuilder.Build(root.transform); // Bram's Village Fund ledger
         settingsPanel.transform.SetAsLastSibling();
         MenuUIBuilder.EventSystemObject(root.transform);
 
         UIRoot ui = root.AddComponent<UIRoot>();
         ui.EditorSetup(labels, labelPrefab, panel);
         ui.EditorSetupMap(map);
+        ui.EditorSetupFund(fund);
+        ui.EditorSetupPrompts(KitSprite("UI_Button"), KitSprite("UI_Dot")); // interact prompts: key-cap + player dot
         ui.EditorSetupPaper(KitSprite("UI_Card"), AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(JerseyFont)); // speech & notice boards
 
         GameObject saved = PrefabUtility.SaveAsPrefabAsset(root, CanvasPath);

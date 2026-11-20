@@ -1,12 +1,12 @@
-using TMPro;
 using UnityEngine;
 
 /// <summary>
 /// Lets this player use levers and other interactables with the Interact button
 /// (shared keyboard: P1 = E, P2 = Enter; full keyboard: E; gamepad: North / Y / △).
 ///
-/// Every frame it finds the NEAREST interactable within Interact Range and shows a small
-/// prompt above it ("P1: E"); pressing Interact uses it. Input comes from this player's own
+/// Every frame it finds the NEAREST interactable within Interact Range and reports it to InteractPrompts,
+/// which shows a small key-cap prompt above it ([E] Read; shared when both players aim at the same thing);
+/// pressing Interact uses it. Input comes from this player's own
 /// PlayerInputReader, so each player only triggers things with their own button, and the
 /// prompt shows that player's actual key.
 ///
@@ -21,18 +21,14 @@ public class PlayerInteractor : MonoBehaviour
     [SerializeField] private LayerMask interactableLayers;
 
     [Header("Prompt")]
+    [Tooltip("Show the key-cap prompt above the interactable (look: InteractPrompt, sprites/font on UI_Canvas).")]
     [SerializeField] private bool showPrompt = true;
-    [Tooltip("Prompt text size in pixels at a 1080p screen.")]
-    [SerializeField, Min(4f)] private float promptFontSizePx = 28f;
-    [Tooltip("Leave empty to use the project's default TMP font.")]
-    [SerializeField] private TMP_FontAsset promptFont;
 
     private PlayerInputReader input;
     private readonly Collider2D[] results = new Collider2D[8];
 
     private IInteractable target;
     private Collider2D targetCollider;
-    private ScreenLabel prompt;
 
     /// <summary>0 = Player 1, 1 = Player 2.</summary>
     public int PlayerIndex => input != null ? input.PlayerIndex : -1;
@@ -43,15 +39,6 @@ public class PlayerInteractor : MonoBehaviour
         if (interactableLayers.value == 0)
         {
             interactableLayers = LayerMask.GetMask("Interactable");
-        }
-    }
-
-    private void Start()
-    {
-        if (showPrompt)
-        {
-            prompt = WorldText.Create($"{name} (prompt)", promptFont, promptFontSizePx, Color.white, 3f);
-            prompt.gameObject.SetActive(false);
         }
     }
 
@@ -70,20 +57,9 @@ public class PlayerInteractor : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (prompt == null) return;
-
+        if (!showPrompt) return;
         bool show = target != null && targetCollider != null;
-        if (prompt.gameObject.activeSelf != show) prompt.gameObject.SetActive(show);
-        if (!show) return;
-
-        // Above the interactable; P1 slightly left, P2 slightly right, so both prompts fit.
-        Bounds b = targetCollider.bounds;
-        float side = PlayerIndex == 1 ? 0.55f : -0.55f;
-        prompt.WorldPosition = new Vector3(b.center.x + side, b.max.y + 0.35f, 0f);
-        string verb = target.InteractVerb;
-        prompt.SetText(string.IsNullOrEmpty(verb)
-            ? $"P{PlayerIndex + 1}: {input.InteractDisplayName}"
-            : $"P{PlayerIndex + 1}: {input.InteractDisplayName}  {verb}");
+        InteractPrompts.Report(PlayerIndex, show ? targetCollider : null, input.InteractDisplayName, show ? target.InteractVerb : null);
     }
 
     private void FindTarget()
@@ -114,10 +90,7 @@ public class PlayerInteractor : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
-    {
-        if (prompt != null) Destroy(prompt.gameObject);
-    }
+    private void OnDisable() => InteractPrompts.Report(PlayerIndex, null, null, null);
 
     private void OnDrawGizmosSelected()
     {

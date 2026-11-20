@@ -13,7 +13,7 @@ using UnityEngine.SceneManagement;
 ///   WREN'S LAB (west, x 0; a new game starts here): the lab and observatory, Wren Alder (he) reading outside, the wall map
 ///     (Interact: map screen, WallMap) and his research table with the machine parts found so far (PartsDisplay).
 ///   MARKET SQUARE (x 20): Mira's cottage and Mira, the Field Requests board, the fruit stall, the shard shrine, the well.
-///   FORGE &amp; EAST ROAD (x 40): Bram's forge (Village Fund: shop comes next), the road east to the Shattered Grounds
+///   FORGE &amp; EAST ROAD (x 40): Bram's forge (Bram opens the Village Fund ledger, FundPanel), the road east to the Shattered Grounds
 ///     (RegionGate) with the closed roads to the other regions signposted.
 /// Restoration projects (RestorationProject: well, lamps, garden, shrine) show broken until funded.
 /// Buildings: PixelLab art adapted to Art/Village/ (sources in Art/Village/Source), on the Midground layer behind the
@@ -298,8 +298,10 @@ public static class VillageBuilder
         PointLight(forge.transform, "Lamp Hearth Glow", hearth, new Color(1f, 0.55f, 0.25f), 1.4f, 3.5f); // always lit; flickers with the lamps
         Marker(forge.transform, "Ember_Point", hearth + new Vector3(0f, 0.2f, 0f));
 
-        // Bram hammers at the anvil beside his hearth; the Village Fund opens from him (shop comes next).
-        Person(people, "Bram", bram, -3.5f, true).EditorSetup("Bram", BramInk, BramFirst, BramParts, BramIdle);
+        // Bram hammers at the anvil beside his hearth; after his first talk, Interact opens the Village Fund ledger.
+        NpcTalk bramTalk = Person(people, "Bram", bram, -3.5f, true);
+        bramTalk.EditorSetup("Bram", BramInk, BramFirst, BramParts, BramIdle);
+        bramTalk.EditorOpensVillageFund(true);
         PackProp(props, "Anvil", "Anvil", -4.3f, Floor, "Props", 1); // where his hammer lands
         PackProp(props, "Wood_Logs", "Wood Logs", 0.9f, Floor, "Props", -1);
         Lamp(props, 2.2f);
@@ -658,7 +660,7 @@ public static class VillageBuilder
     {
         "Name's Bram. I keep the forge, and the Village Fund along with it.",
         "Bring back Motion Shards and we'll put them toward fixing up Alderbrook: the well, the lamps, Mira's garden, the old shrine.",
-        "The ledger's not ready yet, mind. Come back with shards in your pockets.",
+        "Talk to me again and I'll open the ledger. Every shard you bring home goes on the page.",
     };
 
     private static readonly string[] BramParts =

@@ -53,6 +53,8 @@ A complete, playable game:
   RestorationProject states (well, lamps, garden, shrine; broken until funded). Dev menu: Village: Restore / Unrestore All.
 - Map screen (lab wall map + pause menu): Region 1 path from Alderbrook, per-room shards / part / journal read, totals,
   locked regions fogged, travel to any reached room. Save v2: shard ids `<room>/<name>`, journal reads `journal_<entry>`.
+- Village Fund ledger at Bram (VillageFund: well 3, lamps 5, garden 6, shrine 8; balance = collected - spent).
+  Interact prompts restyled: small key-caps with player dots, shared when both players aim at the same thing (InteractPrompt).
 
 ## Tools (Tools > Shards of Motion) — typical run order
 
@@ -78,8 +80,7 @@ A complete, playable game:
 
 ## Next steps
 
-1. Village Fund shop at Bram
-   (shard balance, the 4 restoration projects with prices; buying calls RestorationProject.Restore).
+1. Village road gate: make the way into the region clear (in progress).
 2. Team: PixelLab Momentum Engine (empty slots + running, ~200x160) by ~Nov 24; optional map parchment background;
    music tracks by ~Nov 27.
 3. Rooms 5–8 (designs to propose one at a time; Room 8 finale uses the Flywheel + Counterweight and whatever part Rooms 5–7 add).
