@@ -9,6 +9,7 @@ using UnityEngine.UI;
 /// <summary>
 /// Builds the game-shell menus in the Motion Journal's field-notebook style (UI kit sprites + Jersey 10):
 /// the pause menu and settings panel (added to UI_Canvas by UIPrefabBuilder) and the title screen's menu.
+/// (The map screen is built by MapTool.)
 /// Buttons work with mouse, keyboard (arrows + Enter) and gamepad (stick/d-pad + South) via the EventSystem.
 /// </summary>
 public static class MenuUIBuilder
@@ -155,16 +156,17 @@ public static class MenuUIBuilder
         RectTransform root = Rect(canvas, "PauseMenu", Vector2.zero, Vector2.zero);
         root.anchorMin = Vector2.zero; root.anchorMax = Vector2.one; root.offsetMin = root.offsetMax = Vector2.zero;
         RectTransform panel = Fullscreen(root, "Panel", new Color(0f, 0f, 0f, 0.5f));
-        RectTransform card = Card(panel, "Card", Vector2.zero, new Vector2(560f, 720f), "UI_Page");
-        Text(card, "Heading", "Paused", 56f, Green, new Vector2(0f, 290f), new Vector2(400f, 70f));
-        Button resume = Button(card, "Resume", "Resume", new Vector2(0f, 190f), 400f);
-        Button restart = Button(card, "Restart Room", "Restart Room", new Vector2(0f, 110f), 400f);
-        Button journal = Button(card, "Journal", "Journal", new Vector2(0f, 30f), 400f);
-        Button sett = Button(card, "Settings", "Settings", new Vector2(0f, -50f), 400f);
-        Button village = Button(card, "Village", "Return to Village", new Vector2(0f, -130f), 400f);
-        Button title = Button(card, "Title", "Quit to Title", new Vector2(0f, -210f), 400f);
+        RectTransform card = Card(panel, "Card", Vector2.zero, new Vector2(560f, 800f), "UI_Page");
+        Text(card, "Heading", "Paused", 56f, Green, new Vector2(0f, 330f), new Vector2(400f, 70f));
+        Button resume = Button(card, "Resume", "Resume", new Vector2(0f, 230f), 400f);
+        Button restart = Button(card, "Restart Room", "Restart Room", new Vector2(0f, 150f), 400f);
+        Button journal = Button(card, "Journal", "Journal", new Vector2(0f, 70f), 400f);
+        Button map = Button(card, "Map", "Map", new Vector2(0f, -10f), 400f);
+        Button sett = Button(card, "Settings", "Settings", new Vector2(0f, -90f), 400f);
+        Button village = Button(card, "Village", "Return to Village", new Vector2(0f, -170f), 400f);
+        Button title = Button(card, "Title", "Quit to Title", new Vector2(0f, -250f), 400f);
         PauseMenu menu = root.gameObject.AddComponent<PauseMenu>();
-        menu.EditorSetup(panel.gameObject, resume, restart, journal, sett, village, title, settings);
+        menu.EditorSetup(panel.gameObject, resume, restart, journal, map, sett, village, title, settings);
         settings.transform.SetAsLastSibling(); // settings draw on top of the pause card
         return menu;
     }

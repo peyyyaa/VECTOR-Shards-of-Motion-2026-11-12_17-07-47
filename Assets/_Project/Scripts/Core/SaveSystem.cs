@@ -21,14 +21,17 @@ public class SettingsData
 [Serializable]
 public class SaveData
 {
-    public int version = 1;
+    public const int CurrentVersion = 2;
+
+    public int version = CurrentVersion;
     public bool started;                                  // a game has been started (enables Continue)
     public string region = "Region1";
     public int furthestRoom = 1;                          // in the current region, numbered left to right
-    public List<string> shards = new List<string>();      // MotionShard ids collected
+    public List<string> shards = new List<string>();      // MotionShard ids collected: "<room object>/<shard name>", e.g. "R1_Room03/Shard_Arch"
     public List<string> questItems = new List<string>();  // QuestItem ids found (machine parts...)
     public List<string> questsDone = new List<string>();  // village requests completed
-    public List<string> events = new List<string>();      // one-off things that happened (e.g. "wall_broken"), for requests
+    public List<string> events = new List<string>();      // one-off things that happened: "wall_broken", "met_Bram", "fund_well",
+                                                          // "journal_<entry asset name>" (a journal entry was read)...
     public SettingsData settings = new SettingsData();
 }
 
@@ -77,6 +80,25 @@ public static class SaveSystem
             data = new SaveData();
         }
         if (data.settings == null) data.settings = new SettingsData();
+        Migrate(data);
+    }
+
+    // Older saves: version 1 shard ids ended with the shard's position ("R1_Room03/Shard_Arch@(30.00, -2.10, 0.00)"),
+    // which changed whenever a shard was moved. Keep only "<room>/<name>" (duplicates removed).
+    private static void Migrate(SaveData d)
+    {
+        if (d.version >= SaveData.CurrentVersion) return;
+        if (d.shards == null) d.shards = new List<string>();
+        List<string> shards = new List<string>();
+        foreach (string id in d.shards)
+        {
+            if (string.IsNullOrEmpty(id)) continue;
+            int at = id.IndexOf('@');
+            string clean = at >= 0 ? id.Substring(0, at) : id;
+            if (!shards.Contains(clean)) shards.Add(clean);
+        }
+        d.shards = shards;
+        d.version = SaveData.CurrentVersion;
     }
 
     public static void Save()

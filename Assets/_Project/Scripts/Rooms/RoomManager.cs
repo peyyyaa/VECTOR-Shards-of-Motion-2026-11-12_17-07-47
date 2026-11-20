@@ -58,6 +58,9 @@ public class RoomManager : MonoBehaviour
     public Room CurrentRoom => currentRoom;
     public bool IsTransitioning => transitioning;
 
+    /// <summary>The region these rooms belong to, or null in places that aren't a region (the village). Used by the map.</summary>
+    public string RegionId => saveProgress ? regionId : null;
+
     private void Awake()
     {
         if (cameraTransform == null && Camera.main != null) cameraTransform = Camera.main.transform;

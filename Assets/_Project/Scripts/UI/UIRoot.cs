@@ -5,6 +5,7 @@ using UnityEngine;
 /// - Labels: the container that world-pinned labels (prompts, mass labels, plate readouts) are created in,
 ///   using the Label prefab (restyle that prefab to change how every label looks);
 /// - Journal: the Motion Journal notebook panel.
+/// - Map: the region map screen (opened from the lab's wall map and the pause menu).
 /// While the journal is open, the world labels (prompts, mass labels) fade out so they don't poke out around it.
 ///
 /// One per scene. Created by Tools > Shards of Motion > Create UI Prefabs (Add To Scene).
@@ -15,6 +16,7 @@ public class UIRoot : MonoBehaviour
     [SerializeField] private RectTransform labelContainer;
     [SerializeField] private ScreenLabel labelPrefab;
     [SerializeField] private JournalPanel journal;
+    [SerializeField] private MapPanel map;
     [Header("Paper style (speech, notice boards)")]
     [SerializeField] private Sprite paperSprite;
     [SerializeField] private TMPro.TMP_FontAsset paperFont;
@@ -29,6 +31,7 @@ public class UIRoot : MonoBehaviour
     public RectTransform LabelContainer => labelContainer;
     public ScreenLabel LabelPrefab => labelPrefab;
     public JournalPanel Journal => journal;
+    public MapPanel Map => map;
     public Sprite PaperSprite => paperSprite;
     public TMPro.TMP_FontAsset PaperFont => paperFont;
 
@@ -63,6 +66,8 @@ public class UIRoot : MonoBehaviour
 #if UNITY_EDITOR
     /// <summary>Editor tool hook: wires the references after building the prefab.</summary>
     public void EditorSetupPaper(Sprite sprite, TMPro.TMP_FontAsset font) { paperSprite = sprite; paperFont = font; }
+
+    public void EditorSetupMap(MapPanel mapPanel) => map = mapPanel;
 
     public void EditorSetup(RectTransform container, ScreenLabel prefab, JournalPanel journalPanel)
     {

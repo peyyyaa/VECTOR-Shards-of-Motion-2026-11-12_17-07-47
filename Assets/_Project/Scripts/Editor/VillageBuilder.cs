@@ -11,7 +11,7 @@ using UnityEngine.SceneManagement;
 /// Tools > Shards of Motion > Game Shell > Build Village.
 /// Builds Alderbrook, the village hub: three screens side by side, joined by normal doorways (Docs/Village_Art_Plan.md):
 ///   WREN'S LAB (west, x 0; a new game starts here): the lab and observatory, Wren Alder (he) reading outside, the wall map
-///     spot (map screen comes next) and his research table with the machine parts found so far (PartsDisplay).
+///     (Interact: map screen, WallMap) and his research table with the machine parts found so far (PartsDisplay).
 ///   MARKET SQUARE (x 20): Mira's cottage and Mira, the Field Requests board, the fruit stall, the shard shrine, the well.
 ///   FORGE &amp; EAST ROAD (x 40): Bram's forge (Village Fund: shop comes next), the road east to the Shattered Grounds
 ///     (RegionGate) with the closed roads to the other regions signposted.
@@ -46,7 +46,7 @@ public static class VillageBuilder
     private static readonly string[] Built =
     {
         "Village_Buildings", "Village_Props", "Village_People", "Village_Exit",
-        "Wren", "Bram", "Mira", "Research_Table", "Wall_Map_Spot", "Request_Board", "Fund_Stall", "Gate_Region1", "Gate_Sign",
+        "Wren", "Bram", "Mira", "Research_Table", "Wall_Map", "Wall_Map_Spot", "Request_Board", "Fund_Stall", "Gate_Region1", "Gate_Sign",
         "Gate_Light", "Sign_Region1", "Sign_Region2", "Sign_Region3", "Locked_Road",
     };
 
@@ -199,8 +199,13 @@ public static class VillageBuilder
         // Wren reads outside, facing the players coming out of the lab.
         Person(people, "Wren", wren, -0.6f, true).EditorSetup("Wren Alder", NameInk, FirstVisit, PartsFound, Idle);
 
-        // Where the wall map hangs (the map screen is the next step).
-        PackProp(props, "Wall_Map_Spot", "Billboard", 1.7f, Floor);
+        // The wall map: Interact opens the map screen (WallMap -> MapPanel on UI_Canvas).
+        SpriteRenderer wallMap = PackProp(props, "Wall_Map", "Billboard", 1.7f, Floor);
+        wallMap.gameObject.layer = LayerMask.NameToLayer("Interactable");
+        wallMap.gameObject.AddComponent<BoxCollider2D>().isTrigger = true;
+        wallMap.gameObject.AddComponent<WallMap>();
+        PackProp(wallMap.transform, "Note A", "Billboard Noti 02", 1.35f, wallMap.bounds.center.y - 0.05f, "Props", 1);
+        PackProp(wallMap.transform, "Note B", "Billboard Noti 04", 2.05f, wallMap.bounds.center.y + 0.05f, "Props", 1);
 
         GameObject table = PackProp(props, "Research_Table", "Table", 4.2f, Floor).gameObject;
         PartsDisplay display = table.AddComponent<PartsDisplay>();

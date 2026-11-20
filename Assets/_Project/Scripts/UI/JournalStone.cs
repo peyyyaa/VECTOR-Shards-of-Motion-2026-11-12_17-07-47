@@ -67,11 +67,18 @@ public class JournalStone : MonoBehaviour, IInteractable
         if (journal == null) return;
 
         if (journal.IsOpen) return; // while open, the journal reads Interact itself (tap = next page, hold = close)
-        if (entry != null) journal.Open(this, RuntimeEntry());
+        if (entry != null) { journal.Open(this, RuntimeEntry()); MarkRead(entry); }
         else journal.Show(this, title, body, "");
     }
 
     public bool HasEntry => entry != null;
+
+    /// <summary>Save event recorded when an entry is opened (the map shows each room's journal as read).</summary>
+    public static string ReadEventId(JournalEntry e) => e != null ? "journal_" + e.name : null;
+
+    public static bool IsRead(JournalEntry e) => e != null && SaveSystem.HasEvent(ReadEventId(e));
+
+    private static void MarkRead(JournalEntry e) { if (e != null) SaveSystem.MarkEvent(ReadEventId(e)); }
 
     /// <summary>Opens this stone's entry from the pause menu ("re-read this room's journal"), wherever the players are.</summary>
     public void OpenFromMenu()
@@ -79,6 +86,7 @@ public class JournalStone : MonoBehaviour, IInteractable
         JournalPanel journal = Journal;
         if (journal == null || entry == null || journal.IsOpen) return;
         journal.Open(this, RuntimeEntry());
+        MarkRead(entry);
         openedFromMenu = true; // players may be anywhere: do not close because they are far from the stone
     }
 

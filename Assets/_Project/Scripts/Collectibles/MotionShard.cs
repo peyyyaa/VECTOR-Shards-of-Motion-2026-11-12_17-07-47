@@ -23,14 +23,17 @@ public class MotionShard : MonoBehaviour
 
     public Room Room { get; private set; }
 
-    /// <summary>Unique per shard in the scene (room + its name), used to remember it was collected.</summary>
+    /// <summary>
+    /// Unique per shard: "&lt;room object&gt;/&lt;shard name&gt;", e.g. "R1_Room03/Shard_Arch". Used by the save and the map
+    /// (which counts a room's shards by this prefix). Shard names must be unique within their room; moving a shard keeps its id.
+    /// </summary>
     public string Id { get; private set; }
 
     private void Awake()
     {
         sr = GetComponentInChildren<SpriteRenderer>();
         Room = GetComponentInParent<Room>();
-        Id = (Room != null ? Room.name + "/" : "") + name + "@" + transform.position.ToString("F2");
+        Id = (Room != null ? Room.name + "/" : "") + name;
         GetComponent<Collider2D>().isTrigger = true;
     }
 

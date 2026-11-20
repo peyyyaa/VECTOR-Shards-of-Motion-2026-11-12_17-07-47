@@ -7,8 +7,9 @@ using UnityEngine.UI;
 /// <summary>
 /// Pause menu (part of UI_Canvas). Either player opens it with Esc or a gamepad's Start button; Esc / Start / B
 /// closes it again. While paused, time stops and both players' controls are switched off.
-///   Resume | Restart Room | Journal (re-read this room's entry) | Settings | Return to Village | Quit to Title
-/// "Return to Village" only shows once a Village scene exists. Restart Room and Journal need a RoomManager.
+///   Resume | Restart Room | Journal (re-read this room's entry) | Map | Settings | Return to Village | Quit to Title
+/// "Return to Village" only shows once a Village scene exists. Restart Room and Journal need a RoomManager;
+/// Map needs the map screen on UI_Canvas (UIRoot.Map).
 ///
 /// Note: the pause buttons are read straight from the keyboard/gamepads (a menu key, not gameplay input).
 /// Gameplay itself still reads input only through each player's PlayerInputReader.
@@ -19,6 +20,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private Button resume;
     [SerializeField] private Button restartRoom;
     [SerializeField] private Button journal;
+    [SerializeField] private Button map;
     [SerializeField] private Button settings;
     [SerializeField] private Button village;
     [SerializeField] private Button title;
@@ -34,6 +36,7 @@ public class PauseMenu : MonoBehaviour
         resume.onClick.AddListener(Resume);
         restartRoom.onClick.AddListener(() => { Resume(); if (manager != null) manager.ResetCurrentRoom(); });
         journal.onClick.AddListener(OpenJournal);
+        if (map != null) map.onClick.AddListener(OpenMap);
         settings.onClick.AddListener(() => { panel.SetActive(false); settingsPanel.Open(ShowPanel); });
         village.onClick.AddListener(GameFlow.ToVillage);
         title.onClick.AddListener(GameFlow.ToTitle);
@@ -48,6 +51,7 @@ public class PauseMenu : MonoBehaviour
         spawner = FindFirstObjectByType<LocalCoopSpawner>();
         restartRoom.gameObject.SetActive(manager != null);
         journal.gameObject.SetActive(manager != null);
+        if (map != null) map.gameObject.SetActive(MapScreen != null);
         village.gameObject.SetActive(GameFlow.VillageExists);
     }
 
@@ -57,6 +61,7 @@ public class PauseMenu : MonoBehaviour
                        || Gamepad.all.Any(g => g.startButton.wasPressedThisFrame);
         bool back = Gamepad.all.Any(g => g.buttonEast.wasPressedThisFrame);
         if (settingsPanel.IsOpen || Time.frameCount == SettingsPanel.ClosedFrame) return; // Settings handles its own Back
+        if ((MapScreen != null && MapScreen.IsOpen) || Time.frameCount == MapPanel.ClosedFrame) return; // so does the map
 
         JournalPanel j = UIRoot.Instance != null ? UIRoot.Instance.Journal : null;
         if (!IsPaused && pressed && (j == null || !j.IsOpen)) Pause();
@@ -94,6 +99,16 @@ public class PauseMenu : MonoBehaviour
         if (stone != null) stone.OpenFromMenu();
     }
 
+    private static MapPanel MapScreen => UIRoot.Instance != null ? UIRoot.Instance.Map : null;
+
+    // The map replaces the pause card; Back returns here, travelling resumes the game.
+    private void OpenMap()
+    {
+        if (MapScreen == null) return;
+        panel.SetActive(false);
+        MapScreen.Open(ShowPanel, Resume);
+    }
+
     private void SetPlayerControls(bool on)
     {
         if (spawner == null) return;
@@ -111,9 +126,9 @@ public class PauseMenu : MonoBehaviour
     }
 
 #if UNITY_EDITOR
-    public void EditorSetup(GameObject p, Button res, Button restart, Button jour, Button sett, Button vil, Button tit, SettingsPanel sp)
+    public void EditorSetup(GameObject p, Button res, Button restart, Button jour, Button mapButton, Button sett, Button vil, Button tit, SettingsPanel sp)
     {
-        panel = p; resume = res; restartRoom = restart; journal = jour; settings = sett; village = vil; title = tit; settingsPanel = sp;
+        panel = p; resume = res; restartRoom = restart; journal = jour; map = mapButton; settings = sett; village = vil; title = tit; settingsPanel = sp;
     }
 #endif
 }

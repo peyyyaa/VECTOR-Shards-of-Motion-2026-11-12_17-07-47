@@ -51,6 +51,8 @@ A complete, playable game:
 - Village core: 3 screens with PixelLab buildings (adapted: Art/Village; sources in Art/Village/Source), chibi Wren/Bram/Mira
   (idle + action, NpcActivity), dialogue, VillageAmbience (birds, smoke, embers, sway, pollen, motes),
   RestorationProject states (well, lamps, garden, shrine; broken until funded). Dev menu: Village: Restore / Unrestore All.
+- Map screen (lab wall map + pause menu): Region 1 path from Alderbrook, per-room shards / part / journal read, totals,
+  locked regions fogged, travel to any reached room. Save v2: shard ids `<room>/<name>`, journal reads `journal_<entry>`.
 
 ## Tools (Tools > Shards of Motion) — typical run order
 
@@ -59,6 +61,8 @@ A complete, playable game:
 - **Art:** `Characters > 1. Build Character Sprites` (P1, P2, Wren...), `Effects > 1. Build Effect Sprites`,
   `UI Kit > 2. Build UI Kit`, `Create UI Prefabs` (canvas: journal, pause, settings).
 - **Text:** `Journal > Update All Entries` (entries + tips; keeps drawn sketches).
+- **Map:** `Map > Draw Region Map` (creates/updates `Data/Map/Region1_Map.asset` and draws `Art/Map`), then
+  `Create UI Prefabs` (the map screen is part of UI_Canvas). Re-run both after moving markers in the asset.
 - **Shell:** `Game Shell > Build Title Scene`, `Game Shell > Build Village` (run Characters > 1. Build Character Sprites
   first; Build Village before Build Title Scene, which uses the village crystal).
 - **Testing:** `Dev > Play From Room > Room N`; in play: PgDn/PgUp rooms, F9 reset, F10 hold gates.
@@ -74,7 +78,7 @@ A complete, playable game:
 
 ## Next steps
 
-1. Map screen (lab wall map + pause menu; travel to reached rooms), then the Village Fund shop at Bram
+1. Village Fund shop at Bram
    (shard balance, the 4 restoration projects with prices; buying calls RestorationProject.Restore).
 2. Team: PixelLab Momentum Engine (empty slots + running, ~200x160) by ~Nov 24; optional map parchment background;
    music tracks by ~Nov 27.

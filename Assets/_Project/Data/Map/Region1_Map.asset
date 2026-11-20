@@ -1,0 +1,100 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f3a40fccaa412b4ba7eb91e5d12e123, type: 3}
+  m_Name: Region1_Map
+  m_EditorClassIdentifier: Assembly-CSharp::RegionMapData
+  regionId: Region1
+  regionName: The Shattered Grounds
+  mapArt: {fileID: 21300000, guid: 79e65c9912c7a0d4eaa15355d351f595, type: 3}
+  mapSize: {x: 480, y: 220}
+  villageName: Alderbrook
+  villagePosition: {x: 34, y: 52}
+  rooms:
+  - roomObject: R1_Room01
+    displayName: The First Exchange
+    shards: 3
+    partId: 
+    partName: 
+    journal: {fileID: 11400000, guid: 3bf24c99d6e8e9e458e263a2bf9f9463, type: 2}
+    mapPosition: {x: 88, y: 40}
+    label: 0
+  - roomObject: R1_Room02
+    displayName: Weight of Things
+    shards: 3
+    partId: 
+    partName: 
+    journal: {fileID: 11400000, guid: 8fc216e64ed32a9428f8c43dc5bed8dc, type: 2}
+    mapPosition: {x: 150, y: 56}
+    label: 0
+  - roomObject: R1_Room03
+    displayName: Together We Move
+    shards: 3
+    partId: R1_Part_Flywheel
+    partName: Flywheel
+    journal: {fileID: 11400000, guid: b5bb9925ec9e54442b1e24a4934addb8, type: 2}
+    mapPosition: {x: 212, y: 40}
+    label: 0
+  - roomObject: R1_Room04
+    displayName: Broken Crossing
+    shards: 3
+    partId: R1_Part_Counterweight
+    partName: Counterweight
+    journal: {fileID: 11400000, guid: 9b5c94e9c2eb29e4188d644be05b6440, type: 2}
+    mapPosition: {x: 266, y: 82}
+    label: 3
+  - roomObject: R1_Room05
+    displayName: Long Push
+    shards: 3
+    partId: 
+    partName: 
+    journal: {fileID: 0}
+    mapPosition: {x: 220, y: 122}
+    label: 0
+  - roomObject: R1_Room06
+    displayName: Weight of Cooperation
+    shards: 3
+    partId: 
+    partName: 
+    journal: {fileID: 0}
+    mapPosition: {x: 156, y: 134}
+    label: 0
+  - roomObject: R1_Room07
+    displayName: Unstoppable Object
+    shards: 3
+    partId: 
+    partName: 
+    journal: {fileID: 0}
+    mapPosition: {x: 92, y: 170}
+    label: 0
+  - roomObject: R1_Room08
+    displayName: Heart of the Forest
+    shards: 3
+    partId: 
+    partName: 
+    journal: {fileID: 0}
+    mapPosition: {x: 200, y: 170}
+    label: 0
+  lockedRegions:
+  - name: The Gravity Divide
+    area:
+      serializedVersion: 2
+      x: 342
+      y: 116
+      width: 128
+      height: 94
+  - name: The Mechanical Depths
+    area:
+      serializedVersion: 2
+      x: 342
+      y: 12
+      width: 128
+      height: 94
