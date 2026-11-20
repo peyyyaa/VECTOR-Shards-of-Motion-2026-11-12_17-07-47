@@ -60,6 +60,22 @@ public class KineticBurst : MonoBehaviour
     /// <summary>Time.time of the last burst (read by PlayerAnimator for the cast pose).</summary>
     public float LastFireTime { get; private set; } = float.NegativeInfinity;
 
+    /// <summary>One object pushed by a burst: which body, the push direction, and the impulse (N·s).</summary>
+    public struct Hit
+    {
+        public Rigidbody2D body;
+        public Vector2 direction;
+        public float impulse;
+    }
+
+    /// <summary>Raised after every burst (also when nothing was hit). Used by BurstEffects; read-only.</summary>
+    public event System.Action<Vector2, int, IReadOnlyList<Hit>> Fired;
+
+    public float Range => range;
+    public float ConeAngle => coneAngle;
+
+    private readonly List<Hit> lastHits = new List<Hit>();
+
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
@@ -116,6 +132,7 @@ public class KineticBurst : MonoBehaviour
 
         Vector2 totalReaction = Vector2.zero;
         alreadyHit.Clear();
+        lastHits.Clear();
 
         Collider2D[] hits = Physics2D.OverlapCircleAll(origin, range, affectedLayers);
         foreach (Collider2D hit in hits)
@@ -144,6 +161,7 @@ public class KineticBurst : MonoBehaviour
             target.AddForce(pushDirection * burstImpulse, ForceMode2D.Impulse);
 
             totalReaction -= pushDirection * burstImpulse; // Newton's 3rd law: equal and opposite
+            lastHits.Add(new Hit { body = target, direction = pushDirection, impulse = burstImpulse });
         }
 
         if (totalReaction != Vector2.zero && recoilMultiplier > 0f)
@@ -156,6 +174,8 @@ public class KineticBurst : MonoBehaviour
             holdingLock = true;
             lockTimeRemaining = recoilControlLockTime;
         }
+
+        Fired?.Invoke(origin, movement.FacingDirection, lastHits);
     }
 
     private void ReleaseLock()

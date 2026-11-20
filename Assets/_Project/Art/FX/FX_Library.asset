@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f7e724567008154aac957da473dd91e, type: 3}
+  m_Name: FX_Library
+  m_EditorClassIdentifier: Assembly-CSharp::FxLibrary
+  shockwave:
+  - {fileID: 21300000, guid: 8cdb88196fd29fb4fb56943f85575a02, type: 3}
+  - {fileID: 21300000, guid: 5760038a9575ae5438cd13824a9003ff, type: 3}
+  - {fileID: 21300000, guid: c963e77dfda6ebb4f83c68ca6e62bb20, type: 3}
+  - {fileID: 21300000, guid: df739dd968377fe4eb779cb0fe618556, type: 3}
+  ring:
+  - {fileID: 21300000, guid: 342e4ac0ee0e43643b35f388bc8f2c6b, type: 3}
+  - {fileID: 21300000, guid: 3cee2d9f3e341ae47824f05a76d13fa7, type: 3}
+  - {fileID: 21300000, guid: 46148aafe1dada44daadcadfdfbd7eb2, type: 3}
+  - {fileID: 21300000, guid: eea28b5c7035ee142a1468ae820fc734, type: 3}
+  dust:
+  - {fileID: 21300000, guid: f8a25f4caeaa8ad4bac49763306a3b87, type: 3}
+  - {fileID: 21300000, guid: b28ad5638974d3a42bb36f2624cfc76b, type: 3}
+  - {fileID: 21300000, guid: 5bdd93cda1e2813489da213001b8cfce, type: 3}
+  spark: {fileID: 21300000, guid: 7951f97045aea0b458522738d4a5da3e, type: 3}
+  wisp: {fileID: 21300000, guid: 63c4b555271c0f141a680ac701a9b6e0, type: 3}
+  dot: {fileID: 21300000, guid: 8c79e6b7eea5097469bd7b8bf4e0ef69, type: 3}
+  arrow: {fileID: 21300000, guid: bb6d439b3b725f64b986ca84cd0717cd, type: 3}
+  sparkle: {fileID: 21300000, guid: bdde137a37fdadc42a9780dbd5538ab2, type: 3}

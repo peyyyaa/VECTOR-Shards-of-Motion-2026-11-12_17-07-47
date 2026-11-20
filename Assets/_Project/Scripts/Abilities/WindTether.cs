@@ -64,6 +64,13 @@ public class WindTether : MonoBehaviour
     /// <summary>The object currently tethered, or null.</summary>
     public Rigidbody2D Target => target;
 
+    public float MaxRange => maxRange;
+
+    // Raised for TetherEffects (read-only): latched onto an object, let go, or pressed with nothing to grab.
+    public event System.Action<Rigidbody2D> Attached;
+    public event System.Action<Rigidbody2D> Released;
+    public event System.Action Missed;
+
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
@@ -97,6 +104,8 @@ public class WindTether : MonoBehaviour
         {
             acquireRequested = false;
             target = FindTarget();
+            if (target != null) Attached?.Invoke(target);
+            else Missed?.Invoke();
         }
 
         if (target == null) return;
@@ -200,7 +209,9 @@ public class WindTether : MonoBehaviour
 
     private void Release()
     {
+        Rigidbody2D was = target;
         target = null;
+        if (was != null) Released?.Invoke(was);
         SetLineVisible(false);
     }
 

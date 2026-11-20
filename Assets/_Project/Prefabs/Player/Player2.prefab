@@ -72,6 +72,30 @@ PrefabInstance:
       propertyPath: animationSet
       value: 
       objectReference: {fileID: 11400000, guid: 488c6c9fd9aab8f429b13e8e7e09e455, type: 2}
+    - target: {fileID: 6767354387272500499, guid: 4b11affa6a368144f9872c4891c37341, type: 3}
+      propertyPath: color.b
+      value: 0.8156863
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767354387272500499, guid: 4b11affa6a368144f9872c4891c37341, type: 3}
+      propertyPath: color.g
+      value: 0.7607843
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767354387272500499, guid: 4b11affa6a368144f9872c4891c37341, type: 3}
+      propertyPath: color.r
+      value: 0.28627452
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767354387272500499, guid: 4b11affa6a368144f9872c4891c37341, type: 3}
+      propertyPath: sparkleColor.b
+      value: 0.9490196
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767354387272500499, guid: 4b11affa6a368144f9872c4891c37341, type: 3}
+      propertyPath: sparkleColor.g
+      value: 0.93333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 6767354387272500499, guid: 4b11affa6a368144f9872c4891c37341, type: 3}
+      propertyPath: sparkleColor.r
+      value: 0.7490196
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -82,6 +106,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 4749447147964067890, guid: 4b11affa6a368144f9872c4891c37341, type: 3}
       insertIndex: -1
       addedObject: {fileID: -7252553500599329832}
+    - targetCorrespondingSourceObject: {fileID: 4749447147964067890, guid: 4b11affa6a368144f9872c4891c37341, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1788606181172659715}
   m_SourcePrefab: {fileID: 100100000, guid: 4b11affa6a368144f9872c4891c37341, type: 3}
 --- !u!1 &131944842503351830 stripped
 GameObject:
@@ -221,3 +248,22 @@ MonoBehaviour:
   pullForce: 24
   holdDistance: 1
   tetherLine: {fileID: -884519724812912022}
+--- !u!114 &1788606181172659715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 131944842503351830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a60430a1690899947b101241a77ab09a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TetherEffects
+  fx: {fileID: 11400000, guid: 04d1e0fc5f8d6ac4ea3c95936850723a, type: 2}
+  color: {r: 0.28627452, g: 0.7607843, b: 0.8156863, a: 1}
+  lightColor: {r: 0.7490196, g: 0.93333334, b: 0.9490196, a: 1}
+  handOffset: {x: 0.4, y: 0.05}
+  waveAmplitude: 0.12
+  flowSpeed: 14
+  wispInterval: 0.07
