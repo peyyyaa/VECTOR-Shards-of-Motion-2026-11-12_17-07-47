@@ -97,6 +97,7 @@ public static class UIPrefabBuilder
 
         UIRoot ui = root.AddComponent<UIRoot>();
         ui.EditorSetup(labels, labelPrefab, panel);
+        ui.EditorSetupPaper(KitSprite("UI_Card"), AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(JerseyFont)); // speech & notice boards
 
         GameObject saved = PrefabUtility.SaveAsPrefabAsset(root, CanvasPath);
         Object.DestroyImmediate(root);

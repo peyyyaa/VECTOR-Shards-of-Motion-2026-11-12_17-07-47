@@ -21,6 +21,7 @@ public class ScreenLabel : MonoBehaviour
     [SerializeField] private Vector2 padding = new Vector2(14f, 6f);
 
     public TMP_Text Text => text;
+    public Image Background => background;
 
     /// <summary>Where the label should appear, in world coordinates.</summary>
     public Vector3 WorldPosition { get; set; }

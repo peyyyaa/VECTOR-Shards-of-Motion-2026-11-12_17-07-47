@@ -38,6 +38,8 @@ public class RoomManager : MonoBehaviour
     [Header("Saving")]
     [Tooltip("Name of this region in the save file (progress = furthest room reached here).")]
     [SerializeField] private string regionId = "Region1";
+    [Tooltip("Off for places that aren't region rooms (the village), so they don't count as progress.")]
+    [SerializeField] private bool saveProgress = true;
 
     /// <summary>Set before loading a region scene (e.g. Continue): start in this room number instead of the first. 0 = normal.</summary>
     public static int RequestedStartRoom;
@@ -76,7 +78,7 @@ public class RoomManager : MonoBehaviour
 
         roomsInOrder = FindObjectsByType<Room>(FindObjectsSortMode.None);
         System.Array.Sort(roomsInOrder, (a, b) => a.transform.position.x.CompareTo(b.transform.position.x));
-        SaveSystem.ReachedRoom(regionId, RoomNumber(startingRoom));
+        if (saveProgress) SaveSystem.ReachedRoom(regionId, RoomNumber(startingRoom));
 
         int requested = RequestedStartRoom;
         RequestedStartRoom = 0;
@@ -133,7 +135,7 @@ public class RoomManager : MonoBehaviour
         slideTimer = 0f;
         transitioning = true;
 
-        SaveSystem.ReachedRoom(regionId, RoomNumber(target)); // autosave: progress
+        if (saveProgress) SaveSystem.ReachedRoom(regionId, RoomNumber(target)); // autosave: progress
     }
 
     /// <summary>Sends one player back to where they entered the current room (e.g., touched a hazard).</summary>

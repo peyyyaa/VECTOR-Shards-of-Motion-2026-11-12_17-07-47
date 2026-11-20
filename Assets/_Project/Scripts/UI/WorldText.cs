@@ -44,6 +44,23 @@ public static class WorldText
         return label;
     }
 
+    /// <summary>
+    /// A label in the journal's paper style (speech, notice boards): paper card background, Jersey 10, dark ink text.
+    /// Falls back to the normal label style if the canvas has no paper style set.
+    /// </summary>
+    public static ScreenLabel CreatePaper(string objectName, float fontSizePx, float widthUnits)
+    {
+        UIRoot ui = UIRoot.Instance;
+        ScreenLabel label = Create(objectName, ui != null ? ui.PaperFont : null, fontSizePx, new Color32(74, 47, 28, 255), widthUnits);
+        if (label != null && ui != null && ui.PaperSprite != null && label.Background != null)
+        {
+            label.Background.sprite = ui.PaperSprite;
+            label.Background.type = UnityEngine.UI.Image.Type.Tiled;
+            label.Background.color = Color.white;
+        }
+        return label;
+    }
+
     private static ScreenLabel CreateFallback(string objectName)
     {
         if (fallbackCanvas == null)

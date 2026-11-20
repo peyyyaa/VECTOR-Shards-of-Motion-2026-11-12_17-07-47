@@ -15,6 +15,9 @@ public class UIRoot : MonoBehaviour
     [SerializeField] private RectTransform labelContainer;
     [SerializeField] private ScreenLabel labelPrefab;
     [SerializeField] private JournalPanel journal;
+    [Header("Paper style (speech, notice boards)")]
+    [SerializeField] private Sprite paperSprite;
+    [SerializeField] private TMPro.TMP_FontAsset paperFont;
 
     [Tooltip("Seconds for the world labels to fade out/in when the journal opens/closes.")]
     [SerializeField, Min(0.01f)] private float labelFadeTime = 0.12f;
@@ -26,6 +29,8 @@ public class UIRoot : MonoBehaviour
     public RectTransform LabelContainer => labelContainer;
     public ScreenLabel LabelPrefab => labelPrefab;
     public JournalPanel Journal => journal;
+    public Sprite PaperSprite => paperSprite;
+    public TMPro.TMP_FontAsset PaperFont => paperFont;
 
     private void Awake()
     {
@@ -57,6 +62,8 @@ public class UIRoot : MonoBehaviour
 
 #if UNITY_EDITOR
     /// <summary>Editor tool hook: wires the references after building the prefab.</summary>
+    public void EditorSetupPaper(Sprite sprite, TMPro.TMP_FontAsset font) { paperSprite = sprite; paperFont = font; }
+
     public void EditorSetup(RectTransform container, ScreenLabel prefab, JournalPanel journalPanel)
     {
         labelContainer = container;

@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/_Project/Scenes/Title.unity
     guid: 3304b6493b223454ea89f4cf0ed085ab
   - enabled: 1
+    path: Assets/_Project/Scenes/Village.unity
+    guid: bc02b43b5ee17954a852b1a0eec4dc9d
+  - enabled: 1
     path: Assets/_Project/Scenes/Regions/Region1_ShatteredGrounds.unity
     guid: b4d9488743271b043bdb591908bea820
   - enabled: 0

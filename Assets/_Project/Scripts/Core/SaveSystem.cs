@@ -28,6 +28,7 @@ public class SaveData
     public List<string> shards = new List<string>();      // MotionShard ids collected
     public List<string> questItems = new List<string>();  // QuestItem ids found (machine parts...)
     public List<string> questsDone = new List<string>();  // village requests completed
+    public List<string> events = new List<string>();      // one-off things that happened (e.g. "wall_broken"), for requests
     public SettingsData settings = new SettingsData();
 }
 
@@ -101,6 +102,8 @@ public static class SaveSystem
     public static void AddShard(string id) { if (Add(Data.shards, id)) Save(); }
     public static void AddQuestItem(string id) { if (Add(Data.questItems, id)) Save(); }
     public static void CompleteQuest(string id) { if (Add(Data.questsDone, id)) Save(); }
+    public static void MarkEvent(string id) { if (Data.events == null) Data.events = new List<string>(); if (Add(Data.events, id)) Save(); }
+    public static bool HasEvent(string id) => Data.events != null && Data.events.Contains(id);
 
     public static void ReachedRoom(string region, int room)
     {

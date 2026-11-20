@@ -59,6 +59,7 @@ public class BreakableWall : FloatingLabel, IRoomResettable
     {
         broken = true;
         wallCollider.enabled = false;
+        SaveSystem.MarkEvent("wall_broken"); // for the village Field Requests
         foreach (SpriteRenderer sr in renderers) if (sr != null) sr.enabled = false;
         if (Label != null) Label.gameObject.SetActive(false);
 
