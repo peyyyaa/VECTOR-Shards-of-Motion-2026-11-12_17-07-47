@@ -38,6 +38,8 @@ public class JournalPanel : MonoBehaviour
     [SerializeField] private GameObject marginP2Row;
     [SerializeField] private GameObject diagramCard;
     [SerializeField] private ForceDiagramView diagram;
+    [Tooltip("Shows a page's sketch (e.g. Wren's room sketch) in the diagram card instead of a force diagram.")]
+    [SerializeField] private Image sketchImage;
 
     [Header("Pages")]
     [SerializeField] private CanvasGroup group;
@@ -263,8 +265,14 @@ public class JournalPanel : MonoBehaviour
         Set(marginP1Text, p.marginP1, marginP1Row);
         Set(marginP2Text, p.marginP2, marginP2Row);
         Set(captionText, p.diagram != null ? p.diagram.caption : "");
-        if (diagramCard != null) diagramCard.SetActive(p.diagram != null && p.diagram.show);
-        if (diagram != null) diagram.Draw(p.diagram, diagramDelay);
+        bool hasSketch = p.sketch != null && sketchImage != null;
+        if (diagramCard != null) diagramCard.SetActive(hasSketch || (p.diagram != null && p.diagram.show));
+        if (diagram != null) diagram.Draw(hasSketch ? null : p.diagram, diagramDelay);
+        if (sketchImage != null)
+        {
+            sketchImage.gameObject.SetActive(hasSketch);
+            if (hasSketch) sketchImage.sprite = p.sketch;
+        }
 
         int count = Mathf.Max(1, entry.pages.Count);
         for (int i = 0; i < dots.Length; i++)
@@ -344,6 +352,8 @@ public class JournalPanel : MonoBehaviour
         marginP1Row = marginP1Section; marginP2Row = marginP2Section; diagramCard = diagramSection; diagram = diagramView;
         group = canvasGroup; leftContent = left; rightContent = right; flap = flapPage; pageCurl = curl;
     }
+
+    public void EditorSetupSketch(Image sketch) => sketchImage = sketch;
 
     public void EditorSetupBar(Image[] pageDots, RectTransform[] badges, TMP_Text[] keys, TMP_Text label, GameObject arrow, TMP_Text hint, Image fill)
     {

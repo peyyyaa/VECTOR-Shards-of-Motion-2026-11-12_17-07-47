@@ -229,8 +229,7 @@ public static class Room1VisualPass
         SerializedProperty list = a.FindProperty("behaviours");
         list.arraySize = 1;
         list.GetArrayElementAtIndex(0).objectReferenceValue = exitLight;
-        a.ApplyModifiedPropertiesWithoutUndo();
-    }
+        a.ApplyModifiedPropertiesWithoutUndo();    }
 
     // A rectangular block in 3x3 tile pieces. "grounded" blocks use side tiles at the bottom (no rounded underside).
     private static void Block(Transform parent, string name, float xMin, float yMin, float xMax, float yMax, bool grounded)

@@ -44,6 +44,7 @@ MonoBehaviour:
         kind: 3
         unit: N
       caption: On a scale, the support force equals the weight. That's what it reads.
+    sketch: {fileID: 0}
   - bigIdea: "The same force moves a light object more: a = net force \xF7 m."
     notes: "A quick test without a scale: push it. Friction grips each crate with
       \u03BC\xB7m\xB7g, so heavier crates grip harder. If one of you can move it
@@ -73,6 +74,7 @@ MonoBehaviour:
         kind: 2
         unit: N
       caption: "Net force 4.4 N, so a = 4.4 \xF7 2 = 2.2 m/s\xB2."
+    sketch: {fileID: 0}
   - bigIdea: "One burst, different speeds: \u0394v = J \xF7 m. Lighter crates go
       faster and slide further."
     notes: "Careful near the acid. A burst that nudges the heavy crate sends the
@@ -98,3 +100,9 @@ MonoBehaviour:
         kind: 5
         unit: "N\xB7s"
       caption: "\u0394v = 15 \xF7 3 = 5 m/s, then it slides about 1.3 m."
+    sketch: {fileID: 0}
+  tip: 'Not sure which crate is which? Weigh it on the test scale by the door, or
+    push it: if one of you can move it alone, it''s the light one. The light crate
+    waits in the niche above the door; the Tether can reach it from the high step.'
+  sketch: {fileID: 21300000, guid: 8613d9d4edb29cf4093ff742569ff274, type: 3}
+  sketchCaption: 'ALL: every arrow at once.'

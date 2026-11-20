@@ -159,6 +159,14 @@ public static class UIPrefabBuilder
         ForceDiagramView diagram = area.gameObject.AddComponent<ForceDiagramView>();
         diagram.EditorSetup(KitSprite("UI_Block"), KitSprite("UI_ArrowShaft"), KitSprite("UI_ArrowHead"), font);
         TMP_Text caption = Txt(card, "Caption", font, 28, Ink, new Vector2(0, -175), new Vector2(620, 60), TextAlignmentOptions.Center);
+        // Room sketches (300 x 170 px) shown at exactly 2x, so their pixels stay square.
+        RectTransform sketchRt = NewRect(card, "Sketch");
+        sketchRt.anchoredPosition = new Vector2(0, 30);
+        sketchRt.sizeDelta = new Vector2(600, 340);
+        Image sketch = sketchRt.gameObject.AddComponent<Image>();
+        sketch.raycastTarget = false;
+        sketch.preserveAspect = true;
+        sketchRt.gameObject.SetActive(false);
 
         RectTransform p1Row = NewRect(lc, "Margin_P1");
         Img(p1Row, "Icon", "UI_Icon_Burst", new Vector2(-330, -260), new Vector2(48, 48));
@@ -231,6 +239,7 @@ public static class UIPrefabBuilder
             idea.gameObject, closer.gameObject, fun.gameObject, p1Row.gameObject, p2Row.gameObject, card.gameObject, diagram,
             group, leftGroup, rightGroup, flap, curl);
         panel.EditorSetupBar(dots, badges, keys, prompt, arrow.gameObject, hint, fill);
+        panel.EditorSetupSketch(sketch);
         return panel;
     }
 

@@ -29,6 +29,8 @@ public class Doorway : MonoBehaviour
     [SerializeField] private Transform[] arrivals = new Transform[0];
     [SerializeField] private Transform landing;
     [SerializeField] private Transform landingArt;
+    [Tooltip("Soft light in the opening, so the way out is easy to spot.")]
+    [SerializeField] private Transform exitGlow;
     [Tooltip("Ruin Stone tiles: top-left, top, top-right, left, fill, right.")]
     [SerializeField] private Sprite[] stone = new Sprite[6];
 
@@ -47,6 +49,7 @@ public class Doorway : MonoBehaviour
             if (zone != null) { SetY(zone.transform, mid); zone.size = new Vector2(zone.size.x, h); }
         foreach (Transform a in arrivals)
             if (a != null) SetY(a, b + 0.75f);
+        if (exitGlow != null) SetY(exitGlow, mid);
 
         if (landing != null)
         {
@@ -101,10 +104,10 @@ public class Doorway : MonoBehaviour
 
 #if UNITY_EDITOR
     public void EditorSetup(Transform above, Transform aboveArt, BoxCollider2D playerBarrier, BoxCollider2D[] exits,
-        Transform[] arrivalPoints, Transform landingBlock, Transform landingVisual, Sprite[] stoneTiles)
+        Transform[] arrivalPoints, Transform landingBlock, Transform landingVisual, Sprite[] stoneTiles, Transform glow)
     {
         wallAbove = above; wallAboveArt = aboveArt; barrier = playerBarrier; exitZones = exits;
-        arrivals = arrivalPoints; landing = landingBlock; landingArt = landingVisual; stone = stoneTiles;
+        arrivals = arrivalPoints; landing = landingBlock; landingArt = landingVisual; stone = stoneTiles; exitGlow = glow;
     }
 #endif
 }

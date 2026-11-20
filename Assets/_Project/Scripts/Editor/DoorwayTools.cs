@@ -71,11 +71,24 @@ public static class DoorwayTools
                 landingArt.gameObject.SetActive(false);
             }
 
+            Transform glow = Find("Exit_Glow");
+            if (glow == null)
+            {
+                glow = new GameObject("Exit_Glow").transform;
+                glow.SetParent(root.transform, false);
+                UnityEngine.Rendering.Universal.Light2D l = glow.gameObject.AddComponent<UnityEngine.Rendering.Universal.Light2D>();
+                l.lightType = UnityEngine.Rendering.Universal.Light2D.LightType.Point;
+                l.color = new Color(0.45f, 0.9f, 1f);
+                l.intensity = 0.9f;
+                l.pointLightOuterRadius = 2.6f;
+                l.pointLightInnerRadius = 0.3f;
+            }
+
             Doorway d = root.GetComponent<Doorway>();
             if (d == null) d = root.AddComponent<Doorway>();
             BoxCollider2D[] exits = root.GetComponentsInChildren<RoomExit>(true).Select(e => e.GetComponent<BoxCollider2D>()).Where(c => c != null).ToArray();
             Transform[] arrivals = root.GetComponentsInChildren<Transform>(true).Where(t => t.name.StartsWith("Arrive_")).ToArray();
-            d.EditorSetup(wall, Find("Wall_Above_Visual"), barrier.GetComponent<BoxCollider2D>(), exits, arrivals, landing, landingArt, stone);
+            d.EditorSetup(wall, Find("Wall_Above_Visual"), barrier.GetComponent<BoxCollider2D>(), exits, arrivals, landing, landingArt, stone, glow);
             d.Apply(); // opening bottom 0: same layout as before
             PrefabUtility.SaveAsPrefabAsset(root, DoorwayPrefab);
             Debug.Log($"Doorway: Doorway_Side is adjustable ({exits.Length} exit zones, {arrivals.Length} arrival points). " +

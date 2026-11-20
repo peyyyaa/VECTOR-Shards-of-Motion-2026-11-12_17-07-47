@@ -15,6 +15,13 @@ public class JournalEntry : ScriptableObject
 {
     public string title = "Journal";
     public List<JournalPage> pages = new List<JournalPage>();
+    [Tooltip("Wren's tip for this room. After players have spent a while in the room, the journal stone glows and " +
+             "this tip is added as the last page. One or two short sentences that point the way without solving it.")]
+    [TextArea(2, 5)] public string tip;
+    [Tooltip("Wren's sketch of the room (made by Tools > Shards of Motion > Journal > Draw Room Sketches): what powers what, " +
+             "the weights plates need, where things move, where the exit is. Shown as a clue page near the end of the entry.")]
+    public Sprite sketch;
+    [TextArea(1, 3)] public string sketchCaption;
 }
 
 [Serializable]
@@ -30,6 +37,8 @@ public class JournalPage
     [Tooltip("A short note from Player 2 (Wind Tether), shown in cyan.")]
     public string marginP2;
     public ForceDiagram diagram = new ForceDiagram();
+    [Tooltip("Optional picture shown in the diagram card instead of a force diagram (e.g. Wren's room sketch).")]
+    public Sprite sketch;
 }
 
 /// <summary>A free-body diagram: one object and the forces acting on it, drawn to scale on the page.</summary>

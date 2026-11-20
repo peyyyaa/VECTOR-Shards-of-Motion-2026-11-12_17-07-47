@@ -180,6 +180,15 @@ public static class RoomDresser
         {
             Transform t = plate.transform;
             if (t.TryGetComponent(out SpriteRenderer own)) own.enabled = false;
+            if (t.parent != null && t.parent.GetComponentInParent<Rigidbody2D>() != null)
+            {
+                // Built into a moving body (a cargo ferry): the deck is the plate; no floor recess.
+                SerializedObject carried = new SerializedObject(plate);
+                carried.FindProperty("plateRenderer").objectReferenceValue = null;
+                carried.FindProperty("slab").objectReferenceValue = null;
+                carried.ApplyModifiedPropertiesWithoutUndo();
+                continue;
+            }
             SpriteRenderer slab = Visual(t, "Slab", ctx.Interactive["TX Village Props - Fence 01 Rail 01"], "BackDecor", 20);
             Tiled(slab, new Vector2(BoxRect(t.GetComponent<BoxCollider2D>()).width, 9f / 32f));
             // Recessed: drawn behind the ground with its top 4 px above the floor; PressurePlate sinks it up to 3 px.
@@ -215,6 +224,13 @@ public static class RoomDresser
                 SpriteRenderer deck = Visual(t, "Deck", planks, "Interactables", 0);
                 Tiled(deck, new Vector2(r.width, planks.bounds.size.y));
                 PlaceBottom(deck, new Vector2(r.center.x, r.yMax - planks.bounds.size.y));
+                if (new SerializedObject(mover).FindProperty("signalDelay").floatValue > 0f)
+                {
+                    // "About to sail" blinking lamp on the deck (MoverCue), riding with the ferry.
+                    Light2D cue = PointLight(t, "Departure Light", new Vector3(r.center.x, r.yMax + 0.4f, 0f), new Color(1f, 0.75f, 0.3f), 1.4f, 2.2f);
+                    cue.enabled = false;
+                    cue.gameObject.AddComponent<MoverCue>().EditorSetup(mover, cue);
+                }
             }
             else
             {
@@ -273,8 +289,10 @@ public static class RoomDresser
                 if (pw != null)
                 {
                     pw.Size = r.size;
-                    pw.ambientWaveMul = 2.5f;  // livelier surface (Cainos default 1)
-                    pw.waveLimit = 0.8f;       // taller waves allowed (default 0.5)
+                    // A bit livelier than the Cainos defaults (1 / 0.5), but waves stay within 0.5 m so they never
+                    // reach a ferry or crate floating just above the surface (that made the water simulate every frame).
+                    pw.ambientWaveMul = 1.6f;
+                    pw.waveLimit = 0.5f;
                     pw.distortionStrength = 0.8f;
                     PrefabUtility.RecordPrefabInstancePropertyModifications(pw); // keep these as overrides on the instance
                 }

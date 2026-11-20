@@ -36,6 +36,18 @@ public static class JournalTool
         }
     }
 
+    /// <summary>Rewrites every room's entry asset from this file (same assets, so journal stones keep their links).</summary>
+    [MenuItem("Tools/Shards of Motion/Journal/Update All Entries")]
+    public static void UpdateAll()
+    {
+        Directory.CreateDirectory(Folder);
+        Save("R1_01_TheFirstExchange", FirstExchange());
+        Save("R1_01_Float", Float());
+        SaveRoom2Entry();
+        SaveRoom3Entry();
+        Debug.Log("Journal tool: all entries updated in " + Folder + ".");
+    }
+
     /// <summary>Creates (or rewrites) the Room 2 entry asset; Room2Builder assigns it to the room's journal stone.</summary>
     public static JournalEntry SaveRoom2Entry()
     {
@@ -54,11 +66,13 @@ public static class JournalTool
     {
         JournalEntry e = ScriptableObject.CreateInstance<JournalEntry>();
         e.title = "3 · Together We Move";
+        e.tip = "The ferry sails when it carries at least 85 N of cargo (people don't count), and waits a moment so you can hop on. " +
+                "The stone crate is too heavy for one of you: push and pull it together. At the far side, climb the crate.";
 
         e.pages.Add(new JournalPage
         {
             bigIdea = "Forces on the same object add up. Two small forces can beat one big friction.",
-            notes = "The causeway collapsed long ago; only the old bridge still crosses the acid, and it moves when its plate feels " +
+            notes = "The causeway collapsed long ago; only the old cargo ferry still crosses the acid. It sails when its deck carries " +
                     "a heavy load. The stone crate is too heavy for either of us alone. But a push and a pull at the same time, " +
                     "in the same direction, add together.",
             lookCloser = $"Friction on 3 kg: μ·m·g = {Fric("29.4 N")}\n" +
@@ -84,23 +98,23 @@ public static class JournalTool
         e.pages.Add(new JournalPage
         {
             bigIdea = "Inertia rides along: things keep doing what they were doing until a force changes it.",
-            notes = "Watch the crate on the bridge. When the bridge starts, the crate lags behind for a moment; when it stops, " +
+            notes = "Watch the crate on the ferry. When the ferry starts, the crate lags behind for a moment; when it stops, " +
                     "the crate keeps sliding forward. Only friction from the deck drags it along. Keep cargo away from the edges!",
-            lookCloser = $"Friction on the 2 kg crate: up to {Fric("19.6 N")}, so a = 19.6 ÷ 2 = 9.8 m/s²\n" +
-                         "Bridge speed 2 m/s: the crate catches up in 2 ÷ 9.8 ≈ 0.2 s\n" +
+            lookCloser = $"Friction on the 3 kg crate: up to {Fric("29.4 N")}, so a = 29.4 ÷ 3 = 9.8 m/s²\n" +
+                         "Ferry speed 2 m/s: the crate catches up in 2 ÷ 9.8 ≈ 0.2 s\n" +
                          "and slips about v² ÷ (2a) = 4 ÷ 19.6 ≈ 0.2 m each time.",
             funFact = "It's why a bus pushes you back when it starts and forward when it brakes. You aren't pushed: you just keep going.",
-            marginP1 = "The crate didn't move. The bridge did.",
+            marginP1 = "The crate didn't move. The ferry did.",
             marginP2 = "Then the crate wanted to keep going.",
             diagram = new ForceDiagram
             {
                 show = true,
-                objectLabel = "Crate\n2 kg",
+                objectLabel = "Crate\n3 kg",
                 forces = new List<DiagramForce>
                 {
-                    new DiagramForce { label = "Friction", newtons = 19.6f, direction = DiagramForce.Direction.Right, kind = DiagramForce.Kind.Friction },
+                    new DiagramForce { label = "Friction", newtons = 29.4f, direction = DiagramForce.Direction.Right, kind = DiagramForce.Kind.Friction },
                 },
-                caption = "As the bridge starts right, friction is the only force pulling the crate along.",
+                caption = "As the ferry starts right, friction is the only force pulling the crate along.",
             },
         });
         return e;
@@ -112,6 +126,8 @@ public static class JournalTool
     {
         JournalEntry e = ScriptableObject.CreateInstance<JournalEntry>();
         e.title = "2 · Weight of Things";
+        e.tip = "Not sure which crate is which? Weigh it on the test scale by the door, or push it: if one of you can move it alone, " +
+                "it's the light one. The light crate waits in the niche above the door; the Tether can reach it from the high step.";
 
         e.pages.Add(new JournalPage
         {
@@ -191,6 +207,8 @@ public static class JournalTool
     {
         JournalEntry e = ScriptableObject.CreateInstance<JournalEntry>();
         e.title = "1 · The First Exchange";
+        e.tip = "One of you stands on the small plate to hold the lift up while the other rides to the high perch. " +
+                "Up there, slide the keystone onto its plate. The heavy crate on the ledge won't move for pushing: give it a Burst.";
 
         e.pages.Add(new JournalPage
         {
@@ -316,8 +334,12 @@ public static class JournalTool
             AssetDatabase.CreateAsset(content, path);
             return content;
         }
+        Sprite sketch = existing.sketch;           // drawn by Draw Room Sketches: keep it when the text is rewritten
+        string sketchCaption = existing.sketchCaption;
         EditorUtility.CopySerialized(content, existing); // keep the asset's GUID so references survive
         existing.name = name;
+        existing.sketch = sketch;
+        existing.sketchCaption = sketchCaption;
         EditorUtility.SetDirty(existing);
         AssetDatabase.SaveAssets();
         Object.DestroyImmediate(content);

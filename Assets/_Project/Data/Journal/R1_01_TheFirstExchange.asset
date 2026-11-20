@@ -44,6 +44,7 @@ MonoBehaviour:
         kind: 2
         unit: N
       caption: 'Balanced: friction matches the push (up to 29.4 N). Net force = 0.'
+    sketch: {fileID: 0}
   - bigIdea: An impulse is a big force for a short moment. It changes velocity right
       away.
     notes: The Kinetic Burst doesn't lean on the crate, it SLAMS it. All of the push
@@ -68,6 +69,7 @@ MonoBehaviour:
         kind: 5
         unit: "N\xB7s"
       caption: "One burst: \u0394v = 15 \xF7 3 = 5 m/s, all at once."
+    sketch: {fileID: 0}
   - bigIdea: "Weight is the pull of gravity: W = m\xB7g. Plates feel weight, not
       size."
     notes: The old pressure plates are scales. Each one waits for a certain weight
@@ -99,3 +101,9 @@ MonoBehaviour:
         kind: 3
         unit: N
       caption: The plate pushes up exactly as hard as the crate weighs.
+    sketch: {fileID: 0}
+  tip: 'One of you stands on the small plate to hold the lift up while the other
+    rides to the high perch. Up there, slide the keystone onto its plate. The heavy
+    crate on the ledge won''t move for pushing: give it a Burst.'
+  sketch: {fileID: 21300000, guid: 2542174c66aa24b48b517bbb15bd2f18, type: 3}
+  sketchCaption: 'ALL: every arrow at once.'

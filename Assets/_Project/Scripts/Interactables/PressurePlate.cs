@@ -99,8 +99,12 @@ public class PressurePlate : SignalSource
         plateRenderer = GetComponent<SpriteRenderer>();
     }
 
+    // The body the plate is attached to (e.g. a ferry it's built into), or null for a fixed plate.
+    private Rigidbody2D carrier;
+
     private void Start()
     {
+        carrier = GetComponentInParent<Rigidbody2D>();
         UpdateColor();
     }
 
@@ -137,7 +141,9 @@ public class PressurePlate : SignalSource
                 continue;
             }
             // Only bodies that have settled count; something sliding across doesn't press the plate.
-            bool resting = rb.linearVelocity.magnitude <= maxRestingSpeed;
+            // Resting = not moving relative to the plate (a plate on a moving ferry moves with its load).
+            Vector2 plateVelocity = carrier != null ? carrier.linearVelocity : Vector2.zero;
+            bool resting = (rb.linearVelocity - plateVelocity).magnitude <= maxRestingSpeed;
             if (rb.bodyType == RigidbodyType2D.Dynamic && resting && Counts(rb) && stack.Add(rb))
             {
                 toVisit.Enqueue(rb);
@@ -211,7 +217,8 @@ public class PressurePlate : SignalSource
     private void Update()
     {
         if (slab == null) return;
-        if (!slabRestKnown) { slabRest = slab.position; slabRestKnown = true; }
+        // Rest position relative to the plate (so a slab on a moving ferry travels with it).
+        if (!slabRestKnown) { slabRest = transform.InverseTransformPoint(slab.position); slabRestKnown = true; }
 
         float target = 0f;
         if (isPressed) target = maxSinkPixels;
@@ -219,7 +226,7 @@ public class PressurePlate : SignalSource
             target = Mathf.Clamp(Mathf.Round(currentWeight / Mathf.Max(0.01f, requiredWeight) * maxSinkPixels), 1f, Mathf.Max(1f, maxSinkPixels - 1f));
 
         sinkPixels = Mathf.MoveTowards(sinkPixels, target, sinkSpeed * Time.deltaTime);
-        slab.position = slabRest + Vector3.down * (Mathf.Round(sinkPixels) / pixelsPerUnit);
+        slab.position = transform.TransformPoint(slabRest) + Vector3.down * (Mathf.Round(sinkPixels) / pixelsPerUnit);
     }
 
     private void UpdateColor()

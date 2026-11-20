@@ -41,6 +41,9 @@ public class Mover : MonoBehaviour, IRoomResettable
     [Tooltip("Follow Signal: at B while on, at A while off. Loop: only runs while on (empty = always runs).")]
     [SerializeField] private SignalSource signal;
     [SerializeField] private bool invertSignal = false;
+    [Tooltip("Follow Signal: the signal must stay changed this long (seconds) before the mover reacts. " +
+             "Gives players time to hop on or off a ferry. 0 = react at once.")]
+    [SerializeField, Min(0f)] private float signalDelay = 0f;
     [Tooltip("Loop mode: seconds to wait at each end.")]
     [SerializeField, Min(0f)] private float waitAtEnds = 0.75f;
 
@@ -55,9 +58,14 @@ public class Mover : MonoBehaviour, IRoomResettable
     private bool targetB;          // Follow Signal without a signal: set by MoveToA/MoveToB/Toggle
     private bool loopGoingToB = true;
     private float waitTimer;
+    private bool delayedPowered;    // the signal as the mover acts on it (after Signal Delay)
+    private float delayTimer;
     private readonly RaycastHit2D[] hits = new RaycastHit2D[8];
 
     public Vector2 HomePoint => pointA;
+
+    /// <summary>True while the signal has changed but Signal Delay hasn't passed yet ("about to move").</summary>
+    public bool IsAboutToMove { get; private set; }
 
     private void Awake()
     {
@@ -76,6 +84,13 @@ public class Mover : MonoBehaviour, IRoomResettable
     {
         float dt = Time.fixedDeltaTime;
         bool powered = signal == null || (signal.IsActive != invertSignal);
+        if (signalDelay > 0f && signal != null)
+        {
+            if (powered == delayedPowered) delayTimer = 0f;
+            else if ((delayTimer += dt) >= signalDelay) { delayedPowered = powered; delayTimer = 0f; }
+            IsAboutToMove = powered != delayedPowered;
+            powered = delayedPowered;
+        }
 
         Vector2 target;
         if (mode == MoverMode.FollowSignal)
@@ -160,6 +175,9 @@ public class Mover : MonoBehaviour, IRoomResettable
         targetB = false;
         loopGoingToB = true;
         waitTimer = 0f;
+        delayedPowered = false;
+        delayTimer = 0f;
+        IsAboutToMove = false;
     }
 
     // Scene view: the path (A → B) and the object's outline at B.

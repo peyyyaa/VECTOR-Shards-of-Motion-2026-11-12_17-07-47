@@ -39,3 +39,7 @@ MonoBehaviour:
         kind: 3
         unit: N
       caption: Normally 29.4 N. While floating, only 4.9 N.
+    sketch: {fileID: 0}
+  tip: 
+  sketch: {fileID: 0}
+  sketchCaption: 

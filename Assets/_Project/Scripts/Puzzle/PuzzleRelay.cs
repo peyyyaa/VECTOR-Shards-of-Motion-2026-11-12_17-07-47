@@ -11,6 +11,8 @@ using UnityEngine.Events;
 ///
 /// - Mode All: on only while EVERY input is on ("both plates pressed").
 ///   Mode Any: on while AT LEAST ONE input is on.
+///   Mode Switch: on while an ODD number of inputs are on, so flipping ANY input flips the result
+///   (two-way switches: "each lever sends the ferry the other way").
 /// - Invert: flips the result ("door closes while the plate is pressed").
 /// - Latch: once it turns on, it stays on (until a room reset).
 ///
@@ -19,7 +21,7 @@ using UnityEngine.Events;
 /// </summary>
 public class PuzzleRelay : SignalSource, IRoomResettable
 {
-    public enum RelayMode { All, Any }
+    public enum RelayMode { All, Any, Switch }
 
     [Header("Logic")]
     [Tooltip("Plates, levers or other relays. Empty slots are ignored.")]
@@ -66,7 +68,8 @@ public class PuzzleRelay : SignalSource, IRoomResettable
         bool result;
         if (counted == 0) result = false; // no inputs: never on (before Invert)
         else if (mode == RelayMode.All) result = on == counted;
-        else result = on > 0;
+        else if (mode == RelayMode.Any) result = on > 0;
+        else result = on % 2 == 1; // Switch
 
         return invert ? !result : result;
     }

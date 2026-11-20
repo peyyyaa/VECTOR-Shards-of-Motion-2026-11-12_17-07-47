@@ -16,8 +16,8 @@ MonoBehaviour:
   pages:
   - bigIdea: Forces on the same object add up. Two small forces can beat one big
       friction.
-    notes: The causeway collapsed long ago; only the old bridge still crosses the
-      acid, and it moves when its plate feels a heavy load. The stone crate is too
+    notes: The causeway collapsed long ago; only the old cargo ferry still crosses
+      the acid. It sails when its deck carries a heavy load. The stone crate is too
       heavy for either of us alone. But a push and a pull at the same time, in the
       same direction, add together.
     lookCloser: "Friction on 3 kg: \u03BC\xB7m\xB7g = <color=#7d3029>29.4 N</color>\nPush
@@ -50,29 +50,36 @@ MonoBehaviour:
         kind: 2
         unit: N
       caption: '12 + 24 = 36 N forward against 29.4 N: it moves.'
+    sketch: {fileID: 0}
   - bigIdea: 'Inertia rides along: things keep doing what they were doing until a
       force changes it.'
-    notes: Watch the crate on the bridge. When the bridge starts, the crate lags
-      behind for a moment; when it stops, the crate keeps sliding forward. Only friction
+    notes: Watch the crate on the ferry. When the ferry starts, the crate lags behind
+      for a moment; when it stops, the crate keeps sliding forward. Only friction
       from the deck drags it along. Keep cargo away from the edges!
-    lookCloser: "Friction on the 2 kg crate: up to <color=#7d3029>19.6 N</color>,
-      so a = 19.6 \xF7 2 = 9.8 m/s\xB2\nBridge speed 2 m/s: the crate catches up
-      in 2 \xF7 9.8 \u2248 0.2 s\nand slips about v\xB2 \xF7 (2a) = 4 \xF7 19.6 \u2248
+    lookCloser: "Friction on the 3 kg crate: up to <color=#7d3029>29.4 N</color>,
+      so a = 29.4 \xF7 3 = 9.8 m/s\xB2\nFerry speed 2 m/s: the crate catches up in
+      2 \xF7 9.8 \u2248 0.2 s\nand slips about v\xB2 \xF7 (2a) = 4 \xF7 19.6 \u2248
       0.2 m each time."
     funFact: 'It''s why a bus pushes you back when it starts and forward when it
       brakes. You aren''t pushed: you just keep going.'
-    marginP1: The crate didn't move. The bridge did.
+    marginP1: The crate didn't move. The ferry did.
     marginP2: Then the crate wanted to keep going.
     diagram:
       show: 1
       objectLabel: 'Crate
 
-        2 kg'
+        3 kg'
       forces:
       - label: Friction
-        newtons: 19.6
+        newtons: 29.4
         direction: 0
         kind: 2
         unit: N
-      caption: As the bridge starts right, friction is the only force pulling the
+      caption: As the ferry starts right, friction is the only force pulling the
         crate along.
+    sketch: {fileID: 0}
+  tip: 'The ferry sails when it carries at least 85 N of cargo (people don''t count),
+    and waits a moment so you can hop on. The stone crate is too heavy for one of
+    you: push and pull it together. At the far side, climb the crate.'
+  sketch: {fileID: 21300000, guid: 005e215e7c4403447aa9ab1b37d76ffa, type: 3}
+  sketchCaption: 'FLIP: each one reverses it.'
