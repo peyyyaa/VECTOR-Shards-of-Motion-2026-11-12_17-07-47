@@ -67,7 +67,7 @@ public static class MapTool
             ("Weight of Things",      new Vector2(150f, 56f),  B, null, null),
             ("Together We Move",      new Vector2(212f, 40f),  B, "R1_Part_Flywheel", "Flywheel"),
             ("Broken Crossing",       new Vector2(266f, 82f),  R, "R1_Part_Counterweight", "Counterweight"),
-            ("Long Push",             new Vector2(220f, 122f), B, null, null),
+            ("Long Push",             new Vector2(220f, 122f), B, "R1_Part_Bearing", "Bearing"),
             ("Weight of Cooperation", new Vector2(156f, 134f), B, null, null),
             ("Unstoppable Object",    new Vector2(92f, 170f),  B, null, null),
             ("Heart of the Forest",   new Vector2(200f, 170f), B, null, null),

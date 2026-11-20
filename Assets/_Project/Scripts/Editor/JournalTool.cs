@@ -46,6 +46,7 @@ public static class JournalTool
         SaveRoom2Entry();
         SaveRoom3Entry();
         SaveRoom4Entry();
+        SaveRoom5Entry();
         Debug.Log("Journal tool: all entries updated in " + Folder + ".");
     }
 
@@ -129,6 +130,69 @@ public static class JournalTool
                     new DiagramForce { label = "Friction", newtons = 9.8f, direction = DiagramForce.Direction.Left, kind = DiagramForce.Kind.Friction },
                 },
                 caption = "Net 15.2 N: +15.2 kg·m/s every second.",
+            },
+        });
+        return e;
+    }
+
+    /// <summary>Creates (or rewrites) the Room 5 entry asset; Room5Builder assigns it.</summary>
+    public static JournalEntry SaveRoom5Entry()
+    {
+        Directory.CreateDirectory(Folder);
+        return Save("R1_05_LongPush", LongPush());
+    }
+
+    private static JournalEntry LongPush()
+    {
+        JournalEntry e = ScriptableObject.CreateInstance<JournalEntry>();
+        e.title = "5 · Long Push";
+        e.tip = "Nobody can get behind the crate in the alcove, so pushing only presses it into the wall. Pull it out first, " +
+                "then send it sliding west along the wet stone. The moss will catch it.";
+
+        e.pages.Add(new JournalPage
+        {
+            bigIdea = "Friction pushes back against sliding. How hard depends on the surface and on how hard it's pressed.",
+            notes = "The old causeway is three floors in one: dry stone, slick wet stone and thick moss. Same crate, same weight, " +
+                    "very different grip. The surface's roughness is a number called μ (\"mu\").",
+            lookCloser = $"Friction f = μ × N, and on a flat floor N = m·g = 2 × 29.43 = {Wt("58.9 N")}\n" +
+                         $"Stone μ = 1/3 → {Fric("19.6 N")}    Wet stone μ = 0.05 → {Fric("2.9 N")}\n" +
+                         $"Moss μ = 0.6 → {Fric("35.3 N")}   (one push is {Push("12 N")}, the tether {Pull("24 N")})",
+            funFact = "Curling players sweep the ice in front of the stone: a thin layer of melt lowers μ, so the stone slides farther.",
+            marginP1 = "On the wet stone I can push it alone!",
+            marginP2 = "On the moss, not even both of us.",
+            diagram = new ForceDiagram
+            {
+                show = true,
+                objectLabel = "Crate\n2 kg",
+                forces = new List<DiagramForce>
+                {
+                    new DiagramForce { label = "Push", newtons = 12f, direction = DiagramForce.Direction.Right, kind = DiagramForce.Kind.Push },
+                    new DiagramForce { label = "Friction", newtons = 19.6f, direction = DiagramForce.Direction.Left, kind = DiagramForce.Kind.Friction },
+                },
+                caption = "On stone: 12 N can't beat 19.6 N of friction.",
+            },
+        });
+
+        e.pages.Add(new JournalPage
+        {
+            bigIdea = "Less friction, longer slide. Friction is what stops a sliding thing.",
+            notes = "A Burst gives any 2 kg crate the same speed. After that, only friction slows it down, so the floor decides how " +
+                    "far it goes. On wet stone it barely slows at all; on moss it stops almost at once.",
+            lookCloser = $"Burst: Δv = {Imp("7.5 m/s")}. Stopping distance d = v² ÷ (2·μ·g):\n" +
+                         $"Stone ≈ 2.9 m    Wet stone ≈ 19 m    Moss ≈ 1.6 m\n" +
+                         "(Real surfaces grip a little harder to start than to slide; this world uses one μ for both.)",
+            funFact = "On dry roads car tyres have μ close to 1. On ice it can drop below 0.1, which is why braking distances explode.",
+            marginP1 = "One kick and it's gone!",
+            marginP2 = "And the moss is the brake.",
+            diagram = new ForceDiagram
+            {
+                show = true,
+                objectLabel = "Crate\n2 kg",
+                forces = new List<DiagramForce>
+                {
+                    new DiagramForce { label = "Friction", newtons = 2.9f, direction = DiagramForce.Direction.Left, kind = DiagramForce.Kind.Friction },
+                },
+                caption = "On wet stone: only 2.9 N slows it down.",
             },
         });
         return e;

@@ -208,6 +208,16 @@ public static partial class VillageBuilder
         float top = table.GetComponent<SpriteRenderer>().bounds.max.y;
         AddPart(display, table.transform, "Wheelbarrow Wheel", "R1_Part_Flywheel", 3.8f, top);
         AddPart(display, table.transform, "Anvil", "R1_Part_Counterweight", 4.6f, top);
+        // Machine part 3 (Room 5): the Bearing, drawn by Room5Builder (no pack sprite fits).
+        Sprite bearing = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/_Project/Art/Sprites/Props/SP_Part_Bearing.png") ?? Room5Builder.BearingSprite();
+        GameObject bearingGo = new GameObject("Part R1_Part_Bearing");
+        bearingGo.transform.SetParent(table.transform, false);
+        bearingGo.transform.position = new Vector3(4.2f, top + 0.25f, 0f);
+        SpriteRenderer bearingSr = bearingGo.AddComponent<SpriteRenderer>();
+        bearingSr.sprite = bearing;
+        bearingSr.sortingLayerName = "Props";
+        bearingSr.sortingOrder = 3;
+        display.EditorAdd("R1_Part_Bearing", bearingSr);
         PackProp(table.transform, "Bottle", "White Bottle", 5.2f, top, "Props", 1);
         PackProp(table.transform, "Cup", "Cup", 3.2f, top, "Props", 1);
         PackProp(props, "Chair", "Chair", 5.6f, Floor, "Props", -1);

@@ -55,9 +55,9 @@ MonoBehaviour:
   - roomObject: R1_Room05
     displayName: Long Push
     shards: 3
-    partId: 
-    partName: 
-    journal: {fileID: 0}
+    partId: R1_Part_Bearing
+    partName: Bearing
+    journal: {fileID: 11400000, guid: d7ac9980d789a11499e67853d284a7af, type: 2}
     mapPosition: {x: 220, y: 122}
     label: 0
   - roomObject: R1_Room06
