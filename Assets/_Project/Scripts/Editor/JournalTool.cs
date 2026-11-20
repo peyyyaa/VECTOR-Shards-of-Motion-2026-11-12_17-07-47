@@ -146,8 +146,8 @@ public static class JournalTool
     {
         JournalEntry e = ScriptableObject.CreateInstance<JournalEntry>();
         e.title = "5 · Long Push";
-        e.tip = "Nobody can get behind the crate in the alcove, so pushing only presses it into the wall. Pull it out first, " +
-                "then send it sliding west along the wet stone. The moss will catch it.";
+        e.tip = "Both crates must end on the moss. Run the light one along and let it glide; a Burst sends it flying past. " +
+                "Nobody can get behind the heavy one in the alcove: pull it out first, then Burst it west. The moss will catch it.";
 
         e.pages.Add(new JournalPage
         {
@@ -193,6 +193,29 @@ public static class JournalTool
                     new DiagramForce { label = "Friction", newtons = 2.9f, direction = DiagramForce.Direction.Left, kind = DiagramForce.Kind.Friction },
                 },
                 caption = "On wet stone: only 2.9 N slows it down.",
+            },
+        });
+
+        e.pages.Add(new JournalPage
+        {
+            bigIdea = "Same push, different crate. A Burst gives every crate the same momentum, so the light one leaves twice as fast.",
+            notes = "The old gate wants 80 N on the moss, so both crates must rest there: 58.9 + 29.4 = 88 N. But burst the light crate " +
+                    "and it shoots straight across the moss. It needs a gentler start: run it along and let it go.",
+            lookCloser = $"Δv = J ÷ m:  2 kg → {Imp("7.5 m/s")}    1 kg → {Imp("15 m/s")}\n" +
+                         "Friction slows ANY crate by μ·g each second (moss: 17.7 m/s every second).\n" +
+                         "Twice the speed → four times the distance: on moss 1.6 m vs 6.4 m.",
+            funFact = "Stopping distance grows with the square of speed. That's why driving twice as fast needs about four times the room to stop.",
+            marginP1 = "Gently?? I only know one setting.",
+            marginP2 = "Then I'll push this one. You kick the heavy one.",
+            diagram = new ForceDiagram
+            {
+                show = true,
+                objectLabel = "Crate\n1 kg",
+                forces = new List<DiagramForce>
+                {
+                    new DiagramForce { label = "Burst", newtons = 15f, unit = "N·s", direction = DiagramForce.Direction.Left, kind = DiagramForce.Kind.Impulse },
+                },
+                caption = "Same impulse, half the mass: Δv = 15 ÷ 1 = 15 m/s.",
             },
         });
         return e;

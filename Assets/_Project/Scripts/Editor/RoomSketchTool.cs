@@ -10,7 +10,7 @@ using UnityEngine;
 /// journal's paper card), 300 x 170 px (15 px per metre), shown at 2x. It shows HOW THINGS CONNECT, not the solution:
 ///   stone (hatched), acid (green), plates with the weight they need, crates with their mass ("?" where the room hides
 ///   it), movers with an orange arrow along their path, levers, cyan arrows from each plate/lever to what it powers
-///   (tagged ALL / ANY / FLIP for how a relay combines them), and the exit (at its real height, read from the open
+///   (tagged ALL / ANY / FLIP for how a relay combines them), floors with their own friction (WET ripples, MOSS stipple), and the exit (at its real height, read from the open
 ///   Region 1 scene's doorways). Shards and machine parts are left out on purpose.
 /// The sketch and a caption are stored on the room's JournalEntry (sketch, sketchCaption); JournalStone adds the page.
 /// Re-run after changing a room.
@@ -28,12 +28,14 @@ public static class RoomSketchTool
         (2, "Assets/_Project/Prefabs/Rooms/Region1/R1_Room02.prefab", "R1_02_WeightOfThings"),
         (3, "Assets/_Project/Prefabs/Rooms/Region1/R1_Room03.prefab", "R1_03_TogetherWeMove"),
         (4, "Assets/_Project/Prefabs/Rooms/Region1/R1_Room04.prefab", "R1_04_BrokenCrossing"),
+        (5, "Assets/_Project/Prefabs/Rooms/Region1/R1_Room05.prefab", "R1_05_LongPush"),
     };
 
     private static readonly Color32 Ink = new Color32(74, 47, 28, 255), InkSoft = new Color32(74, 47, 28, 110), Hatch = new Color32(74, 47, 28, 45);
     private static readonly Color32 Acid = new Color32(94, 160, 60, 170), AcidTop = new Color32(62, 120, 40, 255);
     private static readonly Color32 Gold = new Color32(170, 120, 30, 255), CrateFill = new Color32(176, 130, 80, 120);
     private static readonly Color32 Link = new Color32(30, 125, 150, 255), Move = new Color32(200, 104, 30, 255), Exit = new Color32(40, 140, 60, 255);
+    private static readonly Color32 Wet = new Color32(50, 120, 185, 255), Moss = new Color32(70, 125, 45, 255);
 
     private static Color32[] px;
 
@@ -120,6 +122,28 @@ public static class RoomSketchTool
         // Acid.
         foreach (HazardZone hz in root.GetComponentsInChildren<HazardZone>(true))
             if (hz.TryGetComponent(out BoxCollider2D box) && !PrefabUtility.IsPartOfPrefabInstance(hz.gameObject)) AcidArea(LocalRect(box));
+
+        // Floor surfaces with their own friction (edge colliders with a material): wet stone = blue ripples,
+        // moss = green stipple, labelled inside the floor below them.
+        foreach (EdgeCollider2D edge in root.GetComponentsInChildren<EdgeCollider2D>(true))
+        {
+            if (edge.sharedMaterial == null || edge.pointCount < 2) continue;
+            Vector2 a = L(edge.transform.TransformPoint(edge.points[0])), b = L(edge.transform.TransformPoint(edge.points[edge.pointCount - 1]));
+            float x0 = Mathf.Min(a.x, b.x), x1 = Mathf.Max(a.x, b.x), y = a.y;
+            string mat = edge.sharedMaterial.name.ToLowerInvariant();
+            if (mat.Contains("wet"))
+            {
+                Vector2Int p0 = P(x0, y), p1 = P(x1, y);
+                for (int x = p0.x; x <= p1.x; x++) Set(x, p0.y + 1 + ((x / 3) % 2), Wet);
+                Text(P((x0 + x1) * 0.5f, y - 0.55f), "WET", Wet);
+            }
+            else if (mat.Contains("moss"))
+            {
+                Vector2Int p0 = P(x0, y), p1 = P(x1, y);
+                for (int x = p0.x; x <= p1.x; x++) for (int dy = 1; dy <= 3; dy++) if ((x + dy * 2) % 3 == 0) Set(x, p0.y + dy, Moss);
+                Text(P((x0 + x1) * 0.5f, y - 0.55f), "MOSS", Moss);
+            }
+        }
 
         // Movers: outline, ghost at the far end, path arrow.
         foreach (Mover m in root.GetComponentsInChildren<Mover>(true))
@@ -316,6 +340,8 @@ public static class RoomSketchTool
         { 'E', new[] { "###", "#..", "##.", "#..", "###" } }, { 'F', new[] { "###", "#..", "##.", "#..", "#.." } },
         { 'G', new[] { "###", "#..", "#.#", "#.#", "###" } }, { 'I', new[] { "###", ".#.", ".#.", ".#.", "###" } },
         { 'K', new[] { "#.#", "#.#", "##.", "#.#", "#.#" } }, { 'L', new[] { "#..", "#..", "#..", "#..", "###" } },
+        { 'M', new[] { "#.#", "###", "###", "#.#", "#.#" } }, { 'O', new[] { "###", "#.#", "#.#", "#.#", "###" } },
+        { 'W', new[] { "#.#", "#.#", "###", "###", "#.#" } },
         { 'N', new[] { "#.#", "###", "###", "#.#", "#.#" } }, { 'P', new[] { "##.", "#.#", "##.", "#..", "#.." } },
         { 'S', new[] { "###", "#..", "###", "..#", "###" } }, { 'T', new[] { "###", ".#.", ".#.", ".#.", ".#." } },
         { 'X', new[] { "#.#", "#.#", ".#.", "#.#", "#.#" } }, { 'Y', new[] { "#.#", "#.#", ".#.", ".#.", ".#." } },

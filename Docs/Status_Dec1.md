@@ -45,7 +45,8 @@ A complete, playable game:
 - Movement, float, dash, Kinetic Burst (P1), Wind Tether (P2), co-op spawning, rooms/doorways, reset shrines, hazards.
 - Characters P1/P2 (48x60 pixel art from text sources, 9 animations, PlayerAnimator), ability & movement FX.
 - Motion Journal (field-notebook UI, force diagrams, page turning, Wren's sketch page, Wren's tips).
-- Rooms 1–4 (graybox + art): 1 First Exchange, 2 Weight of Things, 3 Together We Move (cargo ferry), 4 Broken Crossing (momentum, rubble walls).
+- Rooms 1–5 (graybox + art): 1 First Exchange, 2 Weight of Things, 3 Together We Move (cargo ferry), 4 Broken Crossing (momentum, rubble walls),
+  5 Long Push (friction: stone / wet stone / moss floors, two crates, Bearing = machine part 3).
 - Game shell: save system (auto, one slot), title screen, pause menu, settings, dev tools.
 - Title screen v2: PixelLab forest-ruin painting (Art/Title), village crystal floating in the arch, P1/P2 framing it.
 - Village core: 3 screens with PixelLab buildings (adapted: Art/Village; sources in Art/Village/Source), chibi Wren/Bram/Mira

@@ -10,22 +10,26 @@ using static RoomBuildKit;
 /// Layout (room-local; floor top y = -4.5). Three floors, each its own surface (an EdgeCollider2D on Ground, linked to its
 /// neighbours with adjacent points so a sliding crate doesn't snag on the joins; the room's grey Floor box is lowered 2 cm
 /// underneath as a safety net and no longer touches anything):
-///   stone x -10..-7 (entry) | MOSS x -7..-4.5 (Moss: mu 0.6, combine Maximum) with the exit plate |
-///   WET STONE x -4.5..5.6 (Wet_Stone: mu 0.05, combine Minimum) | stone x 5.6..10 (alcove, exit).
-///   Culvert: a low slab over x -3.5..1.5 (inside 1.3 m tall): a 1 m crate slides under, players (1.5 m) don't fit and climb
+///   stone x -10..-7 (entry) | MOSS x -7..-4.5 (Moss: mu 0.6, combine Maximum), all of it the exit plate (80 N) |
+///   WET STONE x -4.5..4 (Wet_Stone: mu 0.05, combine Minimum) | stone x 4..10 (alcove, exit).
+///   Culvert: a low slab over x -3.5..1.5 (inside 1.3 m tall): crates slide under, players (1.5 m) don't fit and climb
 ///   over its roof (top y -2.5, 2 m: an easy jump).
-///   Alcove block x 5.6..8.2 (top y -2.3): an alcove 1.6 m deep and 1.8 m tall opens west; the 2 kg crate sits against its back
-///   wall, with only 0.6 m in front of it (a player is 0.8 m wide), so nobody can get behind it. The gate to Room 6 stands at
-///   x 9..9.6 and opens while the moss plate holds 45 N.
-/// Physics (2 kg crate, N = m*g = 58.9 N; the crate's material combines Minimum, moss's Maximum wins over it):
-///   friction  stone 19.6 N, wet stone 2.9 N, moss 35.3 N.  Burst dv = 7.5 m/s slides d = v^2 / (2*mu*g):
-///   stone 2.9 m, wet stone 19 m, moss 1.6 m.
-/// Solution: P2's Wind Tether pulls the crate out of the alcove (24 N > 19.6 N); P1 steps into the alcove and bursts it west.
-///   It glides ~9-10 m over wet stone (v^2 = 56.25 - 2*1.47*d -> about 5.3-5.6 m/s at the moss), then the moss stops it
-///   within ~0.8-1 m, on the plate (x -6.5..-5): the gate opens.
-/// Extras: machine part 3 (Bearing) above the crate at the back of the alcove (reachable once the crate is out); 3 shards
+///   Alcove block x 4..6.6 (top y -2.3): an alcove 1.6 m deep and 1.8 m tall opens west; the 2 kg crate sits against its back
+///   wall, with only 0.6 m in front of it (a player is 0.8 m wide), so nobody can get behind it. Players arriving from
+///   Room 6 land at x 7-7.8, on open floor (keep the block west of that). Gate to Room 6 at x 9..9.6.
+///   A fallen column (x -9.7..-9.1, 0.65 m) by the west doorway stops an overshooting crate before it slides into Room 4.
+/// Physics (crate materials combine Minimum, moss's Maximum wins over it; friction slows any crate at mu*g):
+///   2 kg: friction stone 19.6 N, wet stone 2.9 N, moss 35.3 N; Burst dv = 7.5 m/s slides 2.9 / 19 / 1.6 m.
+///   1 kg: Burst dv = 15 m/s (Room 4: dv = J/m) -> four times the distance (moss 6.4 m): it crosses the 2.5 m moss bed and hits
+///   the column. Walked along and let go at the culvert (~6 m/s) it glides through and stops ~0.5 m into the moss.
+/// Solution: the plate needs 80 N = both crates (58.9 + 29.4 = 88 N; one crate + a player also reaches it, but then that
+///   player can't leave). 1) Push the 1 kg crate (it also blocks the tether's line of sight) at a run and let it glide through
+///   the culvert. 2) P2 tethers the 2 kg crate out of the alcove (24 N > 19.6 N). 3) P1 bursts it west; the moss stops it.
+///   Recovery: an overshooting 1 kg crate rests against the column; P2 tethers it back onto the moss (24 N > 17.7 N).
+/// Extras: machine part 3 (Bearing) above the 2 kg crate at the back of the alcove (reachable once it's out); 3 shards
 ///   (above the culvert roof; on the west ledge x -8.4..-7, 3.6 m up, 3.5 m from the roof's west end; above the alcove block).
-/// Keep things out of x -10..-9 up to 4 m (the Room 4 doorway's exit trigger) and above 4 m there (its wall).
+/// Keep things out of x -10..-9 up to 4 m (the Room 4 doorway's exit trigger) and above 4 m there (its wall); the column is
+/// low enough to hop and only stops crates.
 /// </summary>
 public static class Room5Builder
 {
@@ -37,12 +41,15 @@ public static class Room5Builder
     private const float Floor = -4.5f;
 
     // Surface boundaries (west to east).
-    private const float MossLeft = -7f, WetLeft = -4.5f, StoneEastLeft = 5.6f;
+    private const float MossLeft = -7f, WetLeft = -4.5f, StoneEastLeft = 4f;
+    // Alcove block: hollow x 4..5.6 (1.6 m deep), back wall x 5.6..6.6. Must stay west of Room 6's arrival spots (x 7, 7.8).
+    public const float AlcoveLeft = StoneEastLeft, AlcoveBack = 5.6f, AlcoveRight = 6.6f;
 
     private static readonly string[] Built =
     {
         "Surface_Stone_West", "Surface_Moss", "Surface_Wet", "Surface_Stone_East", "Strip_Moss", "Strip_Wet",
-        "Culvert", "Alcove_Roof", "Alcove_Back", "Ledge_West", "Gate_Exit", "Plate_Moss_45N", "Crate_2kg",
+        "Culvert", "Alcove_Roof", "Alcove_Back", "Ledge_West", "Column_Fallen", "Gate_Exit", "Plate_Moss_45N", "Plate_Moss_80N",
+        "Crate_2kg", "Crate_1kg",
         "Shrine_Room05", "Journal_Room05", "Shard_Roof", "Shard_Ledge", "Shard_Alcove", "Part_Bearing",
     };
 
@@ -52,10 +59,10 @@ public static class Room5Builder
         Transform ledge = Template("Ledge_Heavy"), plateT = Template("Plate_Heavy_80N"), gateT = Template("Gate_Exit"),
                   shrineT = Template("Shrine_Room01"), journalT = Template("Journal_Room01");
         if (ledge == null || plateT == null || gateT == null || shrineT == null || journalT == null) return;
-        GameObject b2 = Load($"{Interactables}/Block_2kg.prefab"), shrineP = Load($"{Interactables}/ResetShrine.prefab"),
+        GameObject b1 = Load($"{Interactables}/Block_1kg.prefab"), b2 = Load($"{Interactables}/Block_2kg.prefab"), shrineP = Load($"{Interactables}/ResetShrine.prefab"),
                    journalP = Load($"{Interactables}/JournalStone.prefab"), shardP = Load($"{Interactables}/MotionShard.prefab");
         PhysicsMaterial2D moss = AssetDatabase.LoadAssetAtPath<PhysicsMaterial2D>(MossPath), wet = AssetDatabase.LoadAssetAtPath<PhysicsMaterial2D>(WetPath);
-        if (b2 == null || shrineP == null || journalP == null || shardP == null || moss == null || wet == null)
+        if (b1 == null || b2 == null || shrineP == null || journalP == null || shardP == null || moss == null || wet == null)
         {
             Debug.LogError("Room 5: a prefab in Prefabs/Interactables or a physics material (Moss, Wet_Stone) is missing. Nothing was changed.");
             return;
@@ -89,28 +96,32 @@ public static class Room5Builder
 
             // ---- Culvert, alcove block, shard ledge
             Solid(ledge, layout, "Culvert", -3.5f, Floor + 1.3f, 1.5f, Floor + 2f);
-            Solid(ledge, layout, "Alcove_Roof", StoneEastLeft, Floor + 1.8f, 8.2f, Floor + 2.2f);
-            Solid(ledge, layout, "Alcove_Back", 7.2f, Floor, 8.2f, Floor + 1.8f);
+            Solid(ledge, layout, "Alcove_Roof", AlcoveLeft, Floor + 1.8f, AlcoveRight, Floor + 2.2f);
+            Solid(ledge, layout, "Alcove_Back", AlcoveBack, Floor, AlcoveRight, Floor + 1.8f);
+            Solid(ledge, layout, "Column_Fallen", -9.7f, Floor, -9.1f, Floor + 0.65f); // stops crates, not people (hop it)
             Solid(ledge, layout, "Ledge_West", -8.4f, Floor + 3.2f, -7f, Floor + 3.6f); // 3.6 m: from the culvert roof only.
             // Keep it east of x -9: the Room 4 doorway's wall reaches 1 m into the room from 4 m up, and its exit trigger
             // fills x -10..-9 up to 4 m.
             SetEntries(room.transform, new Vector2(-8.6f, Floor + 0.75f), new Vector2(-7.8f, Floor + 0.75f)); // on the entry stone
 
             // ---- Puzzle: the moss plate opens the exit gate
-            PressurePlate plate = Plate(plateT, puzzle, "Plate_Moss_45N", -5.75f, Floor, 45f, PlateReadout.Display.TargetOnly, true);
+            // The whole moss bed is the plate (2.5 m): both crates must rest on it (80 N; 2 kg + 1 kg = 88 N).
+            PressurePlate plate = Plate(plateT, puzzle, "Plate_Moss_80N", (MossLeft + WetLeft) * 0.5f, Floor, 80f, PlateReadout.Display.TargetOnly, true,
+                                        WetLeft - MossLeft);
             Platform(gateT, puzzle, "Gate_Exit", 9f, Floor, 9.6f, Floor + 4.2f, new Vector2(0f, 4.3f), 4f, plate, false);
 
             // ---- Objects
-            Crate(b2, objects, "Crate_2kg", 6.7f, Floor + 0.5f); // against the alcove's back wall (x 7.2)
+            Crate(b2, objects, "Crate_2kg", AlcoveBack - 0.5f, Floor + 0.5f); // against the alcove's back wall
+            Crate(b1, objects, "Crate_1kg", 2.7f, Floor + 0.5f);                // on the wet stone, between the culvert and the alcove
             float shrineLift = shrineT.localPosition.y - Floor, journalLift = journalT.localPosition.y - Floor;
-            Instance(shrineP, info, "Shrine_Room05", new Vector2(3f, Floor + shrineLift));
+            Instance(shrineP, info, "Shrine_Room05", new Vector2(8.3f, Floor + shrineLift)); // by the exit, clear of the crates' path
             GameObject journal = Instance(journalP, info, "Journal_Room05", new Vector2(-8.3f, Floor + journalLift));
             if (journal.TryGetComponent(out JournalStone stone)) { stone.EditorSetEntry(entry); EditorUtility.SetDirty(stone); }
 
             Instance(shardP, objects, "Shard_Roof", new Vector2(-1f, -0.3f));     // jump from the culvert roof (top -2.5)
             Instance(shardP, objects, "Shard_Ledge", new Vector2(-7.7f, -0.3f));  // on the west ledge: jump (+ float) from the roof's west end
-            Instance(shardP, objects, "Shard_Alcove", new Vector2(6.9f, 0f));     // jump from the alcove block (top -2.3)
-            MachinePart(objects, shardP.layer, "Part_Bearing", new Vector2(6.7f, Floor + 1.4f), "R1_Part_Bearing",
+            Instance(shardP, objects, "Shard_Alcove", new Vector2(AlcoveBack - 0.3f, 0f)); // jump from the alcove block (top -2.3)
+            MachinePart(objects, shardP.layer, "Part_Bearing", new Vector2(AlcoveBack - 0.5f, Floor + 1.4f), "R1_Part_Bearing",
                         "Bearing (machine part 3)", bearing, fx);
 
             PrefabUtility.SaveAsPrefabAsset(room, Room5Path);

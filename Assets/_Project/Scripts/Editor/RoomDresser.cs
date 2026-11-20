@@ -24,7 +24,8 @@ using Object = UnityEngine.Object;
 public static class RoomDresser
 {
     public const string VisualTag = "_Visual";
-    private const string RuinTexture = "Assets/_Project/Art/Recolors/Ground_RuinStone.png";
+    private const string RecolorFolder = "Assets/_Project/Art/Recolors";
+    private const string RuinTexture = RecolorFolder + "/Ground_RuinStone.png";
     private const string RuinTiles = "Assets/_Project/Art/Recolors/Palettes/Ground_RuinStone";
     private const string ForestTexture = "Assets/_Project/Art/Recolors/Props_Forest.png";
     private const string InteractiveTexture = "Assets/_Project/Art/Recolors/Props_Interactive.png";
@@ -80,6 +81,32 @@ public static class RoomDresser
         public void BackWall(int x, int y, int tile)
         {
             if (BackWallMap != null) BackWallMap.SetTile(new Vector3Int(x, y, 0), Tile(tile));
+        }
+
+        /// <summary>
+        /// A floor (grass-topped edge row + stone fill, top on 'top') from a recoloured ground tileset in Art/Recolors:
+        /// "Ground_Wet", "Ground_Mossy", or null for the usual ruin stone. Same tile shapes, so neighbouring strips join cleanly.
+        /// For rooms whose floor surfaces differ (Room 5): pass the graybox Floor to Dress's skipSolids and draw it here.
+        /// </summary>
+        public void Floor(string tileset, float xMin, float xMax, float top, bool leftCap = false, bool rightCap = false)
+        {
+            Dictionary<string, Sprite> sheet = tileset == null ? ruin : Sprites($"{RecolorFolder}/{tileset}.png");
+            if (sheet.Count == 0) { Debug.LogWarning("Room dresser: no tileset " + tileset + " (run Recolor > Build All)."); sheet = ruin; }
+            FloorStrip(Decor, "Floor " + (tileset ?? "Stone"), Rect.MinMaxRect(xMin, top - 2f, xMax, top), leftCap, rightCap, sheet);
+        }
+
+        /// <summary>
+        /// A shadowed stone backdrop behind an opening, so a tunnel or alcove reads as a hollow with stone inside it.
+        /// darkness 0 = full colour, 1 = black; tile = which ground tile to repeat (F = plain stone fill, Le / R = lit edge
+        /// columns for the mouths); order = drawing order on BackDecor (higher draws on top of lower hollows).
+        /// </summary>
+        public void Hollow(string name, float xMin, float yMin, float xMax, float yMax, float darkness = 0.8f, int tile = F, int order = 30)
+        {
+            SpriteRenderer sr = Visual(Decor, "Hollow " + name, Ground(tile), "BackDecor", order, false);
+            Tiled(sr, new Vector2(xMax - xMin, yMax - yMin));
+            PlaceCenter(sr, new Vector2((xMin + xMax) * 0.5f, (yMin + yMax) * 0.5f));
+            float v = 1f - darkness;
+            sr.color = new Color(v, v, v * 1.15f);
         }
 
         /// <summary>A lamp post with its warm light.</summary>
@@ -360,7 +387,7 @@ public static class RoomDresser
     // ------------------------------------------------------------------ shapes
 
     // A floor: grass-topped edge row on the collider top, stone fill below (past the bottom of the screen).
-    private static void FloorStrip(Transform parent, string name, Rect r, bool leftCap, bool rightCap)
+    private static void FloorStrip(Transform parent, string name, Rect r, bool leftCap, bool rightCap, Dictionary<string, Sprite> sheet = null)
     {
         Transform group = NewChild(parent, name + VisualTag);
         float top = r.yMax;
@@ -368,9 +395,9 @@ public static class RoomDresser
         {
             int[] pieces = row == 0 ? new[] { TL, T, TR } : new[] { Le, F, R };
             float a = leftCap ? r.xMin + 1f : r.xMin, b = rightCap ? r.xMax - 1f : r.xMax;
-            if (b > a) Piece(group, pieces[1], a, y0, b, y1);
-            if (leftCap) Piece(group, pieces[0], r.xMin, y0, Mathf.Min(r.xMin + 1f, r.xMax), y1);
-            if (rightCap) Piece(group, pieces[2], Mathf.Max(r.xMax - 1f, r.xMin), y0, r.xMax, y1);
+            if (b > a) Piece(group, pieces[1], a, y0, b, y1, sheet);
+            if (leftCap) Piece(group, pieces[0], r.xMin, y0, Mathf.Min(r.xMin + 1f, r.xMax), y1, sheet);
+            if (rightCap) Piece(group, pieces[2], Mathf.Max(r.xMax - 1f, r.xMin), y0, r.xMax, y1, sheet);
         }
     }
 
@@ -414,9 +441,9 @@ public static class RoomDresser
         if (rightCap) Visual(group, "Right", Ground(StripR), "Midground", 1, false).transform.position = new Vector3(xMax - 0.5f, y, 0f);
     }
 
-    private static void Piece(Transform group, int tile, float x0, float y0, float x1, float y1)
+    private static void Piece(Transform group, int tile, float x0, float y0, float x1, float y1, Dictionary<string, Sprite> sheet = null)
     {
-        SpriteRenderer sr = Visual(group, "Piece", Ground(tile), "Midground", 0, false);
+        SpriteRenderer sr = Visual(group, "Piece", Ground(tile, sheet), "Midground", 0, false);
         Tiled(sr, new Vector2(x1 - x0, y1 - y0));
         PlaceCenter(sr, new Vector2((x0 + x1) * 0.5f, (y0 + y1) * 0.5f));
     }
@@ -524,7 +551,8 @@ public static class RoomDresser
     private static Transform Find(Transform root, string name) =>
         root.GetComponentsInChildren<Transform>(true).FirstOrDefault(t => t.name == name);
 
-    private static Sprite Ground(int n) => ruin[$"TX Tileset Ground_{n}"];
+    private static Sprite Ground(int n, Dictionary<string, Sprite> sheet = null) =>
+        (sheet ?? ruin).TryGetValue($"TX Tileset Ground_{n}", out Sprite s) ? s : ruin[$"TX Tileset Ground_{n}"];
     private static TileBase Tile(int n) => AssetDatabase.LoadAssetAtPath<TileBase>($"{RuinTiles}/TX Tileset Ground_{n}.asset");
 
     private static Dictionary<string, Sprite> Sprites(string path)
