@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20e8eb7f9e4f65c45ab3a094e1e279b6, type: 3}
+  m_Name: Mira_Animations
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterAnimationSet
+  clips:
+  - name: Idle
+    frames:
+    - {fileID: 21300000, guid: 32c1cd2dfc5adb94fad767434b3b84e5, type: 3}
+    - {fileID: 21300000, guid: ed01c97152e6b3248a65051c1618e776, type: 3}
+    - {fileID: 21300000, guid: 2060f0c6b0b55244f8fd9b99500c23d6, type: 3}
+    - {fileID: 21300000, guid: 00e700cc9a9ea934e94eaa4662aeac8f, type: 3}
+    framesPerSecond: 4
+    loop: 1
+  - name: Act
+    frames:
+    - {fileID: 21300000, guid: 77a4ad0d52b03e44e8701ca5a282b546, type: 3}
+    - {fileID: 21300000, guid: 8dd193d349bae28459c34d21c6af3c42, type: 3}
+    - {fileID: 21300000, guid: 5859ecef3b386f54792e47672fcfdcec, type: 3}
+    - {fileID: 21300000, guid: f92d4ac98aa76d846bbf67bfa7bec81a, type: 3}
+    - {fileID: 21300000, guid: fdf6f7b818027d642b71d57cd44523e5, type: 3}
+    - {fileID: 21300000, guid: e2b9f22280875c641adac15085357f54, type: 3}
+    framesPerSecond: 6
+    loop: 0

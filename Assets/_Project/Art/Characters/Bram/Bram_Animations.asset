@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20e8eb7f9e4f65c45ab3a094e1e279b6, type: 3}
+  m_Name: Bram_Animations
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterAnimationSet
+  clips:
+  - name: Idle
+    frames:
+    - {fileID: 21300000, guid: aaf61d02ceff69c44bf37e2540cee61c, type: 3}
+    - {fileID: 21300000, guid: 593a5ea8a5eb91f43a0b2936d30919b1, type: 3}
+    - {fileID: 21300000, guid: 434f9654fe868e14c94c34e46793dbda, type: 3}
+    - {fileID: 21300000, guid: 48619ca77f3edca45b7cbac996fa3daa, type: 3}
+    framesPerSecond: 4
+    loop: 1
+  - name: Act
+    frames:
+    - {fileID: 21300000, guid: e8ee05bd82f941e498b7b08496521612, type: 3}
+    - {fileID: 21300000, guid: 5105aae8337493148bda248f0ad3aa3b, type: 3}
+    - {fileID: 21300000, guid: 6e058b227d9856842aecc5e0776ce663, type: 3}
+    - {fileID: 21300000, guid: 9365066318529c84884b2efe9390a9f6, type: 3}
+    - {fileID: 21300000, guid: 1df7537a8ca15f3418b1586c79d1b5fc, type: 3}
+    - {fileID: 21300000, guid: 57ebcd46694f0964f8cee26c4ec620cb, type: 3}
+    - {fileID: 21300000, guid: 544cfbbf4a1b8fb439f680f5ae59e270, type: 3}
+    framesPerSecond: 6
+    loop: 0

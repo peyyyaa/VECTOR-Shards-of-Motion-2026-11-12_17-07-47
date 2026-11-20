@@ -1,491 +1,292 @@
 {
  "name": "Wren",
- "note": "Wren Alder (village researcher, NPC): palette swap of P1 - auburn hair, green field coat, tan shirt. Built by Tools > Shards of Motion > Characters > 1. Build Character Sprites.",
+ "note": "Wren Alder (he), village researcher: chibi, tall and narrow; curly hair, round glasses, long green coat, satchel; reads his book (Act = page turn). Edit here, then Tools > Shards of Motion > Characters > 1. Build Character Sprites.",
  "width": 48,
  "height": 60,
  "outline": "2b1b17",
  "palette": {
-  "h": "5a2e1e",
-  "H": "8c4630",
-  "j": "b0603e",
   "S": "f2c49b",
   "s": "d99a74",
   "r": "eb9a86",
   "m": "b5654f",
   "E": "2a1c1a",
   "W": "fff6e8",
+  "e": "7a4a2e",
+  "h": "4a2c1c",
+  "H": "6e4228",
+  "j": "93603a",
+  "G": "3a2a22",
+  "L": "dcecee",
   "C": "4f7a3a",
   "c": "34552a",
   "k": "6f9a50",
-  "T": "d9c9a0",
-  "t": "b0a078",
-  "u": "8c7d5c",
-  "B": "6b4a2e",
-  "G": "e3b341",
+  "T": "e9dcc0",
+  "t": "bfae8c",
+  "B": "7a5236",
+  "b": "4f3422",
   "P": "4a3a2e",
-  "p": "33281f",
-  "O": "5c4128",
-  "o": "3d2b1a",
-  "g": "b8862c",
-  "e": "3f6b45"
+  "p": "352a20",
+  "F": "5c4128",
+  "f": "40301e",
+  "O": "8a4a3a",
+  "o": "5e3026"
  },
  "recolors": {
-  "front": {
-   "L": "P",
-   "F": "O"
-  },
   "back": {
-   "L": "p",
-   "F": "o",
-   "T": "t",
-   "t": "u",
-   "S": "s"
+   "C": "c",
+   "k": "c",
+   "S": "s",
+   "P": "p",
+   "F": "f"
   }
  },
  "parts": {
   "head": [
-   "..........h..h........",
-   ".......h.hHh.hH..h....",
-   ".....hhHhHHHhHHhhH....",
-   "....hHHHHHjHHHHjHHh...",
-   "...hHHHjjHHHHHjjHHHh..",
-   "..hHHHjjHHHHHjjHHHHHh.",
-   "..hHHHHHHHHHHHHHHHHHHh",
-   ".hHHHHHHHHHHHHHHHHHHHh",
-   "hhHHHHHHHHHHHHHHHHHHHH",
-   ".hHHHHHHHHHHHHHHHHHHHH",
+   "....h.hh..hh.h........",
+   "...hHhHHhhHHhHh.h.....",
+   "..hHjHHjHHjHHjHhHh....",
+   ".hHHHHjHHHHjHHHHHHh...",
+   ".hHjHHHHHjHHHHjHHHHh..",
+   "hHHHHjHHHHHHjHHHHHHHh.",
+   "hHHjHHHHHHHHHHHHjHHHHh",
+   "hHHHHHHHHHHHHHHHHHHHHh",
+   "hHHHHHHHHHHHHHHHHHHHHH",
+   "hHHHHHHHHHHHHHHHHHHHHH",
    "hhHHHHHHHHHHHhHHHHhHHH",
    ".hHHHHHHHHHHhShHHHhSHh",
    ".hHHHHHHhHHhSSShHhSSSS",
-   ".hHHHHHhSSHSSSSSSSSSSS",
-   ".hHHHHHsSSSSEEESSEESSS",
-   ".hHHhHsSSSSSWEESSWESSS",
-   "..hHhHsSSSSSEeESSEeSSS",
-   "..hHhhsSSSSSEeESSEeSSS",
-   "..hhHhssSSSSrrSSmSSrrS",
-   "...h.hssSSSSSSSSSSSSSs",
+   ".hHHHHHhSSSGGGGGGGGGGS",
+   ".hHHHHHsSSSGLSSGGLSSGS",
+   ".hHHhHsSSSSGSWEGGSWEGS",
+   "..hHhHsSSSSGSEeGGSEeGS",
+   "..hHhhsSSSSGSSSGGSSSGS",
+   "..hhHhssSSSGGGGGGGGGGS",
+   "...h.hssSSSSrSSSmSSSrS",
    "......ssSSSSSSSSSSSSs.",
    "........sssSSSSSSss..."
   ],
   "torso": [
-   "...CCCCCCCC...",
-   "..CCkkCCCGCC..",
-   ".CCkCCCCGgGCC.",
-   ".tTTTTTTTTTTt.",
-   ".tTTTTTTTTTTt.",
-   ".tTTTTtTTTTTt.",
-   ".tTTTTTTTTTTt.",
-   ".BBBBBBBBGBBB.",
-   ".tOOTTTTTTTTt.",
-   ".tOoTTTTTTTTt.",
-   ".ttTTTTTTTTtt.",
-   ".pPPPPPPPPPPp.",
-   ".pPPPPPPPPPPp."
+   "...cCCCCCCc...",
+   "..cCkTTTTkCc..",
+   ".cCCkTTTTkCCc.",
+   ".cCCCkTTkCCCc.",
+   ".cCBCCkkCCCCc.",
+   ".cCCBCCkCCCCc.",
+   ".cCCCBCkCCCCc.",
+   ".cCCCCBkCCCCc.",
+   ".cCCCCCBCCCCc.",
+   ".cCCCCCkBCCCc.",
+   ".cCCCCCkCBCCc.",
+   ".cCCCCCkCCBBb.",
+   ".cCCCCCkCCBbB.",
+   ".cCCCCCkCCBBB.",
+   "..cCCCCkCCCc..",
+   "..cCCCCkCCCc..",
+   "..cccccccccc.."
   ],
-  "capeIdleA": [
-   "...ccCCCCC",
-   "...ccCCCCC",
-   "..cCCCCCCC",
-   "..cCCkCCCC",
-   "..cCCkCCCC",
-   "..cCCkCCCC",
-   "ccCCCkCCCC",
-   "ccCCCkCCCC",
-   "ccCCCCkkCC",
-   "ccCCCCkkCC",
-   "ccCCCCkkCC",
-   "ccCCCCCCCC",
-   "ccCCCCCCCc",
-   "ccCCCCCCCc",
-   "cccCCCCCcc",
-   "..cccCccc.",
-   "..cccCccc.",
-   "...cc.cc.."
+  "arm": [
+   "cCC",
+   "cCC",
+   "cCC",
+   "cCC",
+   "cCC",
+   "cCC",
+   "kkk",
+   "SSS",
+   "sSS"
   ],
-  "capeIdleB": [
-   "...ccCCCCC",
-   "...ccCCCCC",
-   "..cCCCCCCC",
-   "..cCCkCCCC",
-   "..cCCkCCCC",
-   "..cCCkCCCC",
-   "..cCCkCCCC",
-   "..cCCkCCCC",
-   "ccCCCCkkCC",
-   "ccCCCCkkCC",
-   "ccCCCCkkCC",
-   "ccCCCCCCCC",
-   "..cCCCCCCc",
-   "..cCCCCCCc",
-   "..cccCCCcc",
-   "...cccCCc.",
-   "...cccCCc.",
-   ".....c..c."
+  "armHold": [
+   "cCC",
+   "cCC",
+   "cCC",
+   "cCCC",
+   ".kSS",
+   "..sS"
   ],
-  "capeRunA": [
-   ".........ccCCCCCC.",
-   ".........ccCCCCCC.",
-   ".....cccCCCCCCCCCC",
-   "..cCCCCCkCCCCCCCCC",
-   "..cCCCCCkCCCCCCCCC",
-   "ccCCCkkkCCCCCCCcc.",
-   "..cccCCCCCCccc....",
-   "..cccCCCCCCccc....",
-   ".....ccc.ccc......"
-  ],
-  "capeRunB": [
-   "...........cCCCCC.",
-   "...........cCCCCC.",
-   "......cccCCCCCCCCC",
-   "...ccCCCCkkCCCCCCC",
-   "...ccCCCCkkCCCCCCC",
-   "cccCCCkkCCCCCCCcc.",
-   "ccCCCCCCcccccc....",
-   "ccCCCCCCcccccc....",
-   "..ccc............."
-  ],
-  "legStand": [
-   "LLLL",
-   "LLLL",
-   "LLLL",
-   "LLLL",
-   "LLLL",
-   "LLLL",
+  "leg": [
+   "PPPP",
+   "PPPP",
+   "PPPP",
+   "PPPP",
+   "PPPP",
+   "PPPP",
+   "PPPP",
+   "PPPP",
    "FFFF",
    "FFFF",
    "FFFF",
    "FFFFF"
   ],
-  "legFwd": [
-   "LLLLL.....",
-   "LLLLL.....",
-   "..LLLL....",
-   "...LLLLL..",
-   "...LLLLL..",
-   ".....FFFF.",
-   ".....FFFFF"
+  "book": [
+   ".TTTtTTT.",
+   "TTTTtTTTT",
+   "TttTtTttT",
+   "TTTTtTTTT",
+   "OOOOoOOOO"
   ],
-  "legBack": [
-   ".....LLLL",
-   ".....LLLL",
-   "...LLLLL.",
-   "..LLLL...",
-   "..LLLL...",
-   "FFFFF....",
-   "FFF......"
+  "bookFlip": [
+   "....TT...",
+   ".TTTtTTT.",
+   "TttTtTTTT",
+   "TTTTtTttT",
+   "OOOOoOOOO"
   ],
-  "legKnee": [
-   "LLLLLL...",
-   "LLLLLL...",
-   "LLLLLLLL.",
-   ".....LLL.",
-   ".....LLL.",
-   ".....FFFF"
+  "bookFlip2": [
+   "...TT....",
+   ".TTTtTTT.",
+   "TTTTtTttT",
+   "TttTtTTTT",
+   "OOOOoOOOO"
   ],
-  "legKick": [
-   "...LLLL",
-   "...LLLL",
-   "FFLLLL.",
-   "FFFLL.."
-  ],
-  "armDown": [
-   "tTT",
-   "tTT",
-   "tTT",
-   "tTT",
-   "tTT",
-   "tTT",
-   "SSS",
-   "sSS"
-  ],
-  "armFwd": [
-   "TTT....",
-   "TTT....",
-   "ttTTT..",
-   "..tTTTS"
-  ],
-  "armBack": [
-   "...TTT",
-   "...TTT",
-   "..TTTt",
-   "SSTtt."
-  ],
-  "armUp": [
-   "....SS",
-   "...TTS",
-   "..TTT.",
-   ".TTT..",
-   "tTT...",
-   "tTT..."
-  ],
-  "armOut": [
-   "TTTTTT...",
-   "tTTTTTTSS",
-   ".ttttttSS"
-  ],
-  "armWide": [
-   "......SS",
-   "....TTSS",
-   "..TTTT..",
-   "tTTT....",
-   "tT......"
-  ],
-  "legDangle": [
-   "LLLL",
-   "LLLL",
-   "LLLL",
-   ".LLLL",
-   ".LLLL",
-   ".LLLL",
-   "..FFF",
-   "..FFF",
-   "..FF."
-  ],
-  "legSquat": [
-   "LLLLL.",
-   "LLLLLL",
-   "..LLLL",
-   ".LLLL.",
-   "LLLL..",
-   "FFFFF.",
-   "FFFFFF"
-  ],
-  "capeUpA": [
-   "cc..........",
-   "cCc.........",
-   "cCCc........",
-   ".cCCc.......",
-   ".cCkCc......",
-   "..cCkCCc....",
-   "..cCCkCCc...",
-   "...cCCkCCCc.",
-   "...cCCCCCCCC",
-   "....cCCCCCCC",
-   ".....ccCCCCC",
-   "......cCCCCC",
-   ".......ccCCC"
-  ],
-  "capeUpB": [
-   ".cc.........",
-   ".cCc........",
-   "cCCc........",
-   "cCCCc.......",
-   ".cCkCc......",
-   "..cCkCCc....",
-   "..cCCkCCc...",
-   "...cCCkCCCc.",
-   "...cCCCCCCCC",
-   "....cCCCCCCC",
-   ".....ccCCCCC",
-   "......cCCCCC",
-   ".......ccCCC"
-  ],
-  "capeFloatA": [
-   "....cccc........",
-   "..ccCCCCcc......",
-   ".cCCCkkCCCcc....",
-   "cCCkkCCCCCCCc...",
-   "cCkCCCCCCCCCCc..",
-   ".c.cCCCkCCCCCCc.",
-   ".....cCCCkCCCCCc",
-   "......ccCCCCCCCC",
-   "........cCCCCCCC",
-   ".........ccCCCCC",
-   "...........cCCCC",
-   "............cCCC"
-  ],
-  "capeFloatB": [
-   "................",
-   "...cccc.........",
-   ".ccCCCCccc......",
-   "cCCCkkCCCCcc....",
-   "cCkkCCCCCCCCc...",
-   ".ccCCCkCCCCCCc..",
-   "....cCCCkCCCCCc.",
-   "......ccCCCCCCCc",
-   "........cCCCCCCC",
-   ".........ccCCCCC",
-   "...........cCCCC",
-   "............cCCC"
-  ],
-  "capeDashA": [
-   "...............cCCCCCC",
-   "......cccccCCCCCCCCCCC",
-   "ccCCCCCCkkkkCCCCCCCCCC",
-   "..cccccCCCCCCCCCCccc..",
-   "........ccccccc......."
-  ],
-  "capeDashB": [
-   "................cCCCCC",
-   ".......ccccCCCCCCCCCCC",
-   ".cCCCCCCCkkkkCCCCCCCCC",
-   "ccccccCCCCCCCCCCCccc..",
-   ".......cccccc........."
+  "empty": [
+   "."
   ]
  },
- "poses": {
-  "stand": {
-   "part": "legStand"
-  },
-  "fwd": {
-   "part": "legFwd",
-   "dy": 2
-  },
-  "back": {
-   "part": "legBack",
-   "dx": -4,
-   "dy": 2
-  },
-  "knee": {
-   "part": "legKnee"
-  },
-  "kick": {
-   "part": "legKick",
-   "dx": -3
-  },
-  "armDown": {
-   "part": "armDown"
-  },
-  "armFwd": {
-   "part": "armFwd"
-  },
-  "armBack": {
-   "part": "armBack",
-   "dx": -3
-  },
-  "capeIdleA": {
-   "part": "capeIdleA"
-  },
-  "capeIdleB": {
-   "part": "capeIdleB"
-  },
-  "capeRunA": {
-   "part": "capeRunA",
-   "dx": -9
-  },
-  "capeRunB": {
-   "part": "capeRunB",
-   "dx": -9
-  },
-  "armUp": {
-   "part": "armUp",
-   "dy": -4
-  },
-  "armOut": {
-   "part": "armOut"
-  },
-  "armWide": {
-   "part": "armWide",
-   "dy": -2
-  },
-  "dangle": {
-   "part": "legDangle"
-  },
-  "squat": {
-   "part": "legSquat"
-  },
-  "capeUpA": {
-   "part": "capeUpA",
-   "dx": -4,
-   "dy": -10
-  },
-  "capeUpB": {
-   "part": "capeUpB",
-   "dx": -4,
-   "dy": -10
-  },
-  "capeFloatA": {
-   "part": "capeFloatA",
-   "dx": -8,
-   "dy": -9
-  },
-  "capeFloatB": {
-   "part": "capeFloatB",
-   "dx": -8,
-   "dy": -9
-  },
-  "capeDashA": {
-   "part": "capeDashA",
-   "dx": -14
-  },
-  "capeDashB": {
-   "part": "capeDashB",
-   "dx": -14
-  }
- },
+ "poses": {},
  "anims": {
   "Idle": {
+   "fps": 4,
+   "loop": true,
    "layers": [
-    {
-     "key": "cape",
-     "x": 10,
-     "y": 37,
-     "default": "capeIdleA"
-    },
     {
      "key": "barm",
      "x": 16,
-     "y": 38,
-     "default": "armDown",
+     "y": 34,
+     "default": "arm",
      "recolor": "back"
     },
     {
      "key": "bleg",
      "x": 19,
-     "y": 48,
-     "default": "stand",
+     "y": 46,
+     "default": "leg",
      "recolor": "back",
      "bob": false
     },
     {
      "key": "fleg",
      "x": 24,
-     "y": 48,
-     "default": "stand",
-     "recolor": "front",
+     "y": 46,
+     "default": "leg",
      "bob": false
     },
     {
      "key": "torso",
      "x": 17,
-     "y": 35,
+     "y": 31,
      "default": "torso"
     },
     {
      "key": "head",
      "x": 13,
-     "y": 13,
+     "y": 9,
      "default": "head",
      "lean": true
     },
     {
+     "key": "book",
+     "x": 28,
+     "y": 37,
+     "default": "book"
+    },
+    {
      "key": "farm",
-     "x": 29,
-     "y": 38,
-     "default": "armDown",
-     "recolor": "front"
+     "x": 28,
+     "y": 33,
+     "default": "armHold"
     }
    ],
    "frames": [
     {
-     "bob": 0,
-     "cape": "capeIdleA"
+     "bob": 0
     },
     {
-     "bob": 0,
-     "cape": "capeIdleB"
+     "bob": 0
     },
     {
-     "bob": 1,
-     "cape": "capeIdleB"
+     "bob": 1
     },
     {
-     "bob": 1,
-     "cape": "capeIdleA"
+     "bob": 1
+    }
+   ]
+  },
+  "Act": {
+   "fps": 6,
+   "loop": false,
+   "layers": [
+    {
+     "key": "barm",
+     "x": 16,
+     "y": 34,
+     "default": "arm",
+     "recolor": "back"
+    },
+    {
+     "key": "bleg",
+     "x": 19,
+     "y": 46,
+     "default": "leg",
+     "recolor": "back",
+     "bob": false
+    },
+    {
+     "key": "fleg",
+     "x": 24,
+     "y": 46,
+     "default": "leg",
+     "bob": false
+    },
+    {
+     "key": "torso",
+     "x": 17,
+     "y": 31,
+     "default": "torso"
+    },
+    {
+     "key": "head",
+     "x": 13,
+     "y": 9,
+     "default": "head",
+     "lean": true
+    },
+    {
+     "key": "book",
+     "x": 28,
+     "y": 37,
+     "default": "book"
+    },
+    {
+     "key": "farm",
+     "x": 28,
+     "y": 33,
+     "default": "armHold"
     }
    ],
-   "loop": true,
-   "fps": 6
+   "frames": [
+    {
+     "bob": 0
+    },
+    {
+     "bob": 0,
+     "book": "bookFlip"
+    },
+    {
+     "bob": 0,
+     "book": "bookFlip2",
+     "lean": 1
+    },
+    {
+     "bob": 1,
+     "lean": 1
+    },
+    {
+     "bob": 1
+    },
+    {
+     "bob": 0
+    }
+   ]
   }
  }
 }

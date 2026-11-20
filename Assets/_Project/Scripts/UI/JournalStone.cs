@@ -84,7 +84,7 @@ public class JournalStone : MonoBehaviour, IInteractable
 
     private bool openedFromMenu;
 
-    // The entry as shown: its pages, then Wren's sketch of the room (a clue: how things connect), then her tip
+    // The entry as shown: its pages, then Wren's sketch of the room (a clue: how things connect), then his tip
     // once it's unlocked. Built at run time; the asset isn't changed.
     private JournalEntry RuntimeEntry()
     {

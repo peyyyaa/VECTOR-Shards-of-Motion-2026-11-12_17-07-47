@@ -1,0 +1,336 @@
+{
+ "name": "Bram",
+ "note": "Bram, blacksmith and keeper of the Village Fund: chibi, broad; curly hair and beard, leather apron; Act = hammering. Edit here, then Tools > Shards of Motion > Characters > 1. Build Character Sprites.",
+ "width": 48,
+ "height": 60,
+ "outline": "2b1b17",
+ "palette": {
+  "S": "f2c49b",
+  "s": "d99a74",
+  "r": "eb9a86",
+  "m": "b5654f",
+  "E": "2a1c1a",
+  "W": "fff6e8",
+  "e": "7a4a2e",
+  "h": "3e2618",
+  "H": "5e3a24",
+  "j": "7e5232",
+  "T": "e2d6bc",
+  "t": "b8aa8c",
+  "A": "7a5034",
+  "a": "54351f",
+  "B": "3e2c22",
+  "o": "5e3e26",
+  "P": "3c3c4a",
+  "p": "2a2a36",
+  "F": "4a3222",
+  "f": "33231a",
+  "I": "4a4848",
+  "i": "7a7876",
+  "w": "6e5236"
+ },
+ "recolors": {
+  "back": {
+   "T": "t",
+   "S": "s",
+   "P": "p",
+   "F": "f"
+  }
+ },
+ "parts": {
+  "head": [
+   "......hh.hh.hh........",
+   "....hhHHhHHhHHhh......",
+   "...hHHjHHHjHHHjHh.....",
+   "..hHHHHHHHHHHHHHHh....",
+   "..hHjHHHHjHHHHjHHHh...",
+   ".hHHHHHHHHHHHHHHHHHh..",
+   ".hHHHHHHHHHHHHHHHHHHh.",
+   ".hHHHHHHHHHHHHHHHHHHh.",
+   "hHHHHHHHHHHHHHHHHHHHHh",
+   "hHHHHHHHHHHHHhHHHHhHHh",
+   ".hHHHHHHHHHHhShHHHhSHh",
+   ".hHHHHHHhHHhSSShHhSSSS",
+   ".hHHHHHhSSHSShhhSShhSS",
+   ".hHHHHHsSSSSEEESSEESSS",
+   ".hHHhHsSSSSSWEESSWESSS",
+   "..hHhHsSSSSSEeESSEeSSS",
+   "..hHhhsSSSSSEeESSEeSSS",
+   "..hhHhssSSSrrSSSSSSrrS",
+   "...hHhsHHSSSSSSSSSSSHH",
+   "...hHHHHHHHSSHHHHSHHHH",
+   "....hHHHHHHHHmmHHHHHHh",
+   ".....hHHHjHHHHjHHHHHh.",
+   "......hHHHHHHHHHHHHh..",
+   "........hhHHHHHHhh...."
+  ],
+  "torso": [
+   "....TTTTTTTTTT....",
+   "...TTTTTTTTTTTT...",
+   "..TTTaTTTTTTaTTT..",
+   ".TTTTaTTTTTTaTTTT.",
+   ".TTTTaaaaaaaaTTTT.",
+   ".TTTTaAAAAAAaTTTT.",
+   ".TTTTaAAAAAAaTTTT.",
+   ".TTTTaAAAAAAaTTTT.",
+   ".BBBBBBBBBBBBBBBB.",
+   ".PPPPaAAAAAAaPPPP.",
+   ".PPPPaAAAAAAaPPPP.",
+   ".PPPPaAAAoAAaPPPP.",
+   "..PPPaAAAAAAaPPP..",
+   "..PPPaAAAAAAaPPP..",
+   "..PPPaaaaaaaaPPP.."
+  ],
+  "arm": [
+   "TTTT",
+   "TTTT",
+   "tttt",
+   "SSSS",
+   "SSSS",
+   "SSSS",
+   "SSSS",
+   "sSSS",
+   "sSSs"
+  ],
+  "armUp": [
+   "sSSs",
+   "sSSS",
+   "SSSS",
+   "SSSS",
+   "SSSS",
+   "tttt",
+   "TTTT",
+   "TTTT"
+  ],
+  "armFwd": [
+   "TTtSSSSSs",
+   "TTtSSSSSS",
+   "TTtSSSSSS",
+   "TTt...sSs"
+  ],
+  "hammerUp": [
+   "IIIIIII",
+   "IiiiiiI",
+   "IIIIIII",
+   "...w...",
+   "...w...",
+   "...w...",
+   "...w..."
+  ],
+  "hammerDown": [
+   "ww.....",
+   ".ww....",
+   "..wwIII",
+   "...wIiI",
+   "....IiI",
+   "....III"
+  ],
+  "leg": [
+   "PPPPP",
+   "PPPPP",
+   "PPPPP",
+   "PPPPP",
+   "PPPPP",
+   "PPPPP",
+   "PPPPP",
+   "FFFFF",
+   "FFFFF",
+   "FFFFF",
+   "FFFFFF"
+  ],
+  "empty": [
+   "."
+  ]
+ },
+ "poses": {
+  "farmUp": {
+   "part": "armUp",
+   "dx": 3,
+   "dy": -14
+  },
+  "farmFwd": {
+   "part": "armFwd",
+   "dx": 0,
+   "dy": 3
+  },
+  "hammerHigh": {
+   "part": "hammerUp",
+   "dx": 2,
+   "dy": -21
+  },
+  "hammerLow": {
+   "part": "hammerDown",
+   "dx": 6,
+   "dy": 3
+  },
+  "none": {
+   "part": "empty"
+  }
+ },
+ "anims": {
+  "Idle": {
+   "fps": 4,
+   "loop": true,
+   "layers": [
+    {
+     "key": "barm",
+     "x": 13,
+     "y": 37,
+     "default": "arm",
+     "recolor": "back"
+    },
+    {
+     "key": "bleg",
+     "x": 18,
+     "y": 47,
+     "default": "leg",
+     "recolor": "back",
+     "bob": false
+    },
+    {
+     "key": "fleg",
+     "x": 25,
+     "y": 47,
+     "default": "leg",
+     "bob": false
+    },
+    {
+     "key": "torso",
+     "x": 15,
+     "y": 34,
+     "default": "torso"
+    },
+    {
+     "key": "head",
+     "x": 13,
+     "y": 12,
+     "default": "head",
+     "lean": true
+    },
+    {
+     "key": "farm",
+     "x": 31,
+     "y": 37,
+     "default": "arm"
+    },
+    {
+     "key": "tool",
+     "x": 31,
+     "y": 37,
+     "default": "none"
+    }
+   ],
+   "frames": [
+    {
+     "bob": 0,
+     "tool": null
+    },
+    {
+     "bob": 0,
+     "tool": null
+    },
+    {
+     "bob": 1,
+     "tool": null
+    },
+    {
+     "bob": 1,
+     "tool": null
+    }
+   ]
+  },
+  "Act": {
+   "fps": 6,
+   "loop": false,
+   "layers": [
+    {
+     "key": "barm",
+     "x": 13,
+     "y": 37,
+     "default": "arm",
+     "recolor": "back"
+    },
+    {
+     "key": "bleg",
+     "x": 18,
+     "y": 47,
+     "default": "leg",
+     "recolor": "back",
+     "bob": false
+    },
+    {
+     "key": "fleg",
+     "x": 25,
+     "y": 47,
+     "default": "leg",
+     "bob": false
+    },
+    {
+     "key": "torso",
+     "x": 15,
+     "y": 34,
+     "default": "torso"
+    },
+    {
+     "key": "head",
+     "x": 13,
+     "y": 12,
+     "default": "head",
+     "lean": true
+    },
+    {
+     "key": "farm",
+     "x": 31,
+     "y": 37,
+     "default": "arm"
+    },
+    {
+     "key": "tool",
+     "x": 31,
+     "y": 37,
+     "default": "none"
+    }
+   ],
+   "frames": [
+    {
+     "bob": 0,
+     "farm": "farmUp",
+     "tool": "hammerHigh"
+    },
+    {
+     "bob": 0,
+     "farm": "farmUp",
+     "tool": "hammerHigh",
+     "lean": -1
+    },
+    {
+     "bob": 1,
+     "farm": "farmFwd",
+     "tool": "hammerLow",
+     "lean": 1
+    },
+    {
+     "bob": 1,
+     "farm": "farmFwd",
+     "tool": "hammerLow",
+     "lean": 1
+    },
+    {
+     "bob": 0,
+     "farm": "farmUp",
+     "tool": "hammerHigh"
+    },
+    {
+     "bob": 1,
+     "farm": "farmFwd",
+     "tool": "hammerLow",
+     "lean": 1
+    },
+    {
+     "bob": 0,
+     "tool": null
+    }
+   ]
+  }
+ }
+}

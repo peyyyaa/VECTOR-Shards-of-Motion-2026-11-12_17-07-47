@@ -96,7 +96,8 @@ public static class RoomDresser
     private static Dictionary<string, Sprite> ruin;
     private static readonly List<Rect> solids = new List<Rect>(); // walkable surfaces, for placing shrines and signs
 
-    public static bool Dress(string prefabPath, Action<Context> decorate)
+    /// <param name="skipSolids">Solids left undressed (collider kept, graybox hidden), e.g. a village's edge walls hidden behind trees.</param>
+    public static bool Dress(string prefabPath, Action<Context> decorate, params string[] skipSolids)
     {
         ruin = Sprites(RuinTexture);
         Context ctx = new Context { Forest = Sprites(ForestTexture), Village = Sprites(VillageTexture), Interactive = Sprites(InteractiveTexture) };
@@ -116,7 +117,7 @@ public static class RoomDresser
             Transform visuals = NewChild(layout, "Visuals" + VisualTag);
             ctx.Decor = NewChild(visuals, "Decor" + VisualTag);
 
-            DressSolids(root.transform, visuals);
+            DressSolids(root.transform, visuals, skipSolids);
             DressPlates(root.transform, ctx);
             DressMovers(root.transform, ctx);
             DressShrinesAndJournals(root.transform, ctx);
@@ -157,7 +158,7 @@ public static class RoomDresser
         go.GetComponent<Rigidbody2D>() != null || go.GetComponent<PressurePlate>() != null || go.GetComponent<Mover>() != null ||
         go.GetComponent<ResetShrine>() != null || go.GetComponent<JournalStone>() != null || go.GetComponent<HazardZone>() != null;
 
-    private static void DressSolids(Transform room, Transform visuals)
+    private static void DressSolids(Transform room, Transform visuals, string[] skip = null)
     {
         solids.Clear();
         foreach (BoxCollider2D box in room.GetComponentsInChildren<BoxCollider2D>(true))
@@ -168,6 +169,7 @@ public static class RoomDresser
             Rect r = BoxRect(box);
             solids.Add(r);
             sr.enabled = false; // graybox shape hidden (collider untouched)
+            if (skip != null && Array.IndexOf(skip, go.name) >= 0) continue;
             if (r.yMax < CameraBottom) continue; // entirely below the screen (e.g. a pit's safety floor)
 
             bool leftCap = r.xMin > -RoomHalfWidth + 0.6f, rightCap = r.xMax < RoomHalfWidth - 0.6f;

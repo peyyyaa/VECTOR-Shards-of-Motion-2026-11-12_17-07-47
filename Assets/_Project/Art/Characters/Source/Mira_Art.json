@@ -1,0 +1,303 @@
+{
+ "name": "Mira",
+ "note": "Mira, the village gardener: chibi, short and round; grey bun, purple shawl, apron; Act = watering. Edit here, then Tools > Shards of Motion > Characters > 1. Build Character Sprites.",
+ "width": 48,
+ "height": 60,
+ "outline": "2b1b17",
+ "palette": {
+  "S": "f2c49b",
+  "s": "d99a74",
+  "r": "eb9a86",
+  "m": "b5654f",
+  "E": "2a1c1a",
+  "W": "fff6e8",
+  "e": "7a4a2e",
+  "g": "8a8a90",
+  "G": "c4c4c8",
+  "w": "e8e8ec",
+  "V": "7a5a8a",
+  "v": "5a4068",
+  "T": "e9dcc0",
+  "t": "bfae8c",
+  "D": "6a5a7a",
+  "d": "4c405a",
+  "F": "4f3422",
+  "f": "3a2618",
+  "M": "7f9a96",
+  "n": "56706c",
+  "q": "a6dcf0"
+ },
+ "recolors": {
+  "back": {
+   "V": "v",
+   "S": "s",
+   "F": "f"
+  }
+ },
+ "parts": {
+  "head": [
+   ".........gggg.........",
+   "........gGGGGg........",
+   "........gGwGGg........",
+   ".........gggg.........",
+   ".......ggGGGGgg.......",
+   ".....ggGGwGGGGGgg.....",
+   "....gGGGGGGwGGGGGg....",
+   "...gGGwGGGGGGGGwGGg...",
+   "..gGGGGGGGGGGGGGGGGg..",
+   ".gGGGGGGGGGGGGGGGGGGg.",
+   ".gGGGGGGGGGGGGGGGGGGGg",
+   "gGGGGGGGGGGGGGGGGGGGGg",
+   "gGGGGGGGGGGGGgGGGGgGGg",
+   ".gGGGGGGGGGGgSgGGGgSGg",
+   ".gGGGGGGgGGgSSSgGgSSSS",
+   ".gGGGGGgSSGSSSSSSSSSSS",
+   ".gGGGGGsSSSSSSSSSSSSSS",
+   ".gGGgGsSSSSSESSSSSESSS",
+   "..gGgGsSSSSESESSSESESS",
+   "..gGggsSSSSSSSSSSSSSSS",
+   "..ggGgssSSSrrSSmmSSrrS",
+   "...g.gssSSSSSSSSSSSSSs",
+   "......ssSSSSSSSSSSSSs.",
+   "........sssSSSSSSss..."
+  ],
+  "torso": [
+   "....VVVVVVVV....",
+   "...VvVVVVVVvV...",
+   "..VVVVVVVVVVVV..",
+   ".VVVVVVVVVVVVVV.",
+   ".vVVVVVVVVVVVVv.",
+   ".vvVVVVVVVVVVvv.",
+   ".DDTTTTTTTTTTDD.",
+   ".DDTTTTTTTTTTDD.",
+   "DDDTTTTtTTTTTDDD",
+   "DDDTTTTTTTTTTDDD",
+   "DDDTTTTTTTTTTDDD",
+   "DDDDTTTTTTTTDDDD",
+   "dDDDDDDDDDDDDDDd",
+   ".dddddddddddddd."
+  ],
+  "arm": [
+   "VVV",
+   "VVV",
+   "VVV",
+   "VVV",
+   "SSS",
+   "sSS"
+  ],
+  "boot": [
+   "FFF",
+   "FFF",
+   "FFFF"
+  ],
+  "can": [
+   "..nnnn......",
+   ".n....n.....",
+   ".nMMMMMn...n",
+   ".nMMMMMMn.nn",
+   ".nMMMMMMMnn.",
+   ".nMMMMMMn...",
+   ".nMMMMMMn...",
+   "..nnnnnn...."
+  ],
+  "canPour": [
+   "..nnnn......",
+   ".n....n.....",
+   ".nMMMMMn....",
+   ".nMMMMMMn...",
+   ".nMMMMMMMnn.",
+   ".nMMMMMMn.nn",
+   ".nMMMMMMn..n",
+   "..nnnnnn...."
+  ],
+  "drops1": [
+   "q.",
+   "..",
+   ".q",
+   "..",
+   "q."
+  ],
+  "drops2": [
+   "..",
+   "q.",
+   "..",
+   ".q",
+   ".."
+  ],
+  "empty": [
+   "."
+  ]
+ },
+ "poses": {},
+ "anims": {
+  "Idle": {
+   "fps": 4,
+   "loop": true,
+   "layers": [
+    {
+     "key": "barm",
+     "x": 15,
+     "y": 43,
+     "default": "arm",
+     "recolor": "back"
+    },
+    {
+     "key": "bboot",
+     "x": 19,
+     "y": 55,
+     "default": "boot",
+     "recolor": "back",
+     "bob": false
+    },
+    {
+     "key": "fboot",
+     "x": 25,
+     "y": 55,
+     "default": "boot",
+     "bob": false
+    },
+    {
+     "key": "torso",
+     "x": 16,
+     "y": 41,
+     "default": "torso"
+    },
+    {
+     "key": "head",
+     "x": 13,
+     "y": 17,
+     "default": "head",
+     "lean": true
+    },
+    {
+     "key": "can",
+     "x": 29,
+     "y": 48,
+     "default": "can"
+    },
+    {
+     "key": "farm",
+     "x": 29,
+     "y": 43,
+     "default": "arm"
+    },
+    {
+     "key": "water",
+     "x": 40,
+     "y": 56,
+     "default": "drops1"
+    }
+   ],
+   "frames": [
+    {
+     "bob": 0,
+     "water": null
+    },
+    {
+     "bob": 0,
+     "water": null
+    },
+    {
+     "bob": 1,
+     "water": null
+    },
+    {
+     "bob": 1,
+     "water": null
+    }
+   ]
+  },
+  "Act": {
+   "fps": 6,
+   "loop": false,
+   "layers": [
+    {
+     "key": "barm",
+     "x": 15,
+     "y": 43,
+     "default": "arm",
+     "recolor": "back"
+    },
+    {
+     "key": "bboot",
+     "x": 19,
+     "y": 55,
+     "default": "boot",
+     "recolor": "back",
+     "bob": false
+    },
+    {
+     "key": "fboot",
+     "x": 25,
+     "y": 55,
+     "default": "boot",
+     "bob": false
+    },
+    {
+     "key": "torso",
+     "x": 16,
+     "y": 41,
+     "default": "torso"
+    },
+    {
+     "key": "head",
+     "x": 13,
+     "y": 17,
+     "default": "head",
+     "lean": true
+    },
+    {
+     "key": "can",
+     "x": 29,
+     "y": 48,
+     "default": "can"
+    },
+    {
+     "key": "farm",
+     "x": 29,
+     "y": 43,
+     "default": "arm"
+    },
+    {
+     "key": "water",
+     "x": 40,
+     "y": 56,
+     "default": "drops1"
+    }
+   ],
+   "frames": [
+    {
+     "bob": 0,
+     "can": "canPour",
+     "water": null
+    },
+    {
+     "bob": 0,
+     "can": "canPour",
+     "lean": 1
+    },
+    {
+     "bob": 1,
+     "can": "canPour",
+     "water": "drops2",
+     "lean": 1
+    },
+    {
+     "bob": 1,
+     "can": "canPour",
+     "lean": 1
+    },
+    {
+     "bob": 0,
+     "can": "canPour",
+     "water": "drops2",
+     "lean": 1
+    },
+    {
+     "bob": 0,
+     "water": null
+    }
+   ]
+  }
+ }
+}

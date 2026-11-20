@@ -12,9 +12,11 @@ using UnityEngine.UI;
 /// <summary>
 /// Tools > Shards of Motion > Game Shell > Build Title Scene.
 /// Creates Assets/_Project/Scenes/Title.unity, an atmospheric title screen (inspired by the team's references):
-///   - the Mossy Ruins forest (crop C), edges darkened by a vignette, slow light shafts from the top left;
-///   - a big Motion Shard floating and bobbing above the Stone of Recall on the ruins, with a pulsing cyan light;
-///   - P1 and P2 (idle animations) standing in the grass looking up at it; glowing motes drifting up (TitleAmbience);
+///   - the "Heart of the Forest" painting (Art/Title/Title_Background.png, PixelLab, 344 x 192 at 16 PPU like the room
+///     backgrounds: a root-covered ruined arch over a glowing altar), edges darkened by a vignette, slow light shafts;
+///   - a big Motion Shard floating and bobbing in the arch above the painted altar, with a pulsing cyan light;
+///   - P1 and P2 on either side of the altar, facing each other around the shard (tinted to the painting, cyan rim light,
+///     soft shadows); glowing motes drifting up (TitleAmbience);
 ///   - on the left: "SHARDS / OF MOTION" in Jersey 10 with a soft cyan glow, and a plain-word menu
 ///     (Continue / New Game / Settings / Quit): dim words, the selected one bright with a small shard marker;
 ///   - the Settings panel (journal style) and an EventSystem; a small controls hint at the bottom right.
@@ -26,19 +28,23 @@ public static class TitleSceneBuilder
     private const string RegionScene = "Assets/_Project/Scenes/Regions/Region1_ShatteredGrounds.unity";
     private const string VillageScene = "Assets/_Project/Scenes/Village.unity";
     private const string ArtFolder = "Assets/_Project/Art/Title";
-    private const string Background = "Assets/_Project/Art/Backgrounds/Processed/BG_MossyRuins_C.png";
-    private const string VillageTexture = "Assets/Cainos/Pixel Art Platformer - Village Props/Texture/TX Village Props.png";
+    // Kept in Art/Title (not Art/Backgrounds) so Backgrounds > Process Backgrounds doesn't treat it as a source to shrink.
+    private const string Background = ArtFolder + "/Title_Background.png";
     private const string FontPath = "Assets/_Project/Art/Fonts/Jersey10 SDF.asset";
     private const float FeetBelowCentre = 0.75f; // character sprites: feet 24 px below the player's position
-    private const float Ground = -4.4f;           // where the grass meets the ground in crop C
+    // Places in the painting (pixel x right / y down, 344 x 192, 16 px per unit, centred on the camera).
+    private static Vector2 Painted(float px, float py) => new Vector2((px - 172f) / 16f, (96f - py) / 16f);
+    private static readonly float Ground = Painted(0f, 162f).y;          // the lit clearing in front of the altar
+    private static readonly Vector2 ShardHome = Painted(234f, 90f);      // inside the arch, above the glowing altar
 
     [MenuItem("Tools/Shards of Motion/Game Shell/Build Title Scene")]
     public static void Build()
     {
         if (!EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo()) return;
         Directory.CreateDirectory(ArtFolder);
-        Sprite vignette = SaveSprite("Title_Vignette", Vignette(320, 180), 16f);
-        Sprite shaft = SaveSprite("Title_LightShaft", Shaft(24, 160), 16f);
+        Sprite vignette = SaveSprite("Title_Vignette", Vignette(320, 180), 320, 180, 16f);
+        Sprite shaft = SaveSprite("Title_LightShaft", Shaft(24, 160), 24, 160, 16f);
+        Sprite shadow = SaveSprite("Title_Shadow", Shadow(22, 5), 22, 5, 32f);
         Material glow = GlowMaterial();
 
         Scene scene = EditorSceneManager.NewScene(NewSceneSetup.EmptyScene, NewSceneMode.Single);
@@ -58,8 +64,9 @@ public static class TitleSceneBuilder
         global.lightType = Light2D.LightType.Global;
         global.intensity = 0.85f;
 
-        Sprite bg = AssetDatabase.LoadAssetAtPath<Sprite>(Background);
-        if (bg != null) SR("Background", bg, Vector3.zero, "Background", -100).color = new Color(0.85f, 0.9f, 0.88f);
+        Sprite bg = ImportBackground();
+        if (bg != null) SR("Background", bg, Vector3.zero, "Background", -100);
+        else Debug.LogWarning("Title: " + Background + " not found; the title has no background.");
         SpriteRenderer vig = SR("Vignette", vignette, Vector3.zero, "Foreground", 100);
         vig.color = new Color(0.02f, 0.04f, 0.03f, 1f);
 
@@ -72,40 +79,28 @@ public static class TitleSceneBuilder
             shafts.Add(s);
         }
 
-        // ---- The landmark: Stone of Recall pedestal with a big floating Motion Shard
-        Sprite stone = AssetDatabase.LoadAllAssetsAtPath(VillageTexture).OfType<Sprite>().FirstOrDefault(s => s.name == "TX Village Props - Stone of Recall");
-        float pedestalTop = Ground + 2f;
-        SpriteRenderer stoneGlow = null;
-        if (stone != null)
+        // ---- The landmark: a big Motion Shard floating in the arch above the painted altar
+        SpriteRenderer stoneGlow = null; // (the painted altar already glows)
+        // The same crystal as the village's shard shrine (Art/Village, made by Build Village), at its native pixel size.
+        Sprite shardSprite = AssetDatabase.LoadAssetAtPath<Sprite>("Assets/_Project/Art/Village/Shrine_Crystal.png");
+        bool villageCrystal = shardSprite != null;
+        if (!villageCrystal)
         {
-            SpriteRenderer ped = SR("Pedestal", stone, Vector3.zero, "Props", 0);
-            ped.transform.localScale = new Vector3(2f, 2f, 1f);
-            Bounds b = ped.bounds;
-            ped.transform.position = new Vector3(4.4f - (b.center.x - ped.transform.position.x), Ground - (b.min.y - ped.transform.position.y), 0f);
-            pedestalTop = ped.bounds.max.y;
-
-            // The stone's own glow (its rune), pulsing with the shard above: "the stone is calling the shard".
-            Sprite glowSprite = AssetDatabase.LoadAllAssetsAtPath(VillageTexture).OfType<Sprite>()
-                .FirstOrDefault(s => s.name == "TX Village Props - Stone of Recall - Glow");
-            if (glowSprite != null)
-            {
-                stoneGlow = SR("Pedestal Glow", glowSprite, Vector3.zero, "Props", 1);
-                stoneGlow.transform.localScale = new Vector3(2f, 2f, 1f);
-                stoneGlow.transform.position += ped.bounds.center - stoneGlow.bounds.center;
-                stoneGlow.color = new Color(0.7f, 1f, 1f, 0.7f);
-            }
+            Debug.LogWarning("Title: Art/Village/Shrine_Crystal.png not found (run Game Shell > Build Village first); using the Motion Shard pickup sprite.");
+            GameObject shardPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Project/Prefabs/Interactables/MotionShard.prefab");
+            shardSprite = shardPrefab != null ? shardPrefab.GetComponentInChildren<SpriteRenderer>()?.sprite : null;
         }
-        GameObject shardPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Project/Prefabs/Interactables/MotionShard.prefab");
-        Sprite shardSprite = shardPrefab != null ? shardPrefab.GetComponentInChildren<SpriteRenderer>()?.sprite : null;
         Transform shardT = null;
         Light2D shardLight = null;
         if (shardSprite != null)
         {
-            SpriteRenderer big = SR("Great Shard", shardSprite, new Vector3(4.4f, pedestalTop + 1.3f, 0f), "Props", 5);
-            big.transform.localScale = new Vector3(3f, 3f, 1f);
+            SpriteRenderer big = SR("Great Shard", shardSprite, ShardHome, "Props", 5);
+            if (villageCrystal) big.transform.position += (Vector3)ShardHome - big.bounds.center; // its pivot is at the bottom: centre it
+            else big.transform.localScale = new Vector3(3f, 3f, 1f);
             shardT = big.transform;
             shardLight = new GameObject("Shard Light").AddComponent<Light2D>();
             shardLight.transform.SetParent(shardT, false);
+            shardLight.transform.position = big.bounds.center;
             shardLight.lightType = Light2D.LightType.Point;
             shardLight.color = new Color(0.45f, 0.95f, 1f);
             shardLight.pointLightOuterRadius = 4.5f;
@@ -113,14 +108,34 @@ public static class TitleSceneBuilder
             shardLight.intensity = 1.2f;
         }
 
-        // ---- P1 and P2, idle, looking up at the shard
-        foreach ((string who, float x) in new[] { ("P1", 2.3f), ("P2", 3.2f) })
+        // ---- P1 and P2 on either side of the altar, facing each other around the shard. Blended into the painting:
+        // tinted toward its dark, cool palette, a cyan rim light from the shard between them (lights only the Player layer),
+        // and a soft shadow at their feet.
+        foreach ((string who, float x, bool faceLeft) in new[] { ("P1", 2.3f, false), ("P2", 5.5f, true) })
         {
             CharacterAnimationSet set = AssetDatabase.LoadAssetAtPath<CharacterAnimationSet>($"Assets/_Project/Art/Characters/{who}/{who}_Animations.asset");
             CharacterAnimationSet.Clip idle = set != null ? set.Get("Idle") : null;
             if (idle == null || idle.frames.Length == 0) continue;
             SpriteRenderer sr = SR(who, idle.frames[0], new Vector3(x, Ground + FeetBelowCentre, 0f), "Player", 0);
+            sr.color = new Color(0.72f, 0.78f, 0.8f);
+            sr.flipX = faceLeft;
             sr.gameObject.AddComponent<SpriteFlipbook>().EditorSetup(idle.frames, idle.framesPerSecond);
+            if (shadow != null) SR(who + " Shadow", shadow, new Vector3(x, Ground + 1f / 32f, 0f), "Player", -1).color = new Color(0f, 0.02f, 0.02f, 0.5f);
+        }
+        Light2D rim = new GameObject("Player Rim Light").AddComponent<Light2D>();
+        rim.lightType = Light2D.LightType.Point;
+        rim.transform.position = new Vector3(ShardHome.x, Ground + 1.4f, 0f);
+        rim.color = new Color(0.45f, 0.95f, 1f);
+        rim.intensity = 0.9f;
+        rim.pointLightOuterRadius = 2.6f;
+        rim.pointLightInnerRadius = 0.2f;
+        SerializedObject rimSo = new SerializedObject(rim);
+        SerializedProperty layers = rimSo.FindProperty("m_ApplyToSortingLayers");
+        if (layers != null)
+        {
+            layers.arraySize = 1;
+            layers.GetArrayElementAtIndex(0).intValue = SortingLayer.NameToID("Player");
+            rimSo.ApplyModifiedPropertiesWithoutUndo();
         }
 
         GameObject ambience = new GameObject("Title Ambience");
@@ -204,6 +219,20 @@ public static class TitleSceneBuilder
         return sr;
     }
 
+    private static Sprite ImportBackground()
+    {
+        TextureImporter importer = AssetImporter.GetAtPath(Background) as TextureImporter;
+        if (importer == null) return null;
+        importer.textureType = TextureImporterType.Sprite;
+        importer.spriteImportMode = SpriteImportMode.Single;
+        importer.spritePixelsPerUnit = 16f; // like the room backgrounds: each painting pixel = 2 x 2 game pixels
+        importer.filterMode = FilterMode.Point;
+        importer.textureCompression = TextureImporterCompression.Uncompressed;
+        importer.mipmapEnabled = false;
+        importer.SaveAndReimport();
+        return AssetDatabase.LoadAssetAtPath<Sprite>(Background);
+    }
+
     // Soft cyan underlay ("glow") on a copy of the Jersey 10 material, for the title.
     private static Material GlowMaterial()
     {
@@ -254,9 +283,23 @@ public static class TitleSceneBuilder
         return p;
     }
 
-    private static Sprite SaveSprite(string name, Color32[] pixels, float ppu)
+    // A flat oval, stepped (pixel-art): for the players' ground shadows.
+    private static Color32[] Shadow(int w, int h)
     {
-        int w = name.Contains("Vignette") ? 320 : 24, h = name.Contains("Vignette") ? 180 : 160;
+        Color32[] p = new Color32[w * h];
+        for (int y = 0; y < h; y++)
+            for (int x = 0; x < w; x++)
+            {
+                float dx = (x - (w - 1) * 0.5f) / (w * 0.5f), dy = (y - (h - 1) * 0.5f) / (h * 0.5f);
+                float d = dx * dx + dy * dy;
+                byte a = d <= 0.45f ? (byte)255 : d <= 1f ? (byte)140 : (byte)0;
+                p[y * w + x] = new Color32(255, 255, 255, a);
+            }
+        return p;
+    }
+
+    private static Sprite SaveSprite(string name, Color32[] pixels, int w, int h, float ppu)
+    {
         Texture2D tex = new Texture2D(w, h, TextureFormat.RGBA32, false);
         tex.SetPixels32(pixels);
         string path = $"{ArtFolder}/{name}.png";

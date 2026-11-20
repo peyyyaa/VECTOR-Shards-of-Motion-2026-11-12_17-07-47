@@ -12,9 +12,10 @@ A complete, playable game:
   the machine parts complete the **Momentum Engine** and its puzzle frees the Great Shard.
 - **Regions 2 (Gravity Divide) and 3 (Mechanical Depths): cut for now**, shown as locked gates in the village ("coming soon").
   Also deferred: Kinetic Bloom, launchers/cannons, circular-motion mechanics, extra village screens and shops.
-- **Village (core):** 2 screens — **Wren's Lab** (machine-parts bench, wall map) and **Market Square** (Field Requests
-  board, 1 shop, villagers, road gate with region signs). Wren redesigned as a distinct adult NPC + 2 villagers,
-  journal-style speech boxes, ambient life, **restoration** that shows progress.
+- **Village (core):** 3 screens (see `Docs/Village_Art_Plan.md`): **Wren's Lab** (research table with machine parts,
+  wall map), **Market Square** (Mira's cottage, Field Requests board, fruit stall, shard shrine, well) and
+  **Forge & East Road** (Bram's forge = Village Fund, road gate with region signs). Wren (he), Bram and Mira,
+  journal-style speech boxes, ambient life, **restoration** projects that show progress.
 - **Shop: Village Fund** — spend shards (a balance; the collection record is kept for 100%) on 3–4 visible restoration
   projects. **No power upgrades**: puzzle numbers (burst 15 N·s, tether 24 N, push 12 N, g = 29.43) must stay fixed.
 - **Map:** parchment map (lab wall + pause menu): rooms, shards x/3, parts, journal read, locked regions;
@@ -25,7 +26,7 @@ A complete, playable game:
 
 | Days | Work |
 |---|---|
-| Nov 20–22 | Village core: 2 screens, Wren redesign, villagers, speech boxes, layout, ambience |
+| Nov 20–22 | Village core: screens, villagers, speech boxes, layout, ambience (**done Nov 20**) |
 | Nov 23 | Map (with travel) + Village Fund shop |
 | Nov 24 | Room 5 |
 | Nov 25 | Room 6 |
@@ -46,7 +47,10 @@ A complete, playable game:
 - Motion Journal (field-notebook UI, force diagrams, page turning, Wren's sketch page, Wren's tips).
 - Rooms 1–4 (graybox + art): 1 First Exchange, 2 Weight of Things, 3 Together We Move (cargo ferry), 4 Broken Crossing (momentum, rubble walls).
 - Game shell: save system (auto, one slot), title screen, pause menu, settings, dev tools.
-- Village v0 (single screen, to be replaced by the 2-screen core).
+- Title screen v2: PixelLab forest-ruin painting (Art/Title), village crystal floating in the arch, P1/P2 framing it.
+- Village core: 3 screens with PixelLab buildings (adapted: Art/Village; sources in Art/Village/Source), chibi Wren/Bram/Mira
+  (idle + action, NpcActivity), dialogue, VillageAmbience (birds, smoke, embers, sway, pollen, motes),
+  RestorationProject states (well, lamps, garden, shrine; broken until funded). Dev menu: Village: Restore / Unrestore All.
 
 ## Tools (Tools > Shards of Motion) — typical run order
 
@@ -55,7 +59,8 @@ A complete, playable game:
 - **Art:** `Characters > 1. Build Character Sprites` (P1, P2, Wren...), `Effects > 1. Build Effect Sprites`,
   `UI Kit > 2. Build UI Kit`, `Create UI Prefabs` (canvas: journal, pause, settings).
 - **Text:** `Journal > Update All Entries` (entries + tips; keeps drawn sketches).
-- **Shell:** `Game Shell > Build Title Scene`, `Game Shell > Build Village`.
+- **Shell:** `Game Shell > Build Title Scene`, `Game Shell > Build Village` (run Characters > 1. Build Character Sprites
+  first; Build Village before Build Title Scene, which uses the village crystal).
 - **Testing:** `Dev > Play From Room > Room N`; in play: PgDn/PgUp rooms, F9 reset, F10 hold gates.
 
 ## Conventions
@@ -69,6 +74,8 @@ A complete, playable game:
 
 ## Next steps
 
-1. Village core (in progress, Nov 20).
-2. Map + Village Fund shop.
+1. Map screen (lab wall map + pause menu; travel to reached rooms), then the Village Fund shop at Bram
+   (shard balance, the 4 restoration projects with prices; buying calls RestorationProject.Restore).
+2. Team: PixelLab Momentum Engine (empty slots + running, ~200x160) by ~Nov 24; optional map parchment background;
+   music tracks by ~Nov 27.
 3. Rooms 5–8 (designs to propose one at a time; Room 8 finale uses the Flywheel + Counterweight and whatever part Rooms 5–7 add).
