@@ -19,7 +19,7 @@ using UnityEngine;
 ///        high step, 3.7 m away, the Wind Tether pulls it out (24 N vs 9.8 N friction); the Burst can't reach.
 ///   both - the 2 kg crate starts up on the low step: climb up together and push it off (24 N vs 19.6 N).
 ///   P1 - the 3 kg crate starts 5 m from its pedestal: each burst gives dv = 15/3 = 5 m/s and a slide of
-///        v^2/(2 mu g) = 1.27 m, so it takes 4 bursts. A 5th sends it into the acid pit just past the pedestal,
+///        v^2/(2 mu g) = 1.27 m, so it takes 3 bursts. A 4th sends it into the acid pit just past the pedestal,
 ///        and it returns to its start. A burst on the 1 kg crate (15 m/s, ~11.5 m) also tends to end in the pit.
 ///
 /// Room-local coordinates: floor top y = -4.5, ceiling y = 5.625, doorways at x = -10 and 10 (opening up to y = -0.5).
@@ -85,18 +85,18 @@ public static class Room2Builder
             Solid(t["Ledge_Heavy"], layout, "Step_High", -4.75f, -1f, -3f, -0.5f);      // 2 m above Step_Low: P2's tether spot (level with the niche)
             Solid(t["Gate_Lintel"], layout, "Gate_Lintel", 8.5f, 1.5f, 9.5f, 5.625f);   // nothing goes over the gate
 
-            // Acid pit (x 7.25..8.5) just past the 85 N pedestal: the room's floor is split around it.
+            // Acid pit (x 6.25..8.5, 2.25 m) right after the 85 N pedestal: the room's floor is split around it.
             Transform floor = Find(layout, "Floor");
             if (floor == null) { Debug.LogError("Room 2: Layout/Floor not found. Nothing was changed."); return; }
             GameObject floorRight = Object.Instantiate(floor.gameObject, layout);
             floorRight.name = "Floor_Right";
-            SetRect(floor, -10f, -5.5f, 7.25f, -4.5f);
+            SetRect(floor, -10f, -5.5f, 6.25f, -4.5f);
             SetRect(floorRight.transform, 8.5f, -5.5f, 10f, -4.5f);
-            Solid(t["Ledge_Heavy"], layout, "Pit_Bottom", 7.25f, -7f, 8.5f, -6.5f);    // safety net below the acid
+            Solid(t["Ledge_Heavy"], layout, "Pit_Bottom", 6.25f, -7f, 8.5f, -6.5f);    // safety net below the acid
             Transform hazards = Find(room.transform, "Hazards") ?? puzzle;
             GameObject acid = Clone(t["Ledge_Heavy"], hazards, "Pit_Acid");
             acid.layer = 0; // Default: collides with players and blocks (trigger messages need that)
-            SetRect(acid.transform, 7.25f, -6.5f, 8.5f, -5f);
+            SetRect(acid.transform, 6.25f, -6.5f, 8.5f, -4.8f); // surface 0.3 m below the floor: easy to see
             acid.GetComponent<BoxCollider2D>().isTrigger = true;
             SpriteRenderer acidSr = acid.GetComponent<SpriteRenderer>();
             acidSr.color = new Color(0.45f, 0.95f, 0.25f, 0.85f);
@@ -106,7 +106,7 @@ public static class Room2Builder
             // ---- Puzzle: three locked pedestals (target only, ignore players) + one test scale (reading only)
             PressurePlate s25 = Scale(t["Plate_Heavy_80N"], puzzle, "Scale_25N", -0.25f, 25f, PlateReadout.Display.TargetOnly, false);
             PressurePlate s55 = Scale(t["Plate_Heavy_80N"], puzzle, "Scale_55N", 2.75f, 55f, PlateReadout.Display.TargetOnly, false);
-            PressurePlate s85 = Scale(t["Plate_Heavy_80N"], puzzle, "Scale_85N", 6.25f, 85f, PlateReadout.Display.TargetOnly, false);
+            PressurePlate s85 = Scale(t["Plate_Heavy_80N"], puzzle, "Scale_85N", 5.25f, 85f, PlateReadout.Display.TargetOnly, false);
             Scale(t["Plate_Heavy_80N"], puzzle, "Test_Scale", -6.25f, 9999f, PlateReadout.Display.ReadingOnly, true); // weighs anything, never "pressed"
 
             GameObject relay = Clone(t["Relay_Exit"], puzzle, "Relay_Exit");
@@ -131,7 +131,7 @@ public static class Room2Builder
             // ---- Objects: three unmarked crates (mass labels off in this room: weigh them!)
             Crate(blocks[0], objects, "Crate_A_1kg", -8f, 0f);     // in the niche, front face flush with the opening
             Crate(blocks[1], objects, "Crate_B_2kg", -1f, -2f);    // up on the low step's right end: both climb up and push it off
-            Crate(blocks[2], objects, "Crate_C_3kg", 1.25f, -4f);  // 5 m left of the 85 N pedestal: 4 bursts of ~1.27 m; a 5th reaches the acid
+            Crate(blocks[2], objects, "Crate_C_3kg", 1.25f, -4f);  // 4 m left of the 85 N pedestal: 3 bursts of ~1.27 m; a 4th reaches the acid
 
             GameObject shrine = (GameObject)PrefabUtility.InstantiatePrefab(shrinePrefab, info);
             shrine.name = "Shrine_Room02";

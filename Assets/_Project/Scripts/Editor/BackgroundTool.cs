@@ -27,8 +27,13 @@ public static class BackgroundTool
     private static readonly (string room, string crop, Color tint)[] Assignments =
     {
         ("R1_Room01", "BG_MountainVista_A", new Color(0.88f, 0.92f, 0.95f)),
-        // ("R1_Room02", "BG_MountainVista_A", ...), rooms 3-5: BG_MistyRuins_A/B/C (Room 4 = the waterfall crop),
-        // rooms 6-8: BG_ForestCanopy_A/B/C, darker tint.
+        ("R1_Room02", "BG_MountainVista_A", new Color(0.84f, 0.88f, 0.93f)),  // same vista, a touch dimmer: deeper in
+        ("R1_Room03", "BG_MistyRuins_A", new Color(0.85f, 0.88f, 0.9f)),
+        ("R1_Room04", "BG_MistyRuins_B", new Color(0.85f, 0.88f, 0.9f)),     // swap with A/C if another crop shows the waterfall better
+        ("R1_Room05", "BG_MistyRuins_C", new Color(0.82f, 0.86f, 0.9f)),
+        ("R1_Room06", "BG_ForestCanopy_A", new Color(0.75f, 0.78f, 0.8f)),   // forest rooms: darker
+        ("R1_Room07", "BG_ForestCanopy_B", new Color(0.72f, 0.75f, 0.78f)),
+        ("R1_Room08", "BG_ForestCanopy_C", new Color(0.8f, 0.84f, 0.86f)),   // Heart of the Forest: a little brighter again
     };
 
     // Short names for the source files (by their start).

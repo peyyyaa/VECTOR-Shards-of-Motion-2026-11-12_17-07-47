@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1866009694136763840, guid: d879a7d15fa7f2c4bb9893231f5611ef, type: 3}
+      propertyPath: interactionLayerMask.m_Bits
+      value: 384
+      objectReference: {fileID: 0}
     - target: {fileID: 1866009694136763843, guid: d879a7d15fa7f2c4bb9893231f5611ef, type: 3}
       propertyPath: m_Name
       value: Hazard_Acid
@@ -24,13 +28,17 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1866009694136763840, guid: d879a7d15fa7f2c4bb9893231f5611ef, type: 3}
-      propertyPath: interactionLayerMask.m_Bits
-      value: 384
+    - target: {fileID: 1866009694136763871, guid: d879a7d15fa7f2c4bb9893231f5611ef, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 9021447951967945863, guid: d879a7d15fa7f2c4bb9893231f5611ef, type: 3}
       propertyPath: m_Density
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9021447951967945863, guid: d879a7d15fa7f2c4bb9893231f5611ef, type: 3}
+      propertyPath: m_ColliderMask.m_Bits
+      value: 384
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -40,7 +48,7 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 300003}
   m_SourcePrefab: {fileID: 100100000, guid: d879a7d15fa7f2c4bb9893231f5611ef, type: 3}
---- !u!1 &300002 stripped
+--- !u!1 &1866009694136538658 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1866009694136763843, guid: d879a7d15fa7f2c4bb9893231f5611ef, type: 3}
   m_PrefabInstance: {fileID: 300001}
@@ -51,11 +59,11 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 300002}
+  m_GameObject: {fileID: 1866009694136538658}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cd6a26cce15a6e791b0195d6e4456d3d, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::HazardZone
   respawnPlayers: 1
   returnBlocks: 1

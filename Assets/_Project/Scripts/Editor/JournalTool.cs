@@ -43,6 +43,69 @@ public static class JournalTool
         return Save("R1_02_WeightOfThings", WeightOfThings());
     }
 
+    /// <summary>Creates (or rewrites) the Room 3 entry asset; Room3Builder assigns it.</summary>
+    public static JournalEntry SaveRoom3Entry()
+    {
+        Directory.CreateDirectory(Folder);
+        return Save("R1_03_TogetherWeMove", TogetherWeMove());
+    }
+
+    private static JournalEntry TogetherWeMove()
+    {
+        JournalEntry e = ScriptableObject.CreateInstance<JournalEntry>();
+        e.title = "3 · Together We Move";
+
+        e.pages.Add(new JournalPage
+        {
+            bigIdea = "Forces on the same object add up. Two small forces can beat one big friction.",
+            notes = "The causeway collapsed long ago; only the old bridge still crosses the acid, and it moves when its plate feels " +
+                    "a heavy load. The stone crate is too heavy for either of us alone. But a push and a pull at the same time, " +
+                    "in the same direction, add together.",
+            lookCloser = $"Friction on 3 kg: μ·m·g = {Fric("29.4 N")}\n" +
+                         $"Push {Push("12 N")} alone: no.   Tether {Pull("24 N")} alone: no.\n" +
+                         $"Push + tether = {Push("12")} + {Pull("24")} = 36 N → a = (36 − 29.4) ÷ 3 = 2.2 m/s²",
+            funFact = "Engineers call adding forces like this a \"vector sum\": direction matters as much as size.",
+            marginP1 = "I push, you pull. Same way!",
+            marginP2 = "Pulling from the front still counts.",
+            diagram = new ForceDiagram
+            {
+                show = true,
+                objectLabel = "Crate\n3 kg",
+                forces = new List<DiagramForce>
+                {
+                    new DiagramForce { label = "Tether", newtons = 24f, direction = DiagramForce.Direction.Right, kind = DiagramForce.Kind.Pull },
+                    new DiagramForce { label = "Push", newtons = 12f, direction = DiagramForce.Direction.Right, kind = DiagramForce.Kind.Push },
+                    new DiagramForce { label = "Friction", newtons = 29.4f, direction = DiagramForce.Direction.Left, kind = DiagramForce.Kind.Friction },
+                },
+                caption = "12 + 24 = 36 N forward against 29.4 N: it moves.",
+            },
+        });
+
+        e.pages.Add(new JournalPage
+        {
+            bigIdea = "Inertia rides along: things keep doing what they were doing until a force changes it.",
+            notes = "Watch the crate on the bridge. When the bridge starts, the crate lags behind for a moment; when it stops, " +
+                    "the crate keeps sliding forward. Only friction from the deck drags it along. Keep cargo away from the edges!",
+            lookCloser = $"Friction on the 2 kg crate: up to {Fric("19.6 N")}, so a = 19.6 ÷ 2 = 9.8 m/s²\n" +
+                         "Bridge speed 2 m/s: the crate catches up in 2 ÷ 9.8 ≈ 0.2 s\n" +
+                         "and slips about v² ÷ (2a) = 4 ÷ 19.6 ≈ 0.2 m each time.",
+            funFact = "It's why a bus pushes you back when it starts and forward when it brakes. You aren't pushed: you just keep going.",
+            marginP1 = "The crate didn't move. The bridge did.",
+            marginP2 = "Then the crate wanted to keep going.",
+            diagram = new ForceDiagram
+            {
+                show = true,
+                objectLabel = "Crate\n2 kg",
+                forces = new List<DiagramForce>
+                {
+                    new DiagramForce { label = "Friction", newtons = 19.6f, direction = DiagramForce.Direction.Right, kind = DiagramForce.Kind.Friction },
+                },
+                caption = "As the bridge starts right, friction is the only force pulling the crate along.",
+            },
+        });
+        return e;
+    }
+
     // ------------------------------------------------------------------ content
 
     private static JournalEntry WeightOfThings()
