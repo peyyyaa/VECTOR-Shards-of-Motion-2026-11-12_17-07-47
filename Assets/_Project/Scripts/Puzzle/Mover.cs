@@ -67,6 +67,9 @@ public class Mover : MonoBehaviour, IRoomResettable
     /// <summary>True while the signal has changed but Signal Delay hasn't passed yet ("about to move").</summary>
     public bool IsAboutToMove { get; private set; }
 
+    /// <summary>Developer testing only (DevTools F10): while true, the mover goes to point B whatever its signal.</summary>
+    public bool DevHoldOpen { get; set; }
+
     private void Awake()
     {
         body = GetComponent<Rigidbody2D>();
@@ -96,7 +99,7 @@ public class Mover : MonoBehaviour, IRoomResettable
         if (mode == MoverMode.FollowSignal)
         {
             if (signal != null) targetB = powered;
-            target = targetB ? pointB : pointA;
+            target = targetB || DevHoldOpen ? pointB : pointA;
         }
         else
         {
