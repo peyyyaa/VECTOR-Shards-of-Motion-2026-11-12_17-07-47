@@ -11,6 +11,8 @@ public class TitleAmbience : MonoBehaviour
     [SerializeField] private Light2D shardLight;
     [SerializeField] private SpriteRenderer[] shafts = new SpriteRenderer[0];
     [SerializeField] private FxLibrary fx;
+    [Tooltip("The Stone of Recall's glow, pulsing in step with the shard.")]
+    [SerializeField] private SpriteRenderer stoneGlow;
     [Tooltip("Where motes can appear (world units).")]
     [SerializeField] private Rect moteArea = new Rect(-10f, -5.6f, 20f, 6f);
     [SerializeField] private float motesPerSecond = 3f;
@@ -43,16 +45,28 @@ public class TitleAmbience : MonoBehaviour
             shafts[i].color = c;
         }
 
-        if (fx == null || fx.sparkle == null) return;
+        if (stoneGlow != null)
+        {
+            Color g = stoneGlow.color;
+            g.a = 0.55f + 0.3f * Mathf.Sin(time * 2.2f); // in step with the shard's light
+            stoneGlow.color = g;
+        }
+
+        if (fx == null || fx.dot == null) return;
         moteTimer -= Time.unscaledDeltaTime;
         if (moteTimer > 0f) return;
         moteTimer = 1f / motesPerSecond;
+        // Fireflies: soft round dots that fade in, drift up and fade out.
         Vector3 at = new Vector3(Random.Range(moteArea.xMin, moteArea.xMax), Random.Range(moteArea.yMin, moteArea.yMax), 0f);
-        Color tint = Random.value < 0.6f ? new Color(0.6f, 0.95f, 1f, 0.8f) : new Color(1f, 0.9f, 0.6f, 0.7f);
-        Fx.Sprite(fx.sparkle, at, tint, Random.Range(2.5f, 4.5f), 2).Move(new Vector2(Random.Range(-0.15f, 0.15f), Random.Range(0.25f, 0.6f)));
+        Color tint = Random.value < 0.6f ? new Color(0.6f, 0.95f, 1f, 0.9f) : new Color(1f, 0.9f, 0.6f, 0.8f);
+        Fx.Sprite(fx.dot, at, tint, Random.Range(3f, 5f), 2).FadeInOut()
+          .Move(new Vector2(Random.Range(-0.15f, 0.15f), Random.Range(0.2f, 0.5f)));
     }
 
 #if UNITY_EDITOR
-    public void EditorSetup(Transform s, Light2D l, SpriteRenderer[] beams, FxLibrary library) { shard = s; shardLight = l; shafts = beams; fx = library; }
+    public void EditorSetup(Transform s, Light2D l, SpriteRenderer[] beams, FxLibrary library, SpriteRenderer glow)
+    {
+        shard = s; shardLight = l; shafts = beams; fx = library; stoneGlow = glow;
+    }
 #endif
 }

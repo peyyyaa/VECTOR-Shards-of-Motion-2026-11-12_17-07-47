@@ -57,6 +57,7 @@ public class FxSprite : MonoBehaviour
     private float gravity, drag;
     private float startScale = 1f, endScale = 1f;
     private bool fade = true;
+    private bool pulse;    // fade in, then out (fireflies)
     private Transform follow;
     private Vector3 followOffset;
 
@@ -75,6 +76,7 @@ public class FxSprite : MonoBehaviour
     public FxSprite Rotate(float degrees) { transform.rotation = Quaternion.Euler(0f, 0f, degrees); return this; }
     public FxSprite Flip(bool flipX) { sr.flipX = flipX; return this; }
     public FxSprite Hold() { fade = false; return this; }
+    public FxSprite FadeInOut() { pulse = true; Apply(); return this; }
     public FxSprite Follow(Transform target) { follow = target; followOffset = position - (target != null ? target.position : Vector3.zero); return this; }
     public FxSprite Order(string layer, int order) { sr.sortingLayerName = layer; sr.sortingOrder = order; return this; }
 
@@ -96,7 +98,8 @@ public class FxSprite : MonoBehaviour
         float t = Mathf.Clamp01(age / lifetime);
         sr.sprite = frames[Mathf.Min(frames.Length - 1, (int)(t * frames.Length))];
         Color c = color;
-        if (fade) c.a *= 1f - t * t; // holds longer, then fades quickly
+        if (pulse) c.a *= Mathf.Sin(Mathf.PI * t);  // soft in and out
+        else if (fade) c.a *= 1f - t * t;           // holds longer, then fades quickly
         sr.color = c;
         float s = Mathf.Lerp(startScale, endScale, t);
         transform.localScale = new Vector3(s, s, 1f);

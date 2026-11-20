@@ -75,6 +75,7 @@ public static class TitleSceneBuilder
         // ---- The landmark: Stone of Recall pedestal with a big floating Motion Shard
         Sprite stone = AssetDatabase.LoadAllAssetsAtPath(VillageTexture).OfType<Sprite>().FirstOrDefault(s => s.name == "TX Village Props - Stone of Recall");
         float pedestalTop = Ground + 2f;
+        SpriteRenderer stoneGlow = null;
         if (stone != null)
         {
             SpriteRenderer ped = SR("Pedestal", stone, Vector3.zero, "Props", 0);
@@ -82,6 +83,17 @@ public static class TitleSceneBuilder
             Bounds b = ped.bounds;
             ped.transform.position = new Vector3(4.4f - (b.center.x - ped.transform.position.x), Ground - (b.min.y - ped.transform.position.y), 0f);
             pedestalTop = ped.bounds.max.y;
+
+            // The stone's own glow (its rune), pulsing with the shard above: "the stone is calling the shard".
+            Sprite glowSprite = AssetDatabase.LoadAllAssetsAtPath(VillageTexture).OfType<Sprite>()
+                .FirstOrDefault(s => s.name == "TX Village Props - Stone of Recall - Glow");
+            if (glowSprite != null)
+            {
+                stoneGlow = SR("Pedestal Glow", glowSprite, Vector3.zero, "Props", 1);
+                stoneGlow.transform.localScale = new Vector3(2f, 2f, 1f);
+                stoneGlow.transform.position += ped.bounds.center - stoneGlow.bounds.center;
+                stoneGlow.color = new Color(0.7f, 1f, 1f, 0.7f);
+            }
         }
         GameObject shardPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/_Project/Prefabs/Interactables/MotionShard.prefab");
         Sprite shardSprite = shardPrefab != null ? shardPrefab.GetComponentInChildren<SpriteRenderer>()?.sprite : null;
@@ -113,7 +125,7 @@ public static class TitleSceneBuilder
 
         GameObject ambience = new GameObject("Title Ambience");
         ambience.AddComponent<TitleAmbience>().EditorSetup(shardT, shardLight, shafts.ToArray(),
-            AssetDatabase.LoadAssetAtPath<FxLibrary>("Assets/_Project/Art/FX/FX_Library.asset"));
+            AssetDatabase.LoadAssetAtPath<FxLibrary>("Assets/_Project/Art/FX/FX_Library.asset"), stoneGlow);
 
         // ---- UI: title, plain-word menu, hint, settings
         GameObject canvasGo = new GameObject("Title UI", typeof(RectTransform));
@@ -127,14 +139,14 @@ public static class TitleSceneBuilder
         canvasGo.AddComponent<GraphicRaycaster>();
         Transform c = canvasGo.transform;
 
-        TMP_Text title = MenuUIBuilder.Text(c, "Title", "SHARDS\nOF MOTION", 150f, new Color(1f, 0.97f, 0.86f), new Vector2(-470f, 250f),
+        TMP_Text title = MenuUIBuilder.Text(c, "Title", "SHARDS\nOF MOTION", 150f, new Color(1f, 0.97f, 0.86f), new Vector2(-410f, 250f),
             new Vector2(900f, 330f), TextAlignmentOptions.Left);
         title.lineSpacing = -30f;
         if (glow != null) title.fontSharedMaterial = glow;
         MenuUIBuilder.Text(c, "Subtitle", "A two-player physics adventure", 38f, new Color(0.75f, 0.95f, 1f, 0.9f),
-            new Vector2(-470f, 60f), new Vector2(900f, 50f), TextAlignmentOptions.Left);
+            new Vector2(-410f, 110f), new Vector2(900f, 50f), TextAlignmentOptions.Left);
 
-        RectTransform menu = MenuUIBuilder.Rect(c, "Menu", new Vector2(-670f, -190f), new Vector2(500f, 320f));
+        RectTransform menu = MenuUIBuilder.Rect(c, "Menu", new Vector2(-610f, -190f), new Vector2(500f, 320f));
         VerticalLayoutGroup layout = menu.gameObject.AddComponent<VerticalLayoutGroup>();
         layout.childAlignment = TextAnchor.UpperLeft;
         layout.spacing = 6f;
