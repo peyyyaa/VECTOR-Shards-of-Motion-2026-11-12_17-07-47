@@ -28,6 +28,19 @@ public static class ShardTracker
         Changed = null;
     }
 
+    // After the save file is loaded: shards collected in earlier sessions stay collected.
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void LoadFromSave() => ReloadFromSave();
+
+    /// <summary>Takes the collected shards from the save (also called after New Game).</summary>
+    public static void ReloadFromSave()
+    {
+        collected.Clear();
+        foreach (string id in SaveSystem.Data.shards) collected.Add(id);
+        Collected = collected.Count;
+        Changed?.Invoke();
+    }
+
     public static void Register(MotionShard shard)
     {
         if (all.Add(shard)) Changed?.Invoke();
@@ -44,6 +57,7 @@ public static class ShardTracker
     {
         if (!collected.Add(shard.Id)) return;
         Collected++;
+        SaveSystem.AddShard(shard.Id);
         Changed?.Invoke();
     }
 

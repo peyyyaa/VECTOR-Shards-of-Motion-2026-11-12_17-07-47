@@ -80,6 +80,7 @@ public static class UIPrefabBuilder
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize;
         scaler.referenceResolution = new Vector2(1920f, WorldText.ReferenceHeight);
         scaler.matchWidthOrHeight = 1f;
+        root.AddComponent<GraphicRaycaster>(); // mouse clicks on menu buttons
 
         // Labels container: fills the screen; labels are positioned inside it at runtime.
         RectTransform labels = NewRect(root.transform, "Labels");
@@ -88,6 +89,11 @@ public static class UIPrefabBuilder
 
         JournalPanel panel = BuildJournal(root.transform);
         panel.gameObject.SetActive(false); // shown when a Journal stone is read
+
+        // Game shell: pause menu (Esc / Start) with its settings panel, and the EventSystem menus need.
+        SettingsPanel settingsPanel = MenuUIBuilder.SettingsPanel(root.transform);
+        MenuUIBuilder.PauseMenu(root.transform, settingsPanel);
+        MenuUIBuilder.EventSystemObject(root.transform);
 
         UIRoot ui = root.AddComponent<UIRoot>();
         ui.EditorSetup(labels, labelPrefab, panel);

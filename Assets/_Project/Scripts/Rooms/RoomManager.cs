@@ -35,6 +35,15 @@ public class RoomManager : MonoBehaviour
     [Tooltip("How far (units) outside the room's area a player can go before respawning.")]
     [SerializeField, Min(0f)] private float respawnMargin = 1f;
 
+    [Header("Saving")]
+    [Tooltip("Name of this region in the save file (progress = furthest room reached here).")]
+    [SerializeField] private string regionId = "Region1";
+
+    /// <summary>Set before loading a region scene (e.g. Continue): start in this room number instead of the first. 0 = normal.</summary>
+    public static int RequestedStartRoom;
+
+    private Room[] roomsInOrder = new Room[0];
+
     private Room currentRoom;
     private Transform entryPlayer1;   // where each player entered the current room
     private Transform entryPlayer2;
@@ -64,6 +73,41 @@ public class RoomManager : MonoBehaviour
         entryPlayer1 = startingRoom.Player1Entry;
         entryPlayer2 = startingRoom.Player2Entry;
         cameraTransform.position = CameraPositionFor(startingRoom);
+
+        roomsInOrder = FindObjectsByType<Room>(FindObjectsSortMode.None);
+        System.Array.Sort(roomsInOrder, (a, b) => a.transform.position.x.CompareTo(b.transform.position.x));
+        SaveSystem.ReachedRoom(regionId, RoomNumber(startingRoom));
+
+        int requested = RequestedStartRoom;
+        RequestedStartRoom = 0;
+        if (requested > 1) StartCoroutine(GoToNextFrame(requested));
+    }
+
+    // Wait one frame so the players have spawned, then jump.
+    private System.Collections.IEnumerator GoToNextFrame(int roomNumber)
+    {
+        yield return null;
+        GoToRoomNumber(roomNumber);
+    }
+
+    /// <summary>Rooms in this region, left to right (room 1 first).</summary>
+    public IReadOnlyList<Room> Rooms => roomsInOrder;
+
+    /// <summary>1-based number of a room (left to right), or 0 if unknown.</summary>
+    public int RoomNumber(Room room) => System.Array.IndexOf(roomsInOrder, room) + 1;
+
+    /// <summary>
+    /// Moves both players to room n (1-based), arriving exactly where they would when walking in: at the arrival
+    /// points of the doorway from the previous room (Doorway_R{n-1}_R{n}), else at the room's own entry points.
+    /// </summary>
+    public void GoToRoomNumber(int n)
+    {
+        if (n < 1 || n > roomsInOrder.Length) return;
+        Room room = roomsInOrder[n - 1];
+        GameObject doorway = n > 1 ? GameObject.Find($"Doorway_R{n - 1}_R{n}") : null;
+        Transform a1 = doorway != null ? doorway.transform.Find("Arrive_Right_P1") : null;
+        Transform a2 = doorway != null ? doorway.transform.Find("Arrive_Right_P2") : null;
+        TransitionTo(room, a1 != null ? a1 : room.Player1Entry, a2 != null ? a2 : room.Player2Entry);
     }
 
     /// <summary>True if exits of 'room' may be used right now (it's the current room, not mid-slide).</summary>
@@ -88,6 +132,8 @@ public class RoomManager : MonoBehaviour
         slideTo = CameraPositionFor(target);
         slideTimer = 0f;
         transitioning = true;
+
+        SaveSystem.ReachedRoom(regionId, RoomNumber(target)); // autosave: progress
     }
 
     /// <summary>Sends one player back to where they entered the current room (e.g., touched a hazard).</summary>

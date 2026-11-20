@@ -23,6 +23,17 @@ public class QuestItem : MonoBehaviour
     public static readonly HashSet<string> Found = new HashSet<string>();
     public static event System.Action<QuestItem> Collected;
 
+    // Found items come from the save file (statics can survive between Play sessions in the editor: reload each time).
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void LoadFromSave() => ReloadFromSave();
+
+    /// <summary>Takes the found items from the save (also called after New Game).</summary>
+    public static void ReloadFromSave()
+    {
+        Found.Clear();
+        foreach (string id in SaveSystem.Data.questItems) Found.Add(id);
+    }
+
     public string Id => itemId;
     public string DisplayName => displayName;
 
@@ -45,6 +56,7 @@ public class QuestItem : MonoBehaviour
         if (rb == null || rb.GetComponent<PlayerMovement>() == null || Found.Contains(itemId)) return;
 
         Found.Add(itemId);
+        SaveSystem.AddQuestItem(itemId);
         Collected?.Invoke(this);
 
         Fx.Flash(transform.position, glowColor, 2.5f, 2f, 0.4f);

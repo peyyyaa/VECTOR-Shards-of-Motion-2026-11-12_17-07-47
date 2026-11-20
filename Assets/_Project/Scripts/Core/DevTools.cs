@@ -69,14 +69,7 @@ public class DevTools : MonoBehaviour
     private void GoTo(Room room)
     {
         if (gatesOpen) { gatesOpen = false; ApplyGates(); } // release the old room's gates
-
-        // Arrive exactly where players arrive when walking in: the arrival points of the doorway from the previous room
-        // (Doorway_R{n-1}_R{n}, e.g. on a raised landing). Fallback: the room's own entry points.
-        int n = System.Array.IndexOf(rooms, room) + 1;
-        GameObject doorway = n > 1 ? GameObject.Find($"Doorway_R{n - 1}_R{n}") : null;
-        Transform a1 = doorway != null ? doorway.transform.Find("Arrive_Right_P1") : null;
-        Transform a2 = doorway != null ? doorway.transform.Find("Arrive_Right_P2") : null;
-        manager.TransitionTo(room, a1 != null ? a1 : room.Player1Entry, a2 != null ? a2 : room.Player2Entry);
+        manager.GoToRoomNumber(System.Array.IndexOf(rooms, room) + 1); // arrives like walking in through the doorway
     }
 
     // Every mover named "Gate..." in the current room goes to (or stops being held at) its open end.

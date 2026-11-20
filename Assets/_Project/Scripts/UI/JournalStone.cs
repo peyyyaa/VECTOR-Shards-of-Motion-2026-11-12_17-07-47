@@ -7,7 +7,7 @@ using UnityEngine.Rendering.Universal;
 /// (tap = next page / close on the last page, hold = close). It also closes when both players walk away.
 /// Either player can read or turn pages.
 ///
-/// Wren's tip: if the entry has a Tip, then after Tip Delay seconds in this stone's room the stone starts to glow,
+/// Wren's tip: if the entry has a Tip, then after the time set in Settings (Wren's tips) in this room the stone glows,
 /// its prompt says "Tip!", and the tip is added as the journal's last page.
 ///
 /// Setup: a Collider2D with Is Trigger ON, on the Interactable layer, plus a sprite as the in-world marker.
@@ -24,8 +24,6 @@ public class JournalStone : MonoBehaviour, IInteractable
     [SerializeField, TextArea(3, 10)] private string body = "Explanation...";
     [Tooltip("The journal closes when no player is within this distance (units).")]
     [SerializeField, Min(0.5f)] private float closeDistance = 3f;
-    [Tooltip("Seconds in this room before Wren's tip appears (if the entry has one).")]
-    [SerializeField, Min(0f)] private float tipDelay = 90f;
 
     private PlayerMovement[] players = new PlayerMovement[0];
     private Room room;
@@ -73,6 +71,19 @@ public class JournalStone : MonoBehaviour, IInteractable
         else journal.Show(this, title, body, "");
     }
 
+    public bool HasEntry => entry != null;
+
+    /// <summary>Opens this stone's entry from the pause menu ("re-read this room's journal"), wherever the players are.</summary>
+    public void OpenFromMenu()
+    {
+        JournalPanel journal = Journal;
+        if (journal == null || entry == null || journal.IsOpen) return;
+        journal.Open(this, RuntimeEntry());
+        openedFromMenu = true; // players may be anywhere: do not close because they are far from the stone
+    }
+
+    private bool openedFromMenu;
+
     // The entry as shown: its pages, then Wren's sketch of the room (a clue: how things connect), then her tip
     // once it's unlocked. Built at run time; the asset isn't changed.
     private JournalEntry RuntimeEntry()
@@ -113,7 +124,8 @@ public class JournalStone : MonoBehaviour, IInteractable
     private void Update()
     {
         UpdateTip();
-        if (!IsShowingMe) return;
+        if (!IsShowingMe) { openedFromMenu = false; return; }
+        if (openedFromMenu) return;
 
         if (players.Length < 2) players = FindObjectsByType<PlayerMovement>(FindObjectsSortMode.None);
         float maxSqr = closeDistance * closeDistance;
@@ -130,8 +142,10 @@ public class JournalStone : MonoBehaviour, IInteractable
         if (manager.CurrentRoom != room) { timeInRoom = 0f; return; }
         if (!tipReady)
         {
+            float delay = SaveSystem.Data.settings.tipDelay; // Settings > Wren's tips (0 = off)
+            if (delay <= 0f) return;
             timeInRoom += Time.deltaTime;
-            if (timeInRoom < tipDelay) return;
+            if (timeInRoom < delay) return;
             tipReady = true;
             GameObject g = new GameObject("Tip Glow");
             g.transform.SetParent(transform, false);
