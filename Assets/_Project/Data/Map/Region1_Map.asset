@@ -81,7 +81,7 @@ MonoBehaviour:
     shards: 3
     partId: 
     partName: 
-    journal: {fileID: 0}
+    journal: {fileID: 11400000, guid: c4aa541e3443dba4fa348f9a88aad78a, type: 2}
     mapPosition: {x: 200, y: 170}
     label: 0
   lockedRegions:

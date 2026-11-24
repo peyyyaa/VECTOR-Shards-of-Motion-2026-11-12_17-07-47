@@ -47,6 +47,10 @@ A complete, playable game:
 - Motion Journal (field-notebook UI, force diagrams, page turning, Wren's sketch page, Wren's tips).
 - Rooms 1–5 (graybox + art): 1 First Exchange, 2 Weight of Things, 3 Together We Move (cargo ferry), 4 Broken Crossing (momentum, rubble walls),
   5 Long Push (friction: stone / wet stone / moss floors, two crates, Bearing = machine part 3).
+- Room 6 Weight of Cooperation (balance lift up and over, timed west lift: SignalTimer), Room 7 Unstoppable Object
+  (wet culvert, timed stop block catches the ram), Room 8 Heart of the Forest (Momentum Engine: install the 3 parts,
+  spin up the flywheel, friction-timed Heart Gate, counterweight lift, free the Great Shard -> village). Rooms 6-7 dressed;
+  Room 8 graybox (engine art pending). Rooms are built as visible chain reactions (see memory: room design direction).
 - Game shell: save system (auto, one slot), title screen, pause menu, settings, dev tools.
 - Title screen v2: PixelLab forest-ruin painting (Art/Title), village crystal floating in the arch, P1/P2 framing it.
 - Village core: 3 screens with PixelLab buildings (adapted: Art/Village; sources in Art/Village/Source), chibi Wren/Bram/Mira
@@ -82,7 +86,8 @@ A complete, playable game:
 
 ## Next steps
 
-1. Village road gate: make the way into the region clear (in progress).
+1. Room 8 visual pass (Momentum Engine art when the team's PixelLab piece arrives), then the ending
+   (assembly at the lab, restoration, credits; event region1_complete is set when the Great Shard is freed).
 2. Team: PixelLab Momentum Engine (empty slots + running, ~200x160) by ~Nov 24; optional map parchment background;
    music tracks by ~Nov 27.
 3. Rooms 5–8 (designs to propose one at a time; Room 8 finale uses the Flywheel + Counterweight and whatever part Rooms 5–7 add).

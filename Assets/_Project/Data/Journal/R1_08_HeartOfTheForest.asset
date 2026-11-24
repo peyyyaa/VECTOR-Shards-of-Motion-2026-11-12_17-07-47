@@ -1,0 +1,95 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad496817cc2ac7b498b32f0fc2de6fb3, type: 3}
+  m_Name: R1_08_HeartOfTheForest
+  m_EditorClassIdentifier: Assembly-CSharp::JournalEntry
+  title: "8 \xB7 Heart of the Forest"
+  pages:
+  - bigIdea: Impulse adds momentum. Every hit on the paddle hands the flywheel the
+      crate's momentum.
+    notes: 'The Momentum Engine at last! The flywheel stores momentum: each time
+      the crate slams into its paddle, the crate''s momentum moves into the wheel.
+      A few good hits in a row and it really gets going.'
+    lookCloser: "Burst: \u0394v = 15 \xF7 2 = 7.5 m/s for the 2 kg crate.\nOver the
+      wet track it keeps \u2248 <color=#896923>14 kg\xB7m/s</color> and hands it
+      to the wheel.\nFull speed: 50 kg\xB7m/s, about four or five hits."
+    funFact: Real flywheels store energy in factories, trains and even some race
+      cars, spinning thousands of times a minute.
+    marginP1: Hit, pull, hit, pull...
+    marginP2: Faster! It's slowing down!
+    diagram:
+      show: 1
+      objectLabel: 'Crate
+
+        2 kg'
+      forces:
+      - label: Burst
+        newtons: 15
+        direction: 0
+        kind: 5
+        unit: "N\xB7s"
+      caption: "One Burst: 15 kg\xB7m/s, nearly all of it into the wheel."
+    sketch: {fileID: 0}
+  - bigIdea: Friction slowly takes momentum away, and the Bearing keeps that loss
+      small.
+    notes: 'Without the Bearing the wheel''s axle would grind, and it would lose
+      its momentum almost as fast as you add it. With it, the wheel loses only a
+      little each second. That slow loss is your clock: the gate stays open while
+      the wheel still has enough momentum.'
+    lookCloser: "Friction: <color=#7d3029>1.5 kg\xB7m/s</color> lost each second.\nThe
+      gate needs 35. From a full 50: (50 \u2212 35) \xF7 1.5 = 10 seconds to get
+      through."
+    funFact: 'Ball bearings are everywhere: bikes, skateboards, fans, hard drives.
+      Less friction, longer spin.'
+    marginP1: Ten seconds. Easy.
+    marginP2: Famous last words. RUN!
+    diagram:
+      show: 0
+      objectLabel: 2 kg
+      forces: []
+      caption: 
+    sketch: {fileID: 0}
+  - bigIdea: 'Weight and balance, one last time: the heavier side goes down and lifts
+      the other.'
+    notes: The Counterweight hangs on the far pan. It weighs more than both of you
+      together, so when you release the brake it sinks and carries you up to the
+      Great Shard.
+    lookCloser: 'Counterweight (3 kg): <color=#8a5a2e>88.3 N</color>    Both of you:
+      <color=#8a5a2e>58.9 N</color>
+
+      Net <color=#a26029>29.4 N</color>, minus
+      a little pulley friction: up you go.'
+    funFact: 'Every lesson in the Shattered Grounds, all in one machine: force, mass,
+      friction, momentum, weight, balance.'
+    marginP1: We built a whole engine.
+    marginP2: Wren is going to cry.
+    diagram:
+      show: 1
+      objectLabel: Lift
+      forces:
+      - label: Counterweight
+        newtons: 88.3
+        direction: 1
+        kind: 1
+        unit: N
+      - label: You two
+        newtons: 58.9
+        direction: 0
+        kind: 1
+        unit: N
+      caption: '88.3 N beats 58.9 N: the counterweight sinks, you rise.'
+    sketch: {fileID: 0}
+  tip: 'Install the parts, then keep a rhythm: one of you Bursts the crate into the
+    paddle, the other pulls it back from the perch. When the gate opens, run! Behind
+    it, both of you on the pan, then pull the lever.'
+  sketch: {fileID: 0}
+  sketchCaption: 

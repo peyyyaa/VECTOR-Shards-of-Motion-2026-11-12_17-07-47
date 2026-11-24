@@ -529,12 +529,16 @@ public static class RoomDresser
         return r.width == 0f ? t.position.y : (top ? r.yMax : r.yMin);
     }
 
-    // Where an object's art should stand: the top of the highest solid surface below it (floor, ledge).
+    // Where an object's art should stand: the top of the highest solid surface below it (floor, ledge). If the room has no
+    // surface close under it (it stands on something outside the room prefab, e.g. a raised doorway's landing in the scene),
+    // the art stands at the bottom of the object's own collider instead.
     private static float GroundBelow(Transform t)
     {
         float x = t.position.x, y = t.position.y + 0.05f, best = float.NegativeInfinity;
         foreach (Rect r in solids)
             if (x >= r.xMin && x <= r.xMax && r.yMax <= y && r.yMax > best) best = r.yMax;
+        float own = t.TryGetComponent(out BoxCollider2D box) ? BoxRect(box).yMin : float.NaN;
+        if (!float.IsNaN(own) && (float.IsNegativeInfinity(best) || own - best > 1f)) return own;
         return float.IsNegativeInfinity(best) ? FloorTop : best;
     }
 

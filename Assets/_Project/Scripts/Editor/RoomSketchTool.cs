@@ -31,6 +31,7 @@ public static class RoomSketchTool
         (5, "Assets/_Project/Prefabs/Rooms/Region1/R1_Room05.prefab", "R1_05_LongPush"),
         (6, "Assets/_Project/Prefabs/Rooms/Region1/R1_Room06.prefab", "R1_06_WeightOfCooperation"),
         (7, "Assets/_Project/Prefabs/Rooms/Region1/R1_Room07.prefab", "R1_07_UnstoppableObject"),
+        (8, "Assets/_Project/Prefabs/Rooms/Region1/R1_Room08.prefab", "R1_08_HeartOfTheForest"),
     };
 
     private static readonly Color32 Ink = new Color32(74, 47, 28, 255), InkSoft = new Color32(74, 47, 28, 110), Hatch = new Color32(74, 47, 28, 45);

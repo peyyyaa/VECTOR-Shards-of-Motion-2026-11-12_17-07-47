@@ -49,6 +49,7 @@ public static class JournalTool
         SaveRoom5Entry();
         SaveRoom6Entry();
         SaveRoom7Entry();
+        SaveRoom8Entry();
         Debug.Log("Journal tool: all entries updated in " + Folder + ".");
     }
 
@@ -358,6 +359,82 @@ public static class JournalTool
             marginP1 = "Pull it NOW? Now?! NOW!",
             marginP2 = "Just before it gets there. Timing!",
             diagram = new ForceDiagram { show = false },
+        });
+        return e;
+    }
+
+    /// <summary>Creates (or rewrites) the Room 8 entry asset; Room8Builder assigns it.</summary>
+    public static JournalEntry SaveRoom8Entry()
+    {
+        Directory.CreateDirectory(Folder);
+        return Save("R1_08_HeartOfTheForest", HeartOfTheForest());
+    }
+
+    private static JournalEntry HeartOfTheForest()
+    {
+        JournalEntry e = ScriptableObject.CreateInstance<JournalEntry>();
+        e.title = "8 · Heart of the Forest";
+        e.tip = "Install the parts, then keep a rhythm: one of you Bursts the crate into the paddle, the other pulls it back from " +
+                "the perch. When the gate opens, run! Behind it, both of you on the pan, then pull the lever.";
+
+        e.pages.Add(new JournalPage
+        {
+            bigIdea = "Impulse adds momentum. Every hit on the paddle hands the flywheel the crate's momentum.",
+            notes = "The Momentum Engine at last! The flywheel stores momentum: each time the crate slams into its paddle, the " +
+                    "crate's momentum moves into the wheel. A few good hits in a row and it really gets going.",
+            lookCloser = $"Burst: Δv = 15 ÷ 2 = 7.5 m/s for the 2 kg crate.\n" +
+                         $"Over the wet track it keeps ≈ {Imp("14 kg·m/s")} and hands it to the wheel.\n" +
+                         "Full speed: 50 kg·m/s, about four or five hits.",
+            funFact = "Real flywheels store energy in factories, trains and even some race cars, spinning thousands of times a minute.",
+            marginP1 = "Hit, pull, hit, pull...",
+            marginP2 = "Faster! It's slowing down!",
+            diagram = new ForceDiagram
+            {
+                show = true,
+                objectLabel = "Crate\n2 kg",
+                forces = new List<DiagramForce>
+                {
+                    new DiagramForce { label = "Burst", newtons = 15f, unit = "N·s", direction = DiagramForce.Direction.Right, kind = DiagramForce.Kind.Impulse },
+                },
+                caption = "One Burst: 15 kg·m/s, nearly all of it into the wheel.",
+            },
+        });
+
+        e.pages.Add(new JournalPage
+        {
+            bigIdea = "Friction slowly takes momentum away, and the Bearing keeps that loss small.",
+            notes = "Without the Bearing the wheel's axle would grind, and it would lose its momentum almost as fast as you add it. " +
+                    "With it, the wheel loses only a little each second. That slow loss is your clock: the gate stays open while " +
+                    "the wheel still has enough momentum.",
+            lookCloser = $"Friction: {Fric("1.5 kg·m/s")} lost each second.\n" +
+                         "The gate needs 35. From a full 50: (50 − 35) ÷ 1.5 = 10 seconds to get through.",
+            funFact = "Ball bearings are everywhere: bikes, skateboards, fans, hard drives. Less friction, longer spin.",
+            marginP1 = "Ten seconds. Easy.",
+            marginP2 = "Famous last words. RUN!",
+            diagram = new ForceDiagram { show = false },
+        });
+
+        e.pages.Add(new JournalPage
+        {
+            bigIdea = "Weight and balance, one last time: the heavier side goes down and lifts the other.",
+            notes = "The Counterweight hangs on the far pan. It weighs more than both of you together, so when you release the " +
+                    "brake it sinks and carries you up to the Great Shard.",
+            lookCloser = $"Counterweight (3 kg): {Wt("88.3 N")}    Both of you: {Wt("58.9 N")}\n" +
+                         $"Net {Push("29.4 N")}, minus a little pulley friction: up you go.",
+            funFact = "Every lesson in the Shattered Grounds, all in one machine: force, mass, friction, momentum, weight, balance.",
+            marginP1 = "We built a whole engine.",
+            marginP2 = "Wren is going to cry.",
+            diagram = new ForceDiagram
+            {
+                show = true,
+                objectLabel = "Lift",
+                forces = new List<DiagramForce>
+                {
+                    new DiagramForce { label = "Counterweight", newtons = 88.3f, direction = DiagramForce.Direction.Left, kind = DiagramForce.Kind.Pull },
+                    new DiagramForce { label = "You two", newtons = 58.9f, direction = DiagramForce.Direction.Right, kind = DiagramForce.Kind.Pull },
+                },
+                caption = "88.3 N beats 58.9 N: the counterweight sinks, you rise.",
+            },
         });
         return e;
     }
