@@ -10,7 +10,7 @@ using static RoomBuildKit;
 /// Layout (room-local; floor top y = -4.5):
 ///   landing x -10..-6.5 (6 m, the doorway's) | MID SHELF x -6.5..3 (3 m, solid to the floor) topped with WET STONE
 ///   (mu 0.05; an edge collider, the block 2 cm lower) | a CULVERT over x -4.5..2 (inside 1.3 m: crates fit, players don't;
-///   its roof is 4.6 m up) with the BRAKE PLATE inside (x -0.6..0.8) and the STOP BLOCK slot at its east edge (x 0.85..1.15) |
+///   its roof slab is 0.7 m thick, its top 5 m up) with the BRAKE PLATE inside (x -0.6..0.8) and the STOP BLOCK slot at its east edge (x 0.85..1.15) |
 ///   ACID PIT x 3..6 with a stepping pillar (x 4.2..4.8, 2 m) | east floor x 6..10, exit gate x 9..9.6.
 /// Physics (3 kg ram on wet stone: friction 4.4 N, slows 1.47 m/s each second):
 ///   P1's Burst at the west end: p = 15 kg·m/s, v = 5 m/s. It reaches the stop block at ~3 m/s (~1.3 s); left alone it slides
@@ -28,7 +28,7 @@ public static class Room7Builder
 {
     private const string Room7Path = "Assets/_Project/Prefabs/Rooms/Region1/R1_Room07.prefab";
     private const float Floor = -4.5f;
-    private const float ShelfTop = Floor + 3f, ShelfLeft = -6.5f, ShelfRight = 3f, RoofBottom = ShelfTop + 1.3f, RoofTop = RoofBottom + 0.3f;
+    private const float ShelfTop = Floor + 3f, ShelfLeft = -6.5f, ShelfRight = 3f, RoofBottom = ShelfTop + 1.3f, RoofTop = RoofBottom + 0.7f; // 0.7 m slab (drawn as stone, like Room 5's)
     private const float CulvertLeft = -4.5f, CulvertRight = 2f, StopX = 0.85f, PitLeft = 3f, PitRight = 6f;
 
     private static readonly string[] Built =
@@ -76,7 +76,7 @@ public static class Room7Builder
             Solid(ledge, layout, "Pit_Bottom", PitLeft, -7f, PitRight, -6.5f);
             GameObject acid = Clone(ledge, hazards, "Pit_Acid");
             acid.layer = 0;
-            SetRect(acid.transform, PitLeft, -6.5f, PitRight, Floor - 0.5f);
+            SetRect(acid.transform, PitLeft, -6.5f, PitRight, Floor - 0.1f); // surface just below the floor line: clearly visible
             acid.GetComponent<BoxCollider2D>().isTrigger = true;
             SpriteRenderer acidSr = acid.GetComponent<SpriteRenderer>();
             acidSr.color = new Color(0.45f, 0.95f, 0.25f, 0.85f);

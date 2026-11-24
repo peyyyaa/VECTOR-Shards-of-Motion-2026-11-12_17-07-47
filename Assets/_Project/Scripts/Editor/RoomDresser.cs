@@ -88,11 +88,13 @@ public static class RoomDresser
         /// "Ground_Wet", "Ground_Mossy", or null for the usual ruin stone. Same tile shapes, so neighbouring strips join cleanly.
         /// For rooms whose floor surfaces differ (Room 5): pass the graybox Floor to Dress's skipSolids and draw it here.
         /// </summary>
-        public void Floor(string tileset, float xMin, float xMax, float top, bool leftCap = false, bool rightCap = false)
+        /// <param name="depth">How far down the stone fill goes (default 2 m: past the bottom of the screen for a normal floor;
+        /// more for a tall shelf).</param>
+        public void Floor(string tileset, float xMin, float xMax, float top, bool leftCap = false, bool rightCap = false, float depth = 2f)
         {
             Dictionary<string, Sprite> sheet = tileset == null ? ruin : Sprites($"{RecolorFolder}/{tileset}.png");
             if (sheet.Count == 0) { Debug.LogWarning("Room dresser: no tileset " + tileset + " (run Recolor > Build All)."); sheet = ruin; }
-            FloorStrip(Decor, "Floor " + (tileset ?? "Stone"), Rect.MinMaxRect(xMin, top - 2f, xMax, top), leftCap, rightCap, sheet);
+            FloorStrip(Decor, "Floor " + (tileset ?? "Stone"), Rect.MinMaxRect(xMin, top - Mathf.Max(2f, depth), xMax, top), leftCap, rightCap, sheet);
         }
 
         /// <summary>
@@ -391,7 +393,8 @@ public static class RoomDresser
     {
         Transform group = NewChild(parent, name + VisualTag);
         float top = r.yMax;
-        foreach ((int row, float y0, float y1) in new[] { (0, top - 1f, top), (1, top - 2f, top - 1f) })
+        float fillBottom = Mathf.Min(r.yMin, top - 2f); // at least 2 m (as before); deeper for a tall shelf
+        foreach ((int row, float y0, float y1) in new[] { (0, top - 1f, top), (1, fillBottom, top - 1f) })
         {
             int[] pieces = row == 0 ? new[] { TL, T, TR } : new[] { Le, F, R };
             float a = leftCap ? r.xMin + 1f : r.xMin, b = rightCap ? r.xMax - 1f : r.xMax;
