@@ -91,6 +91,8 @@ public class BalanceLift : SignalSource, IRoomResettable
     /// <summary>Pan A's height within its travel, 0..Travel (for visuals: chains, wheel).</summary>
     public float Height => height;
     public float Travel => travel;
+    public Rigidbody2D PanA => panA;
+    public Rigidbody2D PanB => panB;
 
     private void Awake()
     {
