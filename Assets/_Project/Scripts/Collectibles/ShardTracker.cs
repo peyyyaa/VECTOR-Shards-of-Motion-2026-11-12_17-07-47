@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Keeps count of Motion Shards: how many exist in the scene, how many the players have collected,
@@ -31,6 +32,39 @@ public static class ShardTracker
     // After the save file is loaded: shards collected in earlier sessions stay collected.
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void LoadFromSave() => ReloadFromSave();
+
+    // Each time a scene has loaded (its shards have registered by then), drop saved ids of shards that no longer exist.
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    private static void HookCleanup()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+        RemoveStaleIds();
+    }
+
+    private static void OnSceneLoaded(Scene scene, LoadSceneMode mode) => RemoveStaleIds();
+
+    /// <summary>
+    /// A rebuilt room can rename or remove its shards; their old ids would stay in the save and inflate every count
+    /// ("21 / 18", the Village Fund balance). For each room in the loaded scene, saved ids of that room that match no
+    /// shard in it are removed. Rooms not loaded (other regions) are left alone.
+    /// </summary>
+    private static void RemoveStaleIds()
+    {
+        HashSet<string> rooms = new HashSet<string>();
+        foreach (Room room in UnityEngine.Object.FindObjectsByType<Room>(FindObjectsSortMode.None)) rooms.Add(room.name);
+        if (rooms.Count == 0) return;
+        HashSet<string> existing = new HashSet<string>();
+        foreach (MotionShard s in all) if (s != null) existing.Add(s.Id);
+        int removed = SaveSystem.Data.shards.RemoveAll(id =>
+        {
+            int slash = id.IndexOf('/');
+            return slash > 0 && rooms.Contains(id.Substring(0, slash)) && !existing.Contains(id);
+        });
+        if (removed == 0) return;
+        SaveSystem.Save();
+        ReloadFromSave();
+    }
 
     /// <summary>Takes the collected shards from the save (also called after New Game).</summary>
     public static void ReloadFromSave()

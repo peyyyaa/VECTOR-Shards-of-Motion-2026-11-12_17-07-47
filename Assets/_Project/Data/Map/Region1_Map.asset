@@ -65,7 +65,7 @@ MonoBehaviour:
     shards: 3
     partId: 
     partName: 
-    journal: {fileID: 0}
+    journal: {fileID: 11400000, guid: c27c16c0af599934fa0a622d02d908fd, type: 2}
     mapPosition: {x: 156, y: 134}
     label: 0
   - roomObject: R1_Room07

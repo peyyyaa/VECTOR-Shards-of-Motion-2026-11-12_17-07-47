@@ -47,6 +47,7 @@ public static class JournalTool
         SaveRoom3Entry();
         SaveRoom4Entry();
         SaveRoom5Entry();
+        SaveRoom6Entry();
         Debug.Log("Journal tool: all entries updated in " + Folder + ".");
     }
 
@@ -216,6 +217,92 @@ public static class JournalTool
                     new DiagramForce { label = "Burst", newtons = 15f, unit = "N·s", direction = DiagramForce.Direction.Left, kind = DiagramForce.Kind.Impulse },
                 },
                 caption = "Same impulse, half the mass: Δv = 15 ÷ 1 = 15 m/s.",
+            },
+        });
+        return e;
+    }
+
+    /// <summary>Creates (or rewrites) the Room 6 entry asset; Room6Builder assigns it.</summary>
+    public static JournalEntry SaveRoom6Entry()
+    {
+        Directory.CreateDirectory(Folder);
+        return Save("R1_06_WeightOfCooperation", WeightOfCooperation());
+    }
+
+    private static JournalEntry WeightOfCooperation()
+    {
+        JournalEntry e = ScriptableObject.CreateInstance<JournalEntry>();
+        e.title = "6 · Weight of Cooperation";
+        e.tip = "One of you stands on the plate so the other can ride the west lift up to the gallery. Load BOTH crates onto the " +
+                "pan up there, then both of you get on the low pan and pull its lever. Equal weights won't move.";
+
+        e.pages.Add(new JournalPage
+        {
+            bigIdea = "Weight is a force: W = m·g. On a balance lift the heavier side goes down and lifts the other.",
+            notes = "Two pans on one rope over the old pulley. Whatever one pan gains in height, the other loses. The brake holds " +
+                    "them until the lever is pulled. To go UP, the other side must weigh more than you.",
+            lookCloser = $"Each of you: {Wt("29.4 N")}    1 kg crate: {Wt("29.4 N")}    2 kg crate: {Wt("58.9 N")}\n" +
+                         "The lift is pushed by the difference: net force = W(other side) − W(your side).",
+            funFact = "Old mine lifts and many modern elevators hang a counterweight on the other end of the rope, so the motor " +
+                      "only has to lift the difference.",
+            marginP1 = "The crates have to go DOWN for us to go up?",
+            marginP2 = "Same rope. Down there means up here.",
+            diagram = new ForceDiagram
+            {
+                show = true,
+                objectLabel = "Crate\n2 kg",
+                forces = new List<DiagramForce>
+                {
+                    new DiagramForce { label = "Weight", newtons = 58.9f, direction = DiagramForce.Direction.Down, kind = DiagramForce.Kind.Weight },
+                    new DiagramForce { label = "Normal", newtons = 58.9f, direction = DiagramForce.Direction.Up, kind = DiagramForce.Kind.Normal },
+                },
+                caption = "Resting on a pan: it pushes up exactly as hard as the weight pulls down.",
+            },
+        });
+
+        e.pages.Add(new JournalPage
+        {
+            bigIdea = "Equal weights balance. Balanced forces mean nothing changes: that's equilibrium.",
+            notes = "Both of you on one pan weigh exactly as much as the big crate on the other. Pull the lever and... nothing. " +
+                    "Not stuck: balanced. To lift yourselves, the other side must be heavier than both of you together.",
+            lookCloser = $"Both of you: 2 × 29.4 = {Wt("58.9 N")}    2 kg crate: {Wt("58.9 N")}  → net force 0, no motion\n" +
+                         $"Add the 1 kg crate: 88.3 − 58.9 = {Push("29.4 N")} net, so your side rises.",
+            funFact = "A bridge, a table, a sleeping cat: anything that isn't speeding up has balanced forces on it.",
+            marginP1 = "We pulled the lever. It just... sat there.",
+            marginP2 = "Because we weigh the same as the crate!",
+            diagram = new ForceDiagram
+            {
+                show = true,
+                objectLabel = "Lift",
+                forces = new List<DiagramForce>
+                {
+                    new DiagramForce { label = "Crate side", newtons = 58.9f, direction = DiagramForce.Direction.Left, kind = DiagramForce.Kind.Pull },
+                    new DiagramForce { label = "Your side", newtons = 58.9f, direction = DiagramForce.Direction.Right, kind = DiagramForce.Kind.Pull },
+                },
+                caption = "The rope is pulled 58.9 N each way: balanced, so it stays still.",
+            },
+        });
+
+        e.pages.Add(new JournalPage
+        {
+            bigIdea = "The pan pushes up on you: the normal force. On a moving lift it changes, so you feel heavier or lighter.",
+            notes = "Standing still, the pan pushes up with exactly your weight. When the lift starts upward it must also speed you " +
+                    "up, so it pushes harder: you feel heavier. As it eases to a stop at the top, you feel lighter for a moment.",
+            lookCloser = "Lift: a = net force ÷ total mass = (29.4 − 4 friction) ÷ (3 + 2 + 2 pans) ≈ 3.6 m/s²\n" +
+                         $"Riding up, each of you: N = m·(g + a) = 1 × (29.43 + 3.6) ≈ {Sup("33 N")}, more than your {Wt("29.4 N")} weight.",
+            funFact = "That heavy feeling as an elevator starts upward is the floor pushing you harder than gravity pulls.",
+            marginP1 = "I feel heavier. Is that a thing?",
+            marginP2 = "It's the pan pushing harder. Physics!",
+            diagram = new ForceDiagram
+            {
+                show = true,
+                objectLabel = "You\n1 kg",
+                forces = new List<DiagramForce>
+                {
+                    new DiagramForce { label = "Weight", newtons = 29.4f, direction = DiagramForce.Direction.Down, kind = DiagramForce.Kind.Weight },
+                    new DiagramForce { label = "Normal", newtons = 33f, direction = DiagramForce.Direction.Up, kind = DiagramForce.Kind.Normal },
+                },
+                caption = "Speeding up upward: the normal force wins by m·a.",
             },
         });
         return e;

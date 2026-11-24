@@ -29,6 +29,7 @@ public static class RoomSketchTool
         (3, "Assets/_Project/Prefabs/Rooms/Region1/R1_Room03.prefab", "R1_03_TogetherWeMove"),
         (4, "Assets/_Project/Prefabs/Rooms/Region1/R1_Room04.prefab", "R1_04_BrokenCrossing"),
         (5, "Assets/_Project/Prefabs/Rooms/Region1/R1_Room05.prefab", "R1_05_LongPush"),
+        (6, "Assets/_Project/Prefabs/Rooms/Region1/R1_Room06.prefab", "R1_06_WeightOfCooperation"),
     };
 
     private static readonly Color32 Ink = new Color32(74, 47, 28, 255), InkSoft = new Color32(74, 47, 28, 110), Hatch = new Color32(74, 47, 28, 45);
@@ -143,6 +144,35 @@ public static class RoomSketchTool
                 for (int x = p0.x; x <= p1.x; x++) for (int dy = 1; dy <= 3; dy++) if ((x + dy * 2) % 3 == 0) Set(x, p0.y + dy, Moss);
                 Text(P((x0 + x1) * 0.5f, y - 0.55f), "MOSS", Moss);
             }
+        }
+
+        // Balance lifts: both pans (outline, dotted ghosts at the top and bottom of their travel), ropes up to the pulley,
+        // and up/down arrows: one side goes down as the other goes up.
+        foreach (BalanceLift lift in root.GetComponentsInChildren<BalanceLift>(true))
+        {
+            SerializedObject bl = new SerializedObject(lift);
+            Rigidbody2D pa = bl.FindProperty("panA").objectReferenceValue as Rigidbody2D, pb = bl.FindProperty("panB").objectReferenceValue as Rigidbody2D;
+            if (pa == null || pb == null || !pa.TryGetComponent(out BoxCollider2D ba) || !pb.TryGetComponent(out BoxCollider2D bb)) continue;
+            float travel = bl.FindProperty("travel").floatValue, start = bl.FindProperty("start").floatValue;
+            Rect ra = LocalRect(ba), rb2 = LocalRect(bb);
+            float upA = travel * (1f - start), downA = travel * start;
+            foreach ((Rect r, float up, float down) in new[] { (ra, upA, downA), (rb2, downA, upA) })
+            {
+                Fill(r, CrateFill);
+                Outline(r, Ink);
+                Outline(new Rect(r.x, r.y + up, r.width, r.height), InkSoft, dotted: true);
+                Outline(new Rect(r.x, r.y - down, r.width, r.height), InkSoft, dotted: true);
+                Arrow(P(r.center.x + r.width * 0.5f + 0.3f, r.center.y - 0.6f), P(r.center.x + r.width * 0.5f + 0.3f, r.center.y + 0.6f), Move, dotted: false);
+                Arrow(P(r.center.x + r.width * 0.5f + 0.3f, r.center.y + 0.6f), P(r.center.x + r.width * 0.5f + 0.3f, r.center.y - 0.6f), Move, dotted: false);
+            }
+            float wheelY = Mathf.Max(ra.yMax, rb2.yMax) + travel + 1.2f;
+            Vector2 wheel = new Vector2((ra.center.x + rb2.center.x) * 0.5f, wheelY);
+            Disc(P(wheel.x, wheel.y), 4, Ink);
+            Disc(P(wheel.x, wheel.y), 2, new Color32(255, 251, 240, 255));
+            Line(P(ra.center.x, ra.yMax), P(ra.center.x, wheelY), InkSoft);
+            Line(P(rb2.center.x, rb2.yMax), P(rb2.center.x, wheelY), InkSoft);
+            Line(P(ra.center.x, wheelY), P(rb2.center.x, wheelY), InkSoft);
+            Text(P(wheel.x, wheelY + 0.9f), "BALANCE", Ink);
         }
 
         // Movers: outline, ghost at the far end, path arrow.
@@ -340,7 +370,7 @@ public static class RoomSketchTool
         { 'E', new[] { "###", "#..", "##.", "#..", "###" } }, { 'F', new[] { "###", "#..", "##.", "#..", "#.." } },
         { 'G', new[] { "###", "#..", "#.#", "#.#", "###" } }, { 'I', new[] { "###", ".#.", ".#.", ".#.", "###" } },
         { 'K', new[] { "#.#", "#.#", "##.", "#.#", "#.#" } }, { 'L', new[] { "#..", "#..", "#..", "#..", "###" } },
-        { 'M', new[] { "#.#", "###", "###", "#.#", "#.#" } }, { 'O', new[] { "###", "#.#", "#.#", "#.#", "###" } },
+        { 'M', new[] { "#.#", "###", "###", "#.#", "#.#" } }, { 'B', new[] { "##.", "#.#", "##.", "#.#", "##." } }, { 'O', new[] { "###", "#.#", "#.#", "#.#", "###" } },
         { 'W', new[] { "#.#", "#.#", "###", "###", "#.#" } },
         { 'N', new[] { "#.#", "###", "###", "#.#", "#.#" } }, { 'P', new[] { "##.", "#.#", "##.", "#..", "#.." } },
         { 'S', new[] { "###", "#..", "###", "..#", "###" } }, { 'T', new[] { "###", ".#.", ".#.", ".#.", ".#." } },

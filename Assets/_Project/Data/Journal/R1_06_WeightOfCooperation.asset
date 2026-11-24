@@ -1,0 +1,112 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad496817cc2ac7b498b32f0fc2de6fb3, type: 3}
+  m_Name: R1_06_WeightOfCooperation
+  m_EditorClassIdentifier: Assembly-CSharp::JournalEntry
+  title: "6 \xB7 Weight of Cooperation"
+  pages:
+  - bigIdea: "Weight is a force: W = m\xB7g. On a balance lift the heavier side goes
+      down and lifts the other."
+    notes: Two pans on one rope over the old pulley. Whatever one pan gains in height,
+      the other loses. The brake holds them until the lever is pulled. To go UP,
+      the other side must weigh more than you.
+    lookCloser: "Each of you: <color=#8a5a2e>29.4 N</color>    1 kg crate: <color=#8a5a2e>29.4
+      N</color>    2 kg crate: <color=#8a5a2e>58.9 N</color>\nThe lift is pushed
+      by the difference: net force = W(other side) \u2212 W(your side)."
+    funFact: Old mine lifts and many modern elevators hang a counterweight on the
+      other end of the rope, so the motor only has to lift the difference.
+    marginP1: The crates have to go DOWN for us to go up?
+    marginP2: Same rope. Down there means up here.
+    diagram:
+      show: 1
+      objectLabel: 'Crate
+
+        2 kg'
+      forces:
+      - label: Weight
+        newtons: 58.9
+        direction: 3
+        kind: 3
+        unit: N
+      - label: Normal
+        newtons: 58.9
+        direction: 2
+        kind: 4
+        unit: N
+      caption: 'Resting on a pan: it pushes up exactly as hard as the weight pulls
+        down.'
+    sketch: {fileID: 0}
+  - bigIdea: 'Equal weights balance. Balanced forces mean nothing changes: that''s
+      equilibrium.'
+    notes: 'Both of you on one pan weigh exactly as much as the big crate on the
+      other. Pull the lever and... nothing. Not stuck: balanced. To lift yourselves,
+      the other side must be heavier than both of you together.'
+    lookCloser: "Both of you: 2 \xD7 29.4 = <color=#8a5a2e>58.9 N</color>    2 kg
+      crate: <color=#8a5a2e>58.9 N</color>  \u2192 net force 0, no motion\nAdd the
+      1 kg crate: 88.3 \u2212 58.9 = <color=#a26029>29.4 N</color> net, so your side
+      rises."
+    funFact: 'A bridge, a table, a sleeping cat: anything that isn''t speeding up
+      has balanced forces on it.'
+    marginP1: We pulled the lever. It just... sat there.
+    marginP2: Because we weigh the same as the crate!
+    diagram:
+      show: 1
+      objectLabel: Lift
+      forces:
+      - label: Crate side
+        newtons: 58.9
+        direction: 1
+        kind: 1
+        unit: N
+      - label: Your side
+        newtons: 58.9
+        direction: 0
+        kind: 1
+        unit: N
+      caption: 'The rope is pulled 58.9 N each way: balanced, so it stays still.'
+    sketch: {fileID: 0}
+  - bigIdea: 'The pan pushes up on you: the normal force. On a moving lift it changes,
+      so you feel heavier or lighter.'
+    notes: 'Standing still, the pan pushes up with exactly your weight. When the
+      lift starts upward it must also speed you up, so it pushes harder: you feel
+      heavier. As it eases to a stop at the top, you feel lighter for a moment.'
+    lookCloser: "Lift: a = net force \xF7 total mass = (29.4 \u2212 4 friction) \xF7
+      (3 + 2 + 2 pans) \u2248 3.6 m/s\xB2\nRiding up, each of you: N = m\xB7(g +
+      a) = 1 \xD7 (29.43 + 3.6) \u2248 <color=#42612b>33 N</color>, more than your
+      <color=#8a5a2e>29.4 N</color> weight."
+    funFact: That heavy feeling as an elevator starts upward is the floor pushing
+      you harder than gravity pulls.
+    marginP1: I feel heavier. Is that a thing?
+    marginP2: It's the pan pushing harder. Physics!
+    diagram:
+      show: 1
+      objectLabel: 'You
+
+        1 kg'
+      forces:
+      - label: Weight
+        newtons: 29.4
+        direction: 3
+        kind: 3
+        unit: N
+      - label: Normal
+        newtons: 33
+        direction: 2
+        kind: 4
+        unit: N
+      caption: "Speeding up upward: the normal force wins by m\xB7a."
+    sketch: {fileID: 0}
+  tip: One of you stands on the plate so the other can ride the west lift up to the
+    gallery. Load BOTH crates onto the pan up there, then both of you get on the
+    low pan and pull its lever. Equal weights won't move.
+  sketch: {fileID: 21300000, guid: 2e7d0a61118965044b26c9285a801080, type: 3}
+  sketchCaption: 'Arrows: what powers what.'
