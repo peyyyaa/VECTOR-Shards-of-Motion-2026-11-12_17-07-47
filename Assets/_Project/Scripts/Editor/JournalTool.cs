@@ -48,6 +48,7 @@ public static class JournalTool
         SaveRoom4Entry();
         SaveRoom5Entry();
         SaveRoom6Entry();
+        SaveRoom7Entry();
         Debug.Log("Journal tool: all entries updated in " + Folder + ".");
     }
 
@@ -304,6 +305,59 @@ public static class JournalTool
                 },
                 caption = "Speeding up upward: the normal force wins by m·a.",
             },
+        });
+        return e;
+    }
+
+    /// <summary>Creates (or rewrites) the Room 7 entry asset; Room7Builder assigns it.</summary>
+    public static JournalEntry SaveRoom7Entry()
+    {
+        Directory.CreateDirectory(Folder);
+        return Save("R1_07_UnstoppableObject", UnstoppableObject());
+    }
+
+    private static JournalEntry UnstoppableObject()
+    {
+        JournalEntry e = ScriptableObject.CreateInstance<JournalEntry>();
+        e.title = "7 · Unstoppable Object";
+        e.tip = "One of you sends the stone into the culvert with a Burst; the other waits by the lever on the culvert roof. " +
+                "The stop block only stays up for a moment: pull the lever just before the stone gets there.";
+
+        e.pages.Add(new JournalPage
+        {
+            bigIdea = "Momentum p = m·v. A moving thing keeps its momentum until something takes it away.",
+            notes = "On the wet stone almost nothing pushes back, so the stone just keeps going: through the culvert, off the end, " +
+                    "into the acid. Friction is trying, but 4.4 N is far too gentle to stop 15 kg·m/s in time.",
+            lookCloser = $"Burst: {Imp("15 kg·m/s")} → the 3 kg stone moves at 5 m/s.\n" +
+                         $"Wet-stone friction {Fric("4.4 N")} takes away 4.4 kg·m/s each second:\n" +
+                         "15 ÷ 4.4 ≈ 3.4 s and about 8.5 m to stop. The shelf isn't that long.",
+            funFact = "Out in space there is no friction at all: a thrown spanner would keep going forever.",
+            marginP1 = "I barely touched it and it's GONE.",
+            marginP2 = "That's momentum for you.",
+            diagram = new ForceDiagram
+            {
+                show = true,
+                objectLabel = "Stone\n3 kg",
+                forces = new List<DiagramForce>
+                {
+                    new DiagramForce { label = "Friction", newtons = 4.4f, direction = DiagramForce.Direction.Left, kind = DiagramForce.Kind.Friction },
+                },
+                caption = "Moving right at 5 m/s; only 4.4 N pushes back.",
+            },
+        });
+
+        e.pages.Add(new JournalPage
+        {
+            bigIdea = "Stopping takes an impulse: J = F·Δt = Δp. Stop it fast and the force is huge.",
+            notes = "Friction would take the stone's 15 kg·m/s away slowly, over seconds. The stop block takes all of it in an " +
+                    "instant. Same change in momentum, so a tiny time means an enormous force. That's why the block is solid stone.",
+            lookCloser = $"Friction: {Fric("4.4 N")} × 3.4 s ≈ 15 N·s\n" +
+                         "Stop block: 15 N·s in about 0.02 s → about 750 N!\n" +
+                         "Same impulse, very different force.",
+            funFact = "Crumple zones and airbags work the other way round: they make the stop take longer, so the force on you is smaller.",
+            marginP1 = "Pull it NOW? Now?! NOW!",
+            marginP2 = "Just before it gets there. Timing!",
+            diagram = new ForceDiagram { show = false },
         });
         return e;
     }

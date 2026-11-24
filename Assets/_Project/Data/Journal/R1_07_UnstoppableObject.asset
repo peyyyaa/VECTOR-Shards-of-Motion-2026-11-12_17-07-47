@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad496817cc2ac7b498b32f0fc2de6fb3, type: 3}
+  m_Name: R1_07_UnstoppableObject
+  m_EditorClassIdentifier: Assembly-CSharp::JournalEntry
+  title: "7 \xB7 Unstoppable Object"
+  pages:
+  - bigIdea: "Momentum p = m\xB7v. A moving thing keeps its momentum until something
+      takes it away."
+    notes: "On the wet stone almost nothing pushes back, so the stone just keeps
+      going: through the culvert, off the end, into the acid. Friction is trying,
+      but 4.4 N is far too gentle to stop 15 kg\xB7m/s in time."
+    lookCloser: "Burst: <color=#896923>15 kg\xB7m/s</color> \u2192 the 3 kg stone
+      moves at 5 m/s.\nWet-stone friction <color=#7d3029>4.4 N</color> takes away
+      4.4 kg\xB7m/s each second:\n15 \xF7 4.4 \u2248 3.4 s and about 8.5 m to stop.
+      The shelf isn't that long."
+    funFact: 'Out in space there is no friction at all: a thrown spanner would keep
+      going forever.'
+    marginP1: I barely touched it and it's GONE.
+    marginP2: That's momentum for you.
+    diagram:
+      show: 1
+      objectLabel: 'Stone
+
+        3 kg'
+      forces:
+      - label: Friction
+        newtons: 4.4
+        direction: 1
+        kind: 2
+        unit: N
+      caption: Moving right at 5 m/s; only 4.4 N pushes back.
+    sketch: {fileID: 0}
+  - bigIdea: "Stopping takes an impulse: J = F\xB7\u0394t = \u0394p. Stop it fast
+      and the force is huge."
+    notes: "Friction would take the stone's 15 kg\xB7m/s away slowly, over seconds.
+      The stop block takes all of it in an instant. Same change in momentum, so a
+      tiny time means an enormous force. That's why the block is solid stone."
+    lookCloser: "Friction: <color=#7d3029>4.4 N</color> \xD7 3.4 s \u2248 15 N\xB7s\nStop
+      block: 15 N\xB7s in about 0.02 s \u2192 about 750 N!\nSame impulse, very different
+      force."
+    funFact: 'Crumple zones and airbags work the other way round: they make the stop
+      take longer, so the force on you is smaller.'
+    marginP1: Pull it NOW? Now?! NOW!
+    marginP2: Just before it gets there. Timing!
+    diagram:
+      show: 0
+      objectLabel: 2 kg
+      forces: []
+      caption: 
+    sketch: {fileID: 0}
+  tip: 'One of you sends the stone into the culvert with a Burst; the other waits
+    by the lever on the culvert roof. The stop block only stays up for a moment:
+    pull the lever just before the stone gets there.'
+  sketch: {fileID: 21300000, guid: 0e82fe8ccddd60b48b7c8c2bf9475c75, type: 3}
+  sketchCaption: 'Arrows: what powers what.'
