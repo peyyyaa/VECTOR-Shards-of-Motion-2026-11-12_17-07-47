@@ -133,7 +133,7 @@ public static class Room9Dressing
 
     // A lantern hanging on a chain of 'chain' metres from 'hangY'; 'lit' = its own warm light (the hall lamps' are the engine's).
     // Returns the lit sprite's object (for an unlit lantern: its hidden lit look, to switch on later), or null.
-    private static GameObject Lantern(RoomDresser.Context ctx, float x, float hangY, float chain, bool lit)
+    internal static GameObject Lantern(RoomDresser.Context ctx, float x, float hangY, float chain, bool lit)
     {
         Sprite links = ctx.Village.TryGetValue("TX Village Props - Chain 01", out Sprite c) ? c : null;
         if (links != null && chain > 0.05f)
@@ -156,7 +156,7 @@ public static class Room9Dressing
     }
 
     // A sprite whose pivot sits at 'at' (bottom-pivot art: its base; centre-pivot art: its centre).
-    private static SpriteRenderer Put(Transform parent, string name, Sprite sprite, Vector2 at, string layer, int order, Color color, bool warn = true)
+    internal static SpriteRenderer Put(Transform parent, string name, Sprite sprite, Vector2 at, string layer, int order, Color color, bool warn = true)
     {
         if (sprite == null) { if (warn) Debug.LogWarning("Room 8 part 2 visuals: missing sprite for " + name); return null; }
         GameObject go = new GameObject(name);
@@ -172,7 +172,7 @@ public static class Room9Dressing
 
     // A tiled strip from a to b, 'thickness' wide. alongY: the tile runs along its height (Beam), else along its width (Pipe).
     // Plank tracks (alongY false) hang below the line a-b, so the line is their walking/rolling surface.
-    private static SpriteRenderer Along(Transform parent, string name, Sprite tile, Vector2 a, Vector2 b, float thickness, bool alongY,
+    internal static SpriteRenderer Along(Transform parent, string name, Sprite tile, Vector2 a, Vector2 b, float thickness, bool alongY,
                                         string layer, int order, Color color)
     {
         SpriteRenderer sr = Put(parent, name, tile, a, layer, order, color);
@@ -191,7 +191,7 @@ public static class Room9Dressing
         return sr;
     }
 
-    private static void Hide(Transform room, string name)
+    internal static void Hide(Transform room, string name)
     {
         Transform t = RoomBuildKit.Find(room, name);
         if (t != null && t.TryGetComponent(out SpriteRenderer sr)) sr.enabled = false;
