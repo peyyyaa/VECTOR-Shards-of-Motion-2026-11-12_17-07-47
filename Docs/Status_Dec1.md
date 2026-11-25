@@ -1,7 +1,7 @@
 # Shards of Motion — Status & Plan to December 1, 2026
 
 Read this first in a new session. Rules of the project are in `CLAUDE.md`; this file is the current scope,
-what's done, how the tools are used, and what's next. **Last updated: Nov 25** (finale built and dressed: all three parts).
+what's done, how the tools are used, and what's next. **Last updated: Nov 25** (finale built and dressed; village ending and credits done).
 
 ## Scope for December 1 (agreed Nov 20)
 
@@ -33,7 +33,7 @@ A complete, playable game:
 | Nov 25 | Room 6 (**done**) |
 | Nov 26 | Room 7 (**done**) |
 | Nov 27 | Room 8 finale (Momentum Engine) (**done Nov 25**: 3 parts built and dressed) |
-| Nov 28 | Ending (assembly at the lab, restoration, credits), lock Regions 2–3, sound effects + music |
+| Nov 28 | Ending (homecoming + credits: **done Nov 25**), lock Regions 2–3, sound effects + music |
 | Nov 29 | Full playthrough New Game → credits, balance, bugs |
 | Nov 30 | Windows build, keyboard/controller test on a real build, performance |
 | Dec 1 | Buffer / final fixes |
@@ -80,6 +80,13 @@ A complete, playable game:
   locked regions fogged, travel to any reached room. Save v2: shard ids `<room>/<name>`, journal reads `journal_<entry>`.
 - Village Fund ledger at Bram (VillageFund: well 3, lamps 5, garden 6, shrine 8; balance = collected - spent).
   Interact prompts restyled: small key-caps with player dots, shared when both players aim at the same thing (InteractPrompt).
+- **Village ending** (after the Great Shard is freed; save event region1_complete): the region-end cards return the players
+  to **Wren's lab** (GameFlow.ToVillage(VillageLabScreen); normal trips home still arrive at the trailhead). Wren, Bram and
+  Mira each have a one-time **homecoming** talk, then post-region lines (NpcTalk: Homecoming / After Region; saved
+  `home_<name>`). Right after Wren's, the **credits** roll once (CreditsRoll, saved `credits_seen`): title, team, the
+  physics inside, art and font credits, thank you / Regions 2–3 coming soon; then back to the village (free play).
+  The village shows the healed Great Shard's light (cyan sky glow on all screens, the shard above the road east).
+  **Team names in the credits are placeholders**: edit the `Team` list at the top of `Scripts/UI/CreditsRoll.cs`.
 
 ## Tools (Tools > Shards of Motion) — typical run order
 
@@ -100,7 +107,9 @@ A complete, playable game:
   → `Journal > Update All Entries`. `Room 8 Part 2 > 0. Build Heart Engine Art` redraws its sprites (the builder makes
   missing ones itself). Re-run Part 2's visual pass after its graybox (it links the lanterns to the 30 stage).
 - **Testing:** `Dev > Play From Room > Room N` (Room 8 part 2 / part 3 have their own entries); in play: PgDn/PgUp rooms,
-  F9 reset, F10 hold gates. `Dev > Reset Heart Engine (save)` (outside Play) forgets "assembled" and "awake".
+  F9 reset, F10 hold gates. Outside Play: `Dev > Reset Heart Engine (save)` forgets "assembled" and "awake";
+  `Dev > Village Ending: Mark Region 1 Complete (save)` and `Dev > Village Ending: Reset Homecoming + Credits (save)`
+  test the ending without replaying the finale (after VillageBuilder changes: `Game Shell > Build Village`).
 
 ## Conventions
 
@@ -115,8 +124,7 @@ A complete, playable game:
 
 ## Next steps
 
-1. The ending in the village: nothing reacts to region1_complete yet (assembly / restoration at the lab, credits).
-   The end-of-region cards already play and return to the village.
+1. Team: fill in the credits' names and roles (`CreditsRoll.Team`).
 2. Lock Regions 2–3 at the road gate, sound effects, music (team: 1–2 tracks).
 3. Balance check: can the Heart Engine reach 100 comfortably with 3 kg·m/s drain? (passed the Nov 25 playtest; recheck
    in the full playthrough). Then the full New Game → credits playthrough, Windows build, controller test.
