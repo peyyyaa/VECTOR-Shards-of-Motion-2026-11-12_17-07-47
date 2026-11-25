@@ -78,6 +78,7 @@ public static class HeartEngineArt
         Make("Chain_Tile", ChainTile, Center, true);
         Make("Rope_Tile", RopeTile, Center, true);
         Make("Grate", Grate, Center, true);
+        Make("Bramble", Bramble, new Vector2(0.5f, 0f), true);
         Make("Dots_Tile", DotsTile, Center, true);
         Make("Chevron", Chevron, Center);
         Make("Ruler", Ruler, Center, true);
@@ -405,6 +406,40 @@ public static class HeartEngineArt
                 Color32 c = y == h - 1 ? IronLight : y == h - 2 ? Iron : y == 0 ? IronDark
                           : x % 4 == 0 ? Iron : x % 4 == 1 ? IronDark : new Color32(20, 22, 28, 200);
                 Set(p, w, x, y, c);
+            }
+        return (p, w, h);
+    }
+
+    // 16 x 14 (tiles along x, bottom pivot): purple thorn brambles: two twisting stems with pale spikes (a hazard reads by colour).
+    private static (Color32[], int, int) Bramble()
+    {
+        int w = 16, h = 14;
+        Color32[] p = Canvas(w, h);
+        Color32 stem = new Color32(112, 52, 120, 255), stemDark = new Color32(70, 30, 82, 255), stemLight = new Color32(158, 84, 162, 255),
+                spike = new Color32(226, 196, 230, 255);
+        string[] rows = // top row first; S stem, D dark, L light, * spike
+        {
+            "....*.......*...",
+            "...DL......LD...",
+            "..*.SL....LS.*..",
+            ".....SD..DS.....",
+            "..*DS.S**S.SD*..",
+            "...L..SDDS..L...",
+            ".*S...LSSL...S*.",
+            "..SL.*.SS.*.LS..",
+            "*..SD..SS..DS..*",
+            ".D..SL.SS.LS..D.",
+            "S*...SDSSDS...*S",
+            "SL..*.SSSS.*..LS",
+            "DSD..DSSSSD..DSD",
+            "DDSSSSDDDDSSSSDD",
+        };
+        for (int r = 0; r < h; r++)
+            for (int x = 0; x < w; x++)
+            {
+                char ch = rows[r][x];
+                Color32 c = ch == 'S' ? stem : ch == 'D' ? stemDark : ch == 'L' ? stemLight : ch == '*' ? spike : Clear;
+                Set(p, w, x, h - 1 - r, c);
             }
         return (p, w, h);
     }
