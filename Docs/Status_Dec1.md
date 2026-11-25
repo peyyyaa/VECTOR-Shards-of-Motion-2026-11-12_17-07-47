@@ -1,7 +1,7 @@
 # Shards of Motion — Status & Plan to December 1, 2026
 
 Read this first in a new session. Rules of the project are in `CLAUDE.md`; this file is the current scope,
-what's done, how the tools are used, and what's next. **Last updated: Nov 25** (finale built; Heart Engine polished).
+what's done, how the tools are used, and what's next. **Last updated: Nov 25** (finale built and dressed: all three parts).
 
 ## Scope for December 1 (agreed Nov 20)
 
@@ -10,7 +10,7 @@ A complete, playable game:
 
 - **Region 1: all 8 rooms.** Rooms 1–7 done. **Room 8 = the finale** ("Heart of the Forest"), built as three rooms
   (R1_Room08 / 09 / 10, one entry on the map): the machine parts complete the **Momentum Engine** and its puzzle frees
-  the Great Shard. All three parts are built and playable; part 2 is fully dressed, parts 1 and 3 still graybox.
+  the Great Shard. All three parts are built, playable and dressed.
 - **Regions 2 (Gravity Divide) and 3 (Mechanical Depths): cut for now**, shown as locked gates in the village ("coming soon").
   Also deferred: Kinetic Bloom, launchers/cannons, circular-motion mechanics, extra village screens and shops.
 - **Village (core):** 3 screens (see `Docs/Village_Art_Plan.md`): **Wren's Lab** (research table with machine parts,
@@ -32,7 +32,7 @@ A complete, playable game:
 | Nov 24 | Room 5 (**done**) |
 | Nov 25 | Room 6 (**done**) |
 | Nov 26 | Room 7 (**done**) |
-| Nov 27 | Room 8 finale (Momentum Engine) (**built Nov 25**: 3 parts playable; part 2 dressed; parts 1 and 3 visual passes left) |
+| Nov 27 | Room 8 finale (Momentum Engine) (**done Nov 25**: 3 parts built and dressed) |
 | Nov 28 | Ending (assembly at the lab, restoration, credits), lock Regions 2–3, sound effects + music |
 | Nov 29 | Full playthrough New Game → credits, balance, bugs |
 | Nov 30 | Windows build, keyboard/controller test on a real build, performance |
@@ -53,17 +53,24 @@ A complete, playable game:
   (see memory: room design direction).
 - **Room 8 finale "Heart of the Forest"** (Finale > 1. Add Finale Rooms To Scene makes it three rooms; one map entry;
   light gets darker and bluer from Room 5 on: RoomMood + MoodDirector):
-  - **Part 1 "The Descent"** (R1_Room08, graybox): load ore into the Heart Cart (2 -> 4 kg), chock plate + launch,
+  - **Part 1 "The Descent"** (R1_Room08, **dressed**): load ore into the Heart Cart (2 -> 4 kg), chock plate + launch,
     the loaded cart breaks the root wall (42 kg·m/s), Burst it into the cart chute (saved: r1_cart_delivered).
+    Look (Room8Dressing): plank loading deck on end posts with a lantern over the chock plate, plank ore chute and
+    lever, ramp on a trestle, root wall in earth-brown with roots and moss (they vanish when it breaks), iron grate with
+    a cyan glow and a down chevron at the cart chute.
   - **Part 2 "The Heart Engine"** (R1_Room09, **dressed**): the team's PixelLab engine (Art/Engine) at 2x; assembly
     screen (both players fit Bearing, Flywheel, Counterweight; saved r1_heart_engine_installed); a cart loop: chain lift
     -> winch hammer (P2 winds it by tethering a brass ring: 6:1 pulley + ratchet; P1 releases it from the balcony; 1D
     collision e = 0.9, ore makes the hit stronger) -> ramp -> striker -> flywheel (friction 3 kg·m/s per s). Stages:
     30 hall lamps, 60 alcove platform (shard), 100 awakening (saved r1_engine_awake, exit opens). Readability: height
     ruler, swing path, pulley label, milestone board, lanterns. Players walk past the striker over a grate on the shaft.
-  - **Part 3 "The Great Shard"** (R1_Room10, graybox): lifts powered by the awakening, two pedestals, hold Interact
+  - **Part 3 "The Great Shard"** (R1_Room10, **dressed**): lifts powered by the awakening, two pedestals, hold Interact
     together 3 s: the shard heals, region1_complete is saved, end-of-region cards (RegionFinale: one card per room and
-    its lesson, Wren's words), back to the village.
+    its lesson, Wren's words), back to the village. Look (Room10Dressing): purple bramble thorns (the dresser's acid
+    water is removed there: hazards read by colour), runes behind the pedestal pads, a rune ring and roots binding the
+    shard, rune standing stones, lift chevrons.
+  - All three share one style and one art tool: `HeartEngineArt` (small pieces drawn in code + Legacy Fantasy cuts in
+    Art/Finale/HeartEngine) and Room9Dressing's helpers (planks, beams, lanterns).
 - Game shell: save system (auto, one slot), title screen, pause menu, settings, dev tools.
 - Title screen v2: PixelLab forest-ruin painting (Art/Title), village crystal floating in the arch, P1/P2 framing it.
 - Village core: 3 screens with PixelLab buildings (adapted: Art/Village; sources in Art/Village/Source), chibi Wren/Bram/Mira
@@ -86,9 +93,10 @@ A complete, playable game:
 - **Region 1 trail home:** `Room 1 > Add Trail Home` (gate back to the village at Room 1's west edge; re-runnable).
 - **Shell:** `Game Shell > Build Title Scene`, `Game Shell > Build Village` (run Characters > 1. Build Character Sprites
   first; Build Village before Build Title Scene, which uses the village crystal).
-- **Finale (Room 8):** `Finale > 1. Add Finale Rooms To Scene` (once; save the scene) → `Room 8 > 0. Import Engine Art`
-  → `Room 8 > 1. Build Graybox (Part 1)` → `Room 8 Part 2 > 1. Build Graybox` → `Room 8 Part 2 > 2. Apply Visual Pass`
-  → `Room 8 Part 3 > 1. Build Graybox` → `Backgrounds > 2. Apply To Rooms` → `Create UI Prefabs` (assembly screen)
+- **Finale (Room 8)** (each part: re-run its visual pass after its graybox):
+  `Finale > 1. Add Finale Rooms To Scene` (once; save the scene) → `Room 8 > 0. Import Engine Art`
+  → `Room 8 > 1. Build Graybox (Part 1)` → `Room 8 > 2. Apply Visual Pass (Part 1)` → `Room 8 Part 2 > 1. Build Graybox`
+  → `Room 8 Part 2 > 2. Apply Visual Pass` → `Room 8 Part 3 > 1. Build Graybox` → `Room 8 Part 3 > 2. Apply Visual Pass` → `Backgrounds > 2. Apply To Rooms` → `Create UI Prefabs` (assembly screen)
   → `Journal > Update All Entries`. `Room 8 Part 2 > 0. Build Heart Engine Art` redraws its sprites (the builder makes
   missing ones itself). Re-run Part 2's visual pass after its graybox (it links the lanterns to the 30 stage).
 - **Testing:** `Dev > Play From Room > Room N` (Room 8 part 2 / part 3 have their own entries); in play: PgDn/PgUp rooms,
@@ -107,10 +115,8 @@ A complete, playable game:
 
 ## Next steps
 
-1. Visual passes for finale parts 1 (The Descent) and 3 (The Great Shard), in the Heart Engine's style (Legacy Fantasy
-   + Village Props, warm lanterns, cyan runes).
-2. The ending in the village: nothing reacts to region1_complete yet (assembly / restoration at the lab, credits).
+1. The ending in the village: nothing reacts to region1_complete yet (assembly / restoration at the lab, credits).
    The end-of-region cards already play and return to the village.
-3. Lock Regions 2–3 at the road gate, sound effects, music (team: 1–2 tracks).
-4. Balance check: can the Heart Engine reach 100 comfortably with 3 kg·m/s drain? (passed the Nov 25 playtest; recheck
+2. Lock Regions 2–3 at the road gate, sound effects, music (team: 1–2 tracks).
+3. Balance check: can the Heart Engine reach 100 comfortably with 3 kg·m/s drain? (passed the Nov 25 playtest; recheck
    in the full playthrough). Then the full New Game → credits playthrough, Windows build, controller test.
