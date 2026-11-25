@@ -374,69 +374,75 @@ public static class JournalTool
     {
         JournalEntry e = ScriptableObject.CreateInstance<JournalEntry>();
         e.title = "8 · Heart of the Forest";
-        e.tip = "Install the parts, then keep a rhythm: one of you Bursts the crate into the paddle, the other pulls it back from " +
-                "the perch. When the gate opens, run! Behind it, both of you on the pan, then pull the lever.";
+        e.tip = "Load the cart before you send it: the heavier cart is the one that brings the momentum. One of you works the " +
+                "lift and the chute, the other sends the cart round again. Watch the column: at the top, the engine wakes.";
 
         e.pages.Add(new JournalPage
         {
-            bigIdea = "Impulse adds momentum. Every hit on the paddle hands the flywheel the crate's momentum.",
-            notes = "The Momentum Engine at last! The flywheel stores momentum: each time the crate slams into its paddle, the " +
-                    "crate's momentum moves into the wheel. A few good hits in a row and it really gets going.",
-            lookCloser = $"Burst: Δv = 15 ÷ 2 = 7.5 m/s for the 2 kg crate.\n" +
-                         $"Over the wet track it keeps ≈ {Imp("14 kg·m/s")} and hands it to the wheel.\n" +
-                         "Full speed: 50 kg·m/s, about four or five hits.",
-            funFact = "Real flywheels store energy in factories, trains and even some race cars, spinning thousands of times a minute.",
-            marginP1 = "Hit, pull, hit, pull...",
-            marginP2 = "Faster! It's slowing down!",
+            bigIdea = "A Burst gives every mass the same momentum. A slope gives every mass the same speed.",
+            notes = "The Heart Cart taught us the last trick of the Shattered Grounds. Burst it and it always gets 15 kg·m/s, " +
+                    "heavy or light: a heavier cart just goes slower. But let it roll down a slope and gravity gives it the same " +
+                    "speed whatever it weighs. So the loaded cart, rolled downhill, carries twice the momentum of the empty one.",
+            lookCloser = $"Down 3 m: v² = 2·g·h = 2 × 29.43 × 3, so v ≈ {Push("13 m/s")} (a little less after friction).\n" +
+                         $"Empty, 2 kg: p ≈ {Imp("25 kg·m/s")}.    Loaded, 4 kg: p ≈ {Imp("50 kg·m/s")}.",
+            funFact = "Drop a heavy and a light ball together and they land together (if the air doesn't get in the way). Galileo is said to have tried it.",
+            marginP1 = "More ore!",
+            marginP2 = "Heavier is better? For once!",
             diagram = new ForceDiagram
             {
                 show = true,
-                objectLabel = "Crate\n2 kg",
+                objectLabel = "Cart\n4 kg",
                 forces = new List<DiagramForce>
                 {
-                    new DiagramForce { label = "Burst", newtons = 15f, unit = "N·s", direction = DiagramForce.Direction.Right, kind = DiagramForce.Kind.Impulse },
+                    new DiagramForce { label = "Weight", newtons = 117.7f, direction = DiagramForce.Direction.Down, kind = DiagramForce.Kind.Weight },
+                    new DiagramForce { label = "Momentum", newtons = 50f, unit = "kg·m/s", direction = DiagramForce.Direction.Right, kind = DiagramForce.Kind.Impulse },
                 },
-                caption = "One Burst: 15 kg·m/s, nearly all of it into the wheel.",
+                caption = "Twice the mass, the same speed: twice the momentum.",
             },
         });
 
         e.pages.Add(new JournalPage
         {
-            bigIdea = "Friction slowly takes momentum away, and the Bearing keeps that loss small.",
-            notes = "Without the Bearing the wheel's axle would grind, and it would lose its momentum almost as fast as you add it. " +
-                    "With it, the wheel loses only a little each second. That slow loss is your clock: the gate stays open while " +
-                    "the wheel still has enough momentum.",
-            lookCloser = $"Friction: {Fric("1.5 kg·m/s")} lost each second.\n" +
-                         "The gate needs 35. From a full 50: (50 − 35) ÷ 1.5 = 10 seconds to get through.",
-            funFact = "Ball bearings are everywhere: bikes, skateboards, fans, hard drives. Less friction, longer spin.",
-            marginP1 = "Ten seconds. Easy.",
-            marginP2 = "Famous last words. RUN!",
+            bigIdea = "Wind it slowly, let it go: the hammer's momentum passes to the cart.",
+            notes = "P2 winds the hammer up through its pulley, click by click: the ratchet holds it each time the cord goes back. " +
+                    "From the balcony, P1 lets it go. It swings down and slams into the cart, and the cart flies off toward the ramp. " +
+                    "How much momentum passes on depends on the masses: a light, empty cart shoots away while the hammer swings on, " +
+                    "but a cart as heavy as the hammer takes nearly all of it and the hammer almost stops. So drop ore in first!",
+            lookCloser = $"Pulley 6:1: the 4 kg hammer weighs {Wt("118 N")}, the cord only needs 118 ÷ 6 = {Push("19.6 N")}." + "\n" +
+                         $"Wound 1.2 m: v² = 2·g·h = 2 × 29.43 × 1.2, so v ≈ {Push("8.4 m/s")}: the hammer carries p ≈ {Imp("34 kg·m/s")}." + "\n" +
+                         $"A 4 kg cart (two ore) takes ≈ {Imp("32 kg·m/s")} of it; an empty 2 kg cart only ≈ {Imp("21 kg·m/s")}." + "\n" +
+                         $"Friction: {Fric("3 kg·m/s")} lost every second. Full: 100 kg·m/s.",
+            funFact = "Real pile drivers work like the hammer: lift a heavy weight slowly, let it fall, and it hits with a huge impulse. " +
+                      "Newton's cradle shows the rest: equal masses pass the momentum on almost completely.",
+            marginP1 = "Two ore in: now it's as heavy as the hammer!",
+            marginP2 = "Winding... click, click, click!",
             diagram = new ForceDiagram { show = false },
         });
+        return e;
+    }
 
+    /// <summary>Wren's note at the start of the finale (Room 8, part 1).</summary>
+    public static JournalEntry SaveWrensNote()
+    {
+        Directory.CreateDirectory(Folder);
+        JournalEntry e = ScriptableObject.CreateInstance<JournalEntry>();
+        e.title = "A note from Wren";
+        e.tip = "Load the cart with ore, then one of you holds the chock open while the other sends it down the ramp.";
         e.pages.Add(new JournalPage
         {
-            bigIdea = "Weight and balance, one last time: the heavier side goes down and lifts the other.",
-            notes = "The Counterweight hangs on the far pan. It weighs more than both of you together, so when you release the " +
-                    "brake it sinks and carries you up to the Great Shard.",
-            lookCloser = $"Counterweight (3 kg): {Wt("88.3 N")}    Both of you: {Wt("58.9 N")}\n" +
-                         $"Net {Push("29.4 N")}, minus a little pulley friction: up you go.",
-            funFact = "Every lesson in the Shattered Grounds, all in one machine: force, mass, friction, momentum, weight, balance.",
-            marginP1 = "We built a whole engine.",
-            marginP2 = "Wren is going to cry.",
-            diagram = new ForceDiagram
-            {
-                show = true,
-                objectLabel = "Lift",
-                forces = new List<DiagramForce>
-                {
-                    new DiagramForce { label = "Counterweight", newtons = 88.3f, direction = DiagramForce.Direction.Left, kind = DiagramForce.Kind.Pull },
-                    new DiagramForce { label = "You two", newtons = 58.9f, direction = DiagramForce.Direction.Right, kind = DiagramForce.Kind.Pull },
-                },
-                caption = "88.3 N beats 58.9 N: the counterweight sinks, you rise.",
-            },
+            bigIdea = "\"The old ones didn't build the engine to make power. They built it to keep the heart beating.\"",
+            notes = "If you're reading this, you've come further than I ever did. The Heart Engine sleeps in the hall below, and " +
+                    "the Great Shard beyond it is cracking. I tried alone, years ago, and I couldn't move the cart an inch. " +
+                    "It was never meant for one. You two can do what I couldn't. Everything you've learned out there, you'll " +
+                    "need it all down here. I'll be waiting with the kettle on. - Wren",
+            lookCloser = $"The roots need {Imp("42 kg·m/s")}. A Burst gives {Imp("15")}. The ramp is 3 m tall...\n" +
+                         "How heavy would the cart need to be?",
+            funFact = "Wren's handwriting gets shakier toward the end of the page, as if written in a hurry.",
+            marginP1 = "We won't let you down.",
+            marginP2 = "Kettle on. Got it.",
+            diagram = new ForceDiagram { show = false },
         });
-        return e;
+        return Save("R1_08_WrensNote", e);
     }
 
     /// <summary>Creates (or rewrites) the Room 2 entry asset; Room2Builder assigns it to the room's journal stone.</summary>

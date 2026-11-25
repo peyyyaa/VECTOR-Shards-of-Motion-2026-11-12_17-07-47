@@ -12,6 +12,9 @@ using UnityEngine.InputSystem;
 ///
 /// Action names must match the "Player" map in InputSystem_Actions:
 /// Move, Jump, Dash, Ability, Interact.
+///
+/// Menus that both players use at once (the engine assembly screen) set GameplaySuspended: the gameplay values above
+/// then read as "nothing pressed", while the Menu* values below still give each player's own stick/keys and Interact.
 /// </summary>
 [RequireComponent(typeof(PlayerInput))]
 public class PlayerInputReader : MonoBehaviour
@@ -25,19 +28,33 @@ public class PlayerInputReader : MonoBehaviour
     private bool initialized;
     private bool setupFailed;
 
+    /// <summary>While true, gameplay reads no input (a two-player menu is using the controls). Set by MenuFreeze.</summary>
+    public static bool GameplaySuspended { get; set; }
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetSession() => GameplaySuspended = false;
+
     /// <summary>0 = Player 1, 1 = Player 2 (assigned by Unity's Player Input).</summary>
     public int PlayerIndex => playerInput != null ? playerInput.playerIndex : -1;
 
     /// <summary>Horizontal input from -1 (left) to +1 (right).</summary>
-    public float MoveX => Ready() ? move.ReadValue<Vector2>().x : 0f;
+    public float MoveX => Gameplay() ? move.ReadValue<Vector2>().x : 0f;
 
-    public bool JumpPressedThisFrame => Ready() && jump.WasPressedThisFrame();
-    public bool JumpHeld => Ready() && jump.IsPressed();
-    public bool DashPressedThisFrame => Ready() && dash.WasPressedThisFrame();
-    public bool AbilityPressedThisFrame => Ready() && ability.WasPressedThisFrame();
-    public bool AbilityHeld => Ready() && ability.IsPressed();
-    public bool InteractPressedThisFrame => Ready() && interact.WasPressedThisFrame();
-    public bool InteractHeld => Ready() && interact.IsPressed();
+    public bool JumpPressedThisFrame => Gameplay() && jump.WasPressedThisFrame();
+    public bool JumpHeld => Gameplay() && jump.IsPressed();
+    public bool DashPressedThisFrame => Gameplay() && dash.WasPressedThisFrame();
+    public bool AbilityPressedThisFrame => Gameplay() && ability.WasPressedThisFrame();
+    public bool AbilityHeld => Gameplay() && ability.IsPressed();
+    public bool InteractPressedThisFrame => Gameplay() && interact.WasPressedThisFrame();
+    public bool InteractHeld => Gameplay() && interact.IsPressed();
+
+    /// <summary>Menu cursor direction (this player's stick / movement keys, both axes), even while gameplay is suspended.</summary>
+    public Vector2 MenuMove => Ready() ? Vector2.ClampMagnitude(move.ReadValue<Vector2>(), 1f) : Vector2.zero;
+
+    /// <summary>This player's Interact key/button, for menus ("grab"), even while gameplay is suspended.</summary>
+    public bool MenuGrabPressedThisFrame => Ready() && interact.WasPressedThisFrame();
+
+    private bool Gameplay() => !GameplaySuspended && Ready();
 
     /// <summary>The Interact key/button for THIS player's controls (e.g., "E", "Enter", "Y"), for prompts.</summary>
     public string InteractDisplayName => DisplayName(interact, "Interact");

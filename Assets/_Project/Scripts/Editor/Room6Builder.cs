@@ -194,8 +194,7 @@ public static class Room6Builder
         if (Mathf.Approximately(so.FindProperty("openingBottom").floatValue, bottom)) return;
         so.FindProperty("openingBottom").floatValue = bottom;
         so.ApplyModifiedProperties();
-        door.Apply();
-        EditorSceneManager.MarkSceneDirty(door.gameObject.scene);
+        DoorwayEditor.ApplyAndSave(door);
         Debug.Log($"Room 6: Doorway_R6_R7 raised to {bottom} m. Save the scene (Ctrl+S).");
     }
 }

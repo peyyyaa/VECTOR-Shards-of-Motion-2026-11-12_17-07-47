@@ -14,82 +14,66 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::JournalEntry
   title: "8 \xB7 Heart of the Forest"
   pages:
-  - bigIdea: Impulse adds momentum. Every hit on the paddle hands the flywheel the
-      crate's momentum.
-    notes: 'The Momentum Engine at last! The flywheel stores momentum: each time
-      the crate slams into its paddle, the crate''s momentum moves into the wheel.
-      A few good hits in a row and it really gets going.'
-    lookCloser: "Burst: \u0394v = 15 \xF7 2 = 7.5 m/s for the 2 kg crate.\nOver the
-      wet track it keeps \u2248 <color=#896923>14 kg\xB7m/s</color> and hands it
-      to the wheel.\nFull speed: 50 kg\xB7m/s, about four or five hits."
-    funFact: Real flywheels store energy in factories, trains and even some race
-      cars, spinning thousands of times a minute.
-    marginP1: Hit, pull, hit, pull...
-    marginP2: Faster! It's slowing down!
+  - bigIdea: A Burst gives every mass the same momentum. A slope gives every mass
+      the same speed.
+    notes: "The Heart Cart taught us the last trick of the Shattered Grounds. Burst
+      it and it always gets 15 kg\xB7m/s, heavy or light: a heavier cart just goes
+      slower. But let it roll down a slope and gravity gives it the same speed whatever
+      it weighs. So the loaded cart, rolled downhill, carries twice the momentum
+      of the empty one."
+    lookCloser: "Down 3 m: v\xB2 = 2\xB7g\xB7h = 2 \xD7 29.43 \xD7 3, so v \u2248
+      <color=#a26029>13 m/s</color> (a little less after friction).\nEmpty, 2 kg:
+      p \u2248 <color=#896923>25 kg\xB7m/s</color>.    Loaded, 4 kg: p \u2248 <color=#896923>50
+      kg\xB7m/s</color>."
+    funFact: Drop a heavy and a light ball together and they land together (if the
+      air doesn't get in the way). Galileo is said to have tried it.
+    marginP1: More ore!
+    marginP2: Heavier is better? For once!
     diagram:
       show: 1
-      objectLabel: 'Crate
+      objectLabel: 'Cart
 
-        2 kg'
+        4 kg'
       forces:
-      - label: Burst
-        newtons: 15
+      - label: Weight
+        newtons: 117.7
+        direction: 3
+        kind: 3
+        unit: N
+      - label: Momentum
+        newtons: 50
         direction: 0
         kind: 5
-        unit: "N\xB7s"
-      caption: "One Burst: 15 kg\xB7m/s, nearly all of it into the wheel."
+        unit: "kg\xB7m/s"
+      caption: 'Twice the mass, the same speed: twice the momentum.'
     sketch: {fileID: 0}
-  - bigIdea: Friction slowly takes momentum away, and the Bearing keeps that loss
-      small.
-    notes: 'Without the Bearing the wheel''s axle would grind, and it would lose
-      its momentum almost as fast as you add it. With it, the wheel loses only a
-      little each second. That slow loss is your clock: the gate stays open while
-      the wheel still has enough momentum.'
-    lookCloser: "Friction: <color=#7d3029>1.5 kg\xB7m/s</color> lost each second.\nThe
-      gate needs 35. From a full 50: (50 \u2212 35) \xF7 1.5 = 10 seconds to get
-      through."
-    funFact: 'Ball bearings are everywhere: bikes, skateboards, fans, hard drives.
-      Less friction, longer spin.'
-    marginP1: Ten seconds. Easy.
-    marginP2: Famous last words. RUN!
+  - bigIdea: 'Wind it slowly, let it go: the hammer''s momentum passes to the cart.'
+    notes: 'P2 winds the hammer up through its pulley, click by click: the ratchet
+      holds it each time the cord goes back. From the balcony, P1 lets it go. It
+      swings down and slams into the cart, and the cart flies off toward the ramp.
+      How much momentum passes on depends on the masses: a light, empty cart shoots
+      away while the hammer swings on, but a cart as heavy as the hammer takes nearly
+      all of it and the hammer almost stops. So drop ore in first!'
+    lookCloser: "Pulley 6:1: the 4 kg hammer weighs <color=#8a5a2e>118 N</color>,
+      the cord only needs 118 \xF7 6 = <color=#a26029>19.6 N</color>.\nWound 1.2
+      m: v\xB2 = 2\xB7g\xB7h = 2 \xD7 29.43 \xD7 1.2, so v \u2248 <color=#a26029>8.4
+      m/s</color>: the hammer carries p \u2248 <color=#896923>34 kg\xB7m/s</color>.\nA
+      4 kg cart (two ore) takes \u2248 <color=#896923>32 kg\xB7m/s</color> of it;
+      an empty 2 kg cart only \u2248 <color=#896923>21 kg\xB7m/s</color>.\nFriction:
+      <color=#7d3029>3 kg\xB7m/s</color> lost every second. Full: 100 kg\xB7m/s."
+    funFact: 'Real pile drivers work like the hammer: lift a heavy weight slowly,
+      let it fall, and it hits with a huge impulse. Newton''s cradle shows the rest:
+      equal masses pass the momentum on almost completely.'
+    marginP1: 'Two ore in: now it''s as heavy as the hammer!'
+    marginP2: Winding... click, click, click!
     diagram:
       show: 0
       objectLabel: 2 kg
       forces: []
       caption: 
     sketch: {fileID: 0}
-  - bigIdea: 'Weight and balance, one last time: the heavier side goes down and lifts
-      the other.'
-    notes: The Counterweight hangs on the far pan. It weighs more than both of you
-      together, so when you release the brake it sinks and carries you up to the
-      Great Shard.
-    lookCloser: 'Counterweight (3 kg): <color=#8a5a2e>88.3 N</color>    Both of you:
-      <color=#8a5a2e>58.9 N</color>
-
-      Net <color=#a26029>29.4 N</color>, minus
-      a little pulley friction: up you go.'
-    funFact: 'Every lesson in the Shattered Grounds, all in one machine: force, mass,
-      friction, momentum, weight, balance.'
-    marginP1: We built a whole engine.
-    marginP2: Wren is going to cry.
-    diagram:
-      show: 1
-      objectLabel: Lift
-      forces:
-      - label: Counterweight
-        newtons: 88.3
-        direction: 1
-        kind: 1
-        unit: N
-      - label: You two
-        newtons: 58.9
-        direction: 0
-        kind: 1
-        unit: N
-      caption: '88.3 N beats 58.9 N: the counterweight sinks, you rise.'
-    sketch: {fileID: 0}
-  tip: 'Install the parts, then keep a rhythm: one of you Bursts the crate into the
-    paddle, the other pulls it back from the perch. When the gate opens, run! Behind
-    it, both of you on the pan, then pull the lever.'
+  tip: 'Load the cart before you send it: the heavier cart is the one that brings
+    the momentum. One of you works the lift and the chute, the other sends the cart
+    round again. Watch the column: at the top, the engine wakes.'
   sketch: {fileID: 0}
   sketchCaption: 

@@ -298,7 +298,7 @@ public static class Region1Setup
         return room;
     }
 
-    private static void AddTilemap(Transform grid, string name, string sortingLayer, bool solid, PhysicsMaterial2D material)
+    internal static void AddTilemap(Transform grid, string name, string sortingLayer, bool solid, PhysicsMaterial2D material)
     {
         GameObject go = new GameObject(name);
         go.transform.SetParent(grid, false);
@@ -317,7 +317,7 @@ public static class Region1Setup
         if (material != null) composite.sharedMaterial = material;
     }
 
-    private static void MoveOrRemove(Transform room, string childName, Transform layout, bool remove)
+    internal static void MoveOrRemove(Transform room, string childName, Transform layout, bool remove)
     {
         Transform t = room.Find(childName);
         if (t == null) return;
@@ -398,7 +398,7 @@ public static class Region1Setup
         return -1;
     }
 
-    private static Transform Child(Transform parent, string name)
+    internal static Transform Child(Transform parent, string name)
     {
         GameObject go = new GameObject(name);
         go.transform.SetParent(parent, false);

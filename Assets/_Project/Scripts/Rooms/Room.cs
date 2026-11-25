@@ -23,7 +23,12 @@ public class Room : MonoBehaviour
     [Tooltip("Where Player 2 appears if the game starts in this room, or respawns before entering through an exit.")]
     [SerializeField] private Transform player2Entry;
 
+    [Tooltip("Leaving through the exit to the next room counts as solving this room (map, solved banner). Off for the " +
+             "first parts of a multi-room level (the finale): it is solved at its end instead.")]
+    [SerializeField] private bool solvedOnExit = true;
+
     public Vector2 Center => transform.position;
+    public bool SolvedOnExit => solvedOnExit;
     public Vector2 Size => size;
     public Transform Player1Entry => player1Entry;
     public Transform Player2Entry => player2Entry;

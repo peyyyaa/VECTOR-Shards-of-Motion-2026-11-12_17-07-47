@@ -97,6 +97,7 @@ public static class UIPrefabBuilder
         MenuUIBuilder.PauseMenu(root.transform, settingsPanel);
         MapPanel map = MapTool.BuildPanel(root.transform); // the map screen (draws the map art first if it doesn't exist yet)
         FundPanel fund = FundUIBuilder.Build(root.transform); // Bram's Village Fund ledger
+        EngineAssemblyPanel assembly = EngineAssemblyBuilder.Build(root.transform); // Room 8: both players rebuild the engine
         HudBuilder.SolvedBanner(root.transform, MapTool.EnsureData()); // "room solved" ribbon at the top of the screen
         HudBuilder.SceneTransitionPrefab(new[] { MapTool.EnsureData() }); // Resources/SceneTransition (title card between scenes)
         settingsPanel.transform.SetAsLastSibling();
@@ -106,6 +107,7 @@ public static class UIPrefabBuilder
         ui.EditorSetup(labels, labelPrefab, panel);
         ui.EditorSetupMap(map);
         ui.EditorSetupFund(fund);
+        ui.EditorSetupEngineAssembly(assembly);
         ui.EditorSetupPrompts(KitSprite("UI_Button"), KitSprite("UI_Dot")); // interact prompts: key-cap + player dot
         ui.EditorSetupPaper(KitSprite("UI_Card"), AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(JerseyFont)); // speech & notice boards
 

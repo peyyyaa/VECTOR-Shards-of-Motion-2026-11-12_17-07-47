@@ -19,18 +19,27 @@ public class DoorwayEditor : Editor
         EditorGUILayout.HelpBox("After changing the opening, press Apply. A raised opening gets a stone landing under it: " +
                                 "make sure the room you leave has a way up to it.", MessageType.Info);
         if (GUILayout.Button("Apply Opening"))
-        {
-            foreach (Object o in targets)
-            {
-                Doorway d = (Doorway)o;
-                Undo.RegisterFullObjectHierarchyUndo(d.gameObject, "Apply Doorway Opening");
-                d.Apply();
-                foreach (Component c in d.GetComponentsInChildren<Component>(true))
-                    if (c != null && PrefabUtility.IsPartOfPrefabInstance(c)) PrefabUtility.RecordPrefabInstancePropertyModifications(c);
-                EditorUtility.SetDirty(d);
-                if (d.gameObject.scene.IsValid()) EditorSceneManager.MarkSceneDirty(d.gameObject.scene);
-            }
-        }
+            foreach (Object o in targets) ApplyAndSave((Doorway)o);
+    }
+
+    /// <summary>Lays the doorway out and records the changes on the scene's prefab instance (so they are saved).</summary>
+    public static void ApplyAndSave(Doorway d)
+    {
+        Undo.RegisterFullObjectHierarchyUndo(d.gameObject, "Apply Doorway Opening");
+        d.Apply();
+        foreach (Component c in d.GetComponentsInChildren<Component>(true))
+            if (c != null && PrefabUtility.IsPartOfPrefabInstance(c)) PrefabUtility.RecordPrefabInstancePropertyModifications(c);
+        EditorUtility.SetDirty(d);
+        if (d.gameObject.scene.IsValid()) EditorSceneManager.MarkSceneDirty(d.gameObject.scene);
+    }
+
+    /// <summary>Re-applies every doorway in the open scenes (e.g. after a fix to the layout code). Save the scene afterwards.</summary>
+    [MenuItem("Tools/Shards of Motion/Rooms/Re-apply All Doorways")]
+    public static void ReapplyAll()
+    {
+        Doorway[] all = Object.FindObjectsByType<Doorway>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (Doorway d in all) ApplyAndSave(d);
+        Debug.Log($"Doorways: re-applied {all.Length}. Save the scene (Ctrl+S).");
     }
 }
 

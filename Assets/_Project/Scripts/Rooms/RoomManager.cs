@@ -167,7 +167,7 @@ public class RoomManager : MonoBehaviour
 
         if (saveProgress) SaveSystem.ReachedRoom(regionId, RoomNumber(target)); // autosave: progress
 
-        if (viaExit && saveProgress && left != null && RoomNumber(target) == RoomNumber(left) + 1)
+        if (viaExit && saveProgress && left != null && left.SolvedOnExit && RoomNumber(target) == RoomNumber(left) + 1)
         {
             string id = SolvedEventId(left.name);
             if (!SaveSystem.HasEvent(id))

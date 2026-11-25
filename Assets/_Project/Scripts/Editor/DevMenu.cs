@@ -17,6 +17,21 @@ public static class DevMenu
     [MenuItem(Menu + "Room 6")] private static void R6() => PlayFrom(6);
     [MenuItem(Menu + "Room 7")] private static void R7() => PlayFrom(7);
     [MenuItem(Menu + "Room 8")] private static void R8() => PlayFrom(8);
+    [MenuItem(Menu + "Room 8 part 2 (Heart Engine)")] private static void R9() => PlayFrom(9);
+    [MenuItem(Menu + "Room 8 part 3 (Great Shard)")] private static void R10() => PlayFrom(10);
+
+    /// <summary>Forgets that the Heart Engine was assembled and woken (save events), so the assembly screen and the
+    /// awakening can be tested again. Everything else in the save (shards, parts, rooms) is kept. Outside Play mode only.</summary>
+    [MenuItem("Tools/Shards of Motion/Dev/Reset Heart Engine (save)")]
+    private static void ResetHeartEngine()
+    {
+        if (EditorApplication.isPlaying) { UnityEngine.Debug.LogWarning("Dev: stop Play mode first, then reset the Heart Engine."); return; }
+        SaveSystem.Load();
+        int removed = SaveSystem.Data.events == null ? 0
+            : SaveSystem.Data.events.RemoveAll(e => e == "r1_heart_engine_installed" || e == "r1_engine_awake");
+        SaveSystem.Save();
+        UnityEngine.Debug.Log($"Dev: Heart Engine reset ({removed} saved event(s) removed): not assembled, not awake.");
+    }
 
     private static void PlayFrom(int room)
     {

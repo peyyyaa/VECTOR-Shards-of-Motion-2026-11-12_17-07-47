@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad496817cc2ac7b498b32f0fc2de6fb3, type: 3}
+  m_Name: R1_08_WrensNote
+  m_EditorClassIdentifier: Assembly-CSharp::JournalEntry
+  title: A note from Wren
+  pages:
+  - bigIdea: '"The old ones didn''t build the engine to make power. They built it
+      to keep the heart beating."'
+    notes: If you're reading this, you've come further than I ever did. The Heart
+      Engine sleeps in the hall below, and the Great Shard beyond it is cracking.
+      I tried alone, years ago, and I couldn't move the cart an inch. It was never
+      meant for one. You two can do what I couldn't. Everything you've learned out
+      there, you'll need it all down here. I'll be waiting with the kettle on. -
+      Wren
+    lookCloser: "The roots need <color=#896923>42 kg\xB7m/s</color>. A Burst gives
+      <color=#896923>15</color>. The ramp is 3 m tall...\nHow heavy would the cart
+      need to be?"
+    funFact: Wren's handwriting gets shakier toward the end of the page, as if written
+      in a hurry.
+    marginP1: We won't let you down.
+    marginP2: Kettle on. Got it.
+    diagram:
+      show: 0
+      objectLabel: 2 kg
+      forces: []
+      caption: 
+    sketch: {fileID: 0}
+  tip: Load the cart with ore, then one of you holds the chock open while the other
+    sends it down the ramp.
+  sketch: {fileID: 0}
+  sketchCaption: 

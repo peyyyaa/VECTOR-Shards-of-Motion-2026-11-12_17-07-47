@@ -30,10 +30,12 @@ public static class BackgroundTool
         ("R1_Room02", "BG_MountainVista_A", new Color(0.84f, 0.88f, 0.93f)),  // same vista, a touch dimmer: deeper in
         ("R1_Room03", "BG_MistyRuins_A", new Color(0.85f, 0.88f, 0.9f)),
         ("R1_Room04", "BG_MistyRuins_B", new Color(0.85f, 0.88f, 0.9f)),     // swap with A/C if another crop shows the waterfall better
-        ("R1_Room05", "BG_MistyRuins_C", new Color(0.82f, 0.86f, 0.9f)),
-        ("R1_Room06", "BG_ForestCanopy_A", new Color(0.75f, 0.78f, 0.8f)),   // forest rooms: darker
-        ("R1_Room07", "BG_ForestCanopy_B", new Color(0.72f, 0.75f, 0.78f)),
-        ("R1_Room08", "BG_ForestCanopy_C", new Color(0.8f, 0.84f, 0.86f)),   // Heart of the Forest: a little brighter again
+        ("R1_Room05", "BG_MistyRuins_C", new Color(0.78f, 0.83f, 0.86f)),   // deeper in: each room a little darker
+        ("R1_Room06", "BG_ForestCanopy_A", new Color(0.7f, 0.74f, 0.77f)),
+        ("R1_Room07", "BG_ForestCanopy_B", new Color(0.62f, 0.67f, 0.72f)),
+        ("R1_Room08", "BG_ForestCanopy_C", new Color(0.5f, 0.56f, 0.66f)),   // the finale, part 1: the Heartwood begins
+        ("R1_Room09", "BG_ForestCanopy_A", new Color(0.38f, 0.45f, 0.56f)),  // part 2: the engine hall
+        ("R1_Room10", "BG_ForestCanopy_B", new Color(0.34f, 0.42f, 0.55f)),  // part 3: the Great Shard's chamber
     };
 
     // Short names for the source files (by their start).

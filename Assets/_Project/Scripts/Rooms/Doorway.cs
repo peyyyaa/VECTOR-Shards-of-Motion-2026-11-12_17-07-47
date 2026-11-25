@@ -43,7 +43,8 @@ public class Doorway : MonoBehaviour
     {
         float b = openingBottom, h = openingHeight, mid = b + h * 0.5f;
         if (wallAbove != null) SetY(wallAbove, b + h + WallAboveHeight * 0.5f);
-        if (wallAboveArt != null) SetY(wallAboveArt, b + (h - DefaultHeight)); // its art was built for a 4 m floor-level opening
+        Transform aboveArt = wallAboveArt != null ? wallAboveArt : transform.Find("Wall_Above_Visual"); // older doorways: not wired
+        if (aboveArt != null) SetY(aboveArt, b + (h - DefaultHeight)); // its art was built for a 4 m floor-level opening
         if (barrier != null) { SetY(barrier.transform, mid); barrier.size = new Vector2(barrier.size.x, h); }
         foreach (BoxCollider2D zone in exitZones)
             if (zone != null) { SetY(zone.transform, mid); zone.size = new Vector2(zone.size.x, h); }

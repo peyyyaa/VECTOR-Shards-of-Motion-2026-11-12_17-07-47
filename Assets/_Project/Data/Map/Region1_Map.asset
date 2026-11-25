@@ -26,6 +26,7 @@ MonoBehaviour:
     partId: 
     partName: 
     journal: {fileID: 11400000, guid: 3bf24c99d6e8e9e458e263a2bf9f9463, type: 2}
+    alsoRooms: []
     mapPosition: {x: 88, y: 40}
     label: 0
   - roomObject: R1_Room02
@@ -34,6 +35,7 @@ MonoBehaviour:
     partId: 
     partName: 
     journal: {fileID: 11400000, guid: 8fc216e64ed32a9428f8c43dc5bed8dc, type: 2}
+    alsoRooms: []
     mapPosition: {x: 150, y: 56}
     label: 0
   - roomObject: R1_Room03
@@ -42,6 +44,7 @@ MonoBehaviour:
     partId: R1_Part_Flywheel
     partName: Flywheel
     journal: {fileID: 11400000, guid: b5bb9925ec9e54442b1e24a4934addb8, type: 2}
+    alsoRooms: []
     mapPosition: {x: 212, y: 40}
     label: 0
   - roomObject: R1_Room04
@@ -50,6 +53,7 @@ MonoBehaviour:
     partId: R1_Part_Counterweight
     partName: Counterweight
     journal: {fileID: 11400000, guid: 9b5c94e9c2eb29e4188d644be05b6440, type: 2}
+    alsoRooms: []
     mapPosition: {x: 266, y: 82}
     label: 3
   - roomObject: R1_Room05
@@ -58,6 +62,7 @@ MonoBehaviour:
     partId: R1_Part_Bearing
     partName: Bearing
     journal: {fileID: 11400000, guid: d7ac9980d789a11499e67853d284a7af, type: 2}
+    alsoRooms: []
     mapPosition: {x: 220, y: 122}
     label: 0
   - roomObject: R1_Room06
@@ -66,6 +71,7 @@ MonoBehaviour:
     partId: 
     partName: 
     journal: {fileID: 11400000, guid: c27c16c0af599934fa0a622d02d908fd, type: 2}
+    alsoRooms: []
     mapPosition: {x: 156, y: 134}
     label: 0
   - roomObject: R1_Room07
@@ -74,6 +80,7 @@ MonoBehaviour:
     partId: 
     partName: 
     journal: {fileID: 11400000, guid: 3a59b0efff4ab43459421a439f8ed3e3, type: 2}
+    alsoRooms: []
     mapPosition: {x: 92, y: 170}
     label: 0
   - roomObject: R1_Room08
@@ -82,6 +89,9 @@ MonoBehaviour:
     partId: 
     partName: 
     journal: {fileID: 11400000, guid: c4aa541e3443dba4fa348f9a88aad78a, type: 2}
+    alsoRooms:
+    - R1_Room09
+    - R1_Room10
     mapPosition: {x: 200, y: 170}
     label: 0
   lockedRegions:

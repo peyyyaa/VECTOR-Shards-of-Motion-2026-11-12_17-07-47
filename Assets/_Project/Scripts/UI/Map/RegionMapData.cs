@@ -30,6 +30,8 @@ public class RegionMapData : ScriptableObject
         public string partName;
         [Tooltip("The room's main journal entry; the map shows it as read once it has been opened. Empty = not written yet.")]
         public JournalEntry journal;
+        [Tooltip("Other room objects that are parts of this one on the map (e.g. the finale's three parts): their shards count here too.")]
+        public string[] alsoRooms = new string[0];
         [Tooltip("Marker position on the map art, in map pixels (0,0 = bottom left).")]
         public Vector2 mapPosition;
         [Tooltip("Where the room's name sits next to its marker.")]
@@ -67,7 +69,15 @@ public class RegionMapData : ScriptableObject
 
     public int ShardsFound(int index)
     {
-        string prefix = rooms[index].roomObject + "/";
+        int n = Count(rooms[index].roomObject);
+        if (rooms[index].alsoRooms != null) foreach (string other in rooms[index].alsoRooms) n += Count(other);
+        return n;
+    }
+
+    private static int Count(string roomObject)
+    {
+        if (string.IsNullOrEmpty(roomObject)) return 0;
+        string prefix = roomObject + "/";
         int n = 0;
         foreach (string id in SaveSystem.Data.shards) if (id.StartsWith(prefix, StringComparison.Ordinal)) n++;
         return n;

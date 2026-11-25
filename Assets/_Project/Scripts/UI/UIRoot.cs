@@ -7,6 +7,7 @@ using UnityEngine;
 /// - Journal: the Motion Journal notebook panel.
 /// - Map: the region map screen (opened from the lab's wall map and the pause menu).
 /// - Fund: the Village Fund ledger (opened by talking to Bram).
+/// - EngineAssembly: the two-player Momentum Engine assembly screen (Room 8).
 /// - Prompt sprites: the key-cap and player dot used by interact prompts (InteractPrompt).
 /// While the journal is open, the world labels (prompts, mass labels) fade out so they don't poke out around it.
 ///
@@ -20,6 +21,7 @@ public class UIRoot : MonoBehaviour
     [SerializeField] private JournalPanel journal;
     [SerializeField] private MapPanel map;
     [SerializeField] private FundPanel fund;
+    [SerializeField] private EngineAssemblyPanel engineAssembly;
     [Header("Interact prompts")]
     [SerializeField] private Sprite promptKeySprite;
     [SerializeField] private Sprite promptDotSprite;
@@ -39,6 +41,7 @@ public class UIRoot : MonoBehaviour
     public JournalPanel Journal => journal;
     public MapPanel Map => map;
     public FundPanel Fund => fund;
+    public EngineAssemblyPanel EngineAssembly => engineAssembly;
     public Sprite PromptKeySprite => promptKeySprite;
     public Sprite PromptDotSprite => promptDotSprite;
     public Sprite PaperSprite => paperSprite;
@@ -79,6 +82,8 @@ public class UIRoot : MonoBehaviour
     public void EditorSetupMap(MapPanel mapPanel) => map = mapPanel;
 
     public void EditorSetupFund(FundPanel fundPanel) => fund = fundPanel;
+
+    public void EditorSetupEngineAssembly(EngineAssemblyPanel panel) => engineAssembly = panel;
 
     public void EditorSetupPrompts(Sprite key, Sprite dot) { promptKeySprite = key; promptDotSprite = dot; }
 
