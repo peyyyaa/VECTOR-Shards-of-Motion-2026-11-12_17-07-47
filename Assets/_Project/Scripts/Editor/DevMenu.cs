@@ -33,6 +33,29 @@ public static class DevMenu
         UnityEngine.Debug.Log($"Dev: Heart Engine reset ({removed} saved event(s) removed): not assembled, not awake.");
     }
 
+    /// <summary>Marks Region 1 as complete in the save (as freeing the Great Shard does), to test the village ending
+    /// without replaying the finale. Outside Play mode only.</summary>
+    [MenuItem("Tools/Shards of Motion/Dev/Village Ending: Mark Region 1 Complete (save)")]
+    private static void MarkRegionComplete()
+    {
+        if (EditorApplication.isPlaying) { UnityEngine.Debug.LogWarning("Dev: stop Play mode first."); return; }
+        SaveSystem.Load();
+        SaveSystem.MarkEvent("region1_complete");
+        UnityEngine.Debug.Log("Dev: Region 1 marked complete. Play the Village scene and talk to Wren for the homecoming and credits.");
+    }
+
+    /// <summary>Forgets the homecoming talks and the credits (they play again); Region 1 stays complete. Outside Play mode only.</summary>
+    [MenuItem("Tools/Shards of Motion/Dev/Village Ending: Reset Homecoming + Credits (save)")]
+    private static void ResetVillageEnding()
+    {
+        if (EditorApplication.isPlaying) { UnityEngine.Debug.LogWarning("Dev: stop Play mode first."); return; }
+        SaveSystem.Load();
+        int removed = SaveSystem.Data.events == null ? 0
+            : SaveSystem.Data.events.RemoveAll(e => e.StartsWith("home_") || e == CreditsRoll.SeenEvent);
+        SaveSystem.Save();
+        UnityEngine.Debug.Log($"Dev: village ending reset ({removed} saved event(s) removed).");
+    }
+
     private static void PlayFrom(int room)
     {
         if (EditorApplication.isPlaying) return;

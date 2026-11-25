@@ -15,6 +15,9 @@ public static class GameFlow
     /// <summary>The village screen with the trailhead (Forge &amp; East Road), numbered left to right: where players arrive home.</summary>
     public const int VillageTrailheadScreen = 3;
 
+    /// <summary>Wren's lab, the first village screen: where the players come home to after freeing a region's Great Shard.</summary>
+    public const int VillageLabScreen = 1;
+
     /// <summary>The scene for a region id stored in the save.</summary>
     public static string RegionScene(string region) => region switch
     {
@@ -65,11 +68,14 @@ public static class GameFlow
         Load(RegionScene(region), region);
     }
 
-    /// <summary>Back home (trail home gate, pause menu): arrives at the village trailhead, as if walking in along the road.</summary>
-    public static void ToVillage()
+    /// <summary>Back home (trail home gate, pause menu): arrives at the village trailhead, as if walking in along the road.
+    /// The end of a region arrives at Wren's lab instead (screen = VillageLabScreen), for the homecoming.</summary>
+    public static void ToVillage() => ToVillage(VillageTrailheadScreen);
+
+    public static void ToVillage(int screen)
     {
         if (!VillageExists) { ToTitle(); return; }
-        RoomManager.RequestedStartRoom = VillageTrailheadScreen;
+        RoomManager.RequestedStartRoom = screen;
         Load(VillageScene);
     }
 

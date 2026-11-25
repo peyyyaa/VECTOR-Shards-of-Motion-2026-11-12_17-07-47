@@ -106,7 +106,7 @@ public class GreatShard : MonoBehaviour, IInteractable
         {
             Time.timeScale = 1f;
             if (map != null && lessons.Length > 0) RegionFinale.Play(map, lessons, closing);
-            else GameFlow.ToVillage();
+            else GameFlow.ToVillage(GameFlow.VillageLabScreen); // home to Wren's lab (the homecoming)
         }
     }
 

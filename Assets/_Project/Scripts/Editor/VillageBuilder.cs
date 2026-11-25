@@ -48,7 +48,7 @@ public static partial class VillageBuilder
     {
         "Village_Buildings", "Village_Props", "Village_People", "Village_Exit",
         "Wren", "Bram", "Mira", "Research_Table", "Wall_Map", "Wall_Map_Spot", "Request_Board", "Fund_Stall", "Gate_Region1", "Gate_Sign",
-        "Gate_Light", "Sign_Region1", "Sign_Region2", "Sign_Region3", "Locked_Road",
+        "Gate_Light", "Sign_Region1", "Sign_Region2", "Sign_Region3", "Locked_Road", "Village_Healed",
     };
 
     private static Dictionary<string, Sprite> village;
@@ -198,7 +198,10 @@ public static partial class VillageBuilder
         Marker(lab.transform, "Smoke_Point", Px(lab, 40, 26));
 
         // Wren reads outside, facing the players coming out of the lab.
-        Person(people, "Wren", wren, -0.6f, true).EditorSetup("Wren Alder", NameInk, FirstVisit, PartsFound, Idle);
+        NpcTalk wrenTalk = Person(people, "Wren", wren, -0.6f, true);
+        wrenTalk.EditorSetup("Wren Alder", NameInk, FirstVisit, PartsFound, Idle);
+        wrenTalk.EditorSetupHomecoming(Homecoming, AfterRegion, true); // the credits roll after his homecoming talk
+        Healed(Group(root.transform, "Objects"), false);
 
         // Wren's chest of field notes (the map moved to the trailhead, where the road leaves the village).
         PackProp(props, "Notes_Chest", "Chest Wooden", 1.7f, Floor);
@@ -246,7 +249,10 @@ public static partial class VillageBuilder
         PackProp(gRestored, "Sunflower B", "Sunflower 03", -4.2f, Floor, "Props", -1);
         PackProp(gRestored, "Pot", "Pot 03", -9.3f, Floor, "Props", 1);
         Project(garden, "garden", gBroken, gRestored);
-        Person(people, "Mira", mira, -3.6f, true).EditorSetup("Mira", MiraInk, MiraFirst, MiraParts, MiraIdle);
+        NpcTalk miraTalk = Person(people, "Mira", mira, -3.6f, true);
+        miraTalk.EditorSetup("Mira", MiraInk, MiraFirst, MiraParts, MiraIdle);
+        miraTalk.EditorSetupHomecoming(MiraHome, MiraAfter, false);
+        Healed(Group(root.transform, "Objects"), false);
         Lamp(props, -2.6f);
 
         // 2. The Field Requests board.
@@ -308,6 +314,8 @@ public static partial class VillageBuilder
         NpcTalk bramTalk = Person(people, "Bram", bram, -3.5f, true);
         bramTalk.EditorSetup("Bram", BramInk, BramFirst, BramParts, BramIdle);
         bramTalk.EditorOpensVillageFund(true);
+        bramTalk.EditorSetupHomecoming(BramHome, BramAfter, false);
+        Healed(Group(root.transform, "Objects"), true); // over the road east: the Great Shard itself, shining above the forest
         PackProp(props, "Anvil", "Anvil", -4.3f, Floor, "Props", 1); // where his hammer lands
         Lamp(props, 0.5f); // just past the forge, leaving the rest of the screen to the trailhead
 
@@ -358,6 +366,35 @@ public static partial class VillageBuilder
         if (broken != null) broken.gameObject.SetActive(true);   // the prefab shows the broken state; the save decides at runtime
         if (restored != null) restored.gameObject.SetActive(false);
         owner.gameObject.AddComponent<RestorationProject>().EditorSetup(id, broken != null ? broken.gameObject : null, restored != null ? restored.gameObject : null, fx);
+    }
+
+    /// <summary>
+    /// The healed Great Shard's light over the forest: a soft cyan glow in the sky, and (on the screen with the road east)
+    /// the shard itself, small and far away above the trees, bobbing and pulsing. Off until the region is complete:
+    /// EventSignal ("region1_complete") + SignalActivator switch the Glow group on.
+    /// </summary>
+    private static void Healed(Transform parent, bool shardInSky)
+    {
+        Transform group = NewGroup(parent, "Village_Healed");
+        EventSignal signal = group.gameObject.AddComponent<EventSignal>();
+        signal.EditorSetup("region1_complete", 0f, 0f);
+        Transform glow = NewGroup(group, "Glow");
+        PointLight(glow, "Sky Glow", new Vector3(shardInSky ? 6.8f : 0f, Floor + 9.5f, 0f), new Color(0.5f, 0.92f, 1f), 0.45f, 14f);
+        if (shardInSky)
+        {
+            SpriteRenderer shard = ArtSprite(glow, "Great_Shard", "Shrine_Crystal", 6.8f, Floor + 7.4f, "BackDecor", -20);
+            shard.color = new Color(0.85f, 0.97f, 1f, 0.9f);
+            Light2D light = PointLight(shard.transform, "Shard Light", shard.bounds.center, new Color(0.45f, 0.9f, 1f), 1.2f, 5f);
+            shard.gameObject.AddComponent<Hover>().EditorSetup(light);
+        }
+        glow.gameObject.SetActive(false);
+        SignalActivator activator = group.gameObject.AddComponent<SignalActivator>();
+        SerializedObject so = new SerializedObject(activator);
+        so.FindProperty("signal").objectReferenceValue = signal;
+        SerializedProperty objects = so.FindProperty("gameObjects");
+        objects.arraySize = 1;
+        objects.GetArrayElementAtIndex(0).objectReferenceValue = glow.gameObject;
+        so.ApplyModifiedPropertiesWithoutUndo();
     }
 
     /// <summary>A villager: idle/act animation (NpcActivity), a trigger on the Interactable layer, and NpcTalk (lines set by the caller).</summary>
@@ -645,6 +682,21 @@ public static partial class VillageBuilder
         "Stuck? My journal stones will offer a tip if you wait a little. No shame in reading it!",
     };
 
+    // The homecoming (once, after the Great Shard is freed; the credits follow) and what Wren says after it.
+    private static readonly string[] Homecoming =
+    {
+        "You're back! Look over the forest, east: that light is the Great Shard. Whole again!",
+        "Do you know what you did out there? You pushed, pulled, balanced and smashed your way through. Every bit of it was physics.",
+        "Forces add up. An impulse becomes momentum. Friction drains it away. Weight is mass times gravity. You felt all of it, together.",
+        "The roads east are still closed, but not for long. For now, rest. Alderbrook owes you two everything.",
+    };
+
+    private static readonly string[] AfterRegion =
+    {
+        "Every time I look east, the Great Shard is shining. I still can't quite believe it.",
+        "When the roads to the Gravity Divide open, I'll need my two best assistants again. Until then, Bram's ledger could use your shards!",
+    };
+
     // ------------------------------------------------------------------ Bram's lines (blacksmith, keeper of the Village Fund)
 
     private static readonly string[] BramFirst =
@@ -666,6 +718,18 @@ public static partial class VillageBuilder
         "Push the same crate together and your forces add. Two of you shove twice as hard as one.",
     };
 
+    private static readonly string[] BramHome =
+    {
+        "So the old engine roared back to life. Felt it in my anvil, I did.",
+        "The heavier and the faster, the harder to stop. You two proved it. Now, about that ledger...",
+    };
+
+    private static readonly string[] BramAfter =
+    {
+        "Whatever shards are left in your pockets, the village can still use them.",
+        "Heavy cart, long fall, big hit. I'll be telling that story for years.",
+    };
+
     // ------------------------------------------------------------------ Mira's lines (gardener)
 
     private static readonly string[] MiraFirst =
@@ -684,5 +748,16 @@ public static partial class VillageBuilder
     {
         "A seed doesn't move until something pushes it: the wind, a bird, a careless boot. Nothing else does either.",
         "Drop a pebble and a pumpkin together and they land together. Gravity pulls everything down at the same rate, if the air stays out of it.",
+    };
+
+    private static readonly string[] MiraHome =
+    {
+        "Can you feel it, dears? The soil is humming again, the way it did when the shards drifted through here.",
+        "Thank you. The whole village is breathing easier.",
+    };
+
+    private static readonly string[] MiraAfter =
+    {
+        "My flowers all lean east now, toward the light over the forest.",
     };
 }

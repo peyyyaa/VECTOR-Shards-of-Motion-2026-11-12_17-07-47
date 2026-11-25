@@ -8,7 +8,7 @@ using UnityEngine.UI;
 /// <summary>
 /// The end-of-region sequence, played when the Great Shard is freed: the screen fades to night, then one card per room
 /// ("1 · First Exchange" and the one thing it taught, in the order the players walked them), then Wren's closing
-/// words, and the game returns to the village (GameFlow.ToVillage, with its transition card).
+/// words, and the game returns to the village at Wren's lab (GameFlow.ToVillage, with its transition card).
 /// Built in code on its own overlay canvas (nothing to set up). Cards advance by themselves; Space / Enter / gamepad
 /// South moves on sooner. Like the other menus, it reads the keyboard and gamepads directly (menu keys, not gameplay).
 /// </summary>
@@ -84,7 +84,7 @@ public class RegionFinale : MonoBehaviour
         }
         heading.text = "";
         yield return Card("", closing, 2f);
-        GameFlow.ToVillage();
+        GameFlow.ToVillage(GameFlow.VillageLabScreen); // home to Wren's lab: the homecoming (NpcTalk) and the credits
     }
 
     private IEnumerator Card(string t, string b, float hold = 1f)
